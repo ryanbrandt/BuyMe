@@ -20,17 +20,17 @@
 			<form id="loginForm">
 				<table>
 					<tr>
-						<td><label for="email"><b>Email</b></label></td>
+						<td><label for="loginEmail"><b>Email</b></label></td>
 					</tr>
 					<tr class="inputItems">
-						<td><input class="userCredentials" type="email" placeholder="Enter Email" name="email" required></td>
+						<td><input class="userCredentials" type="email" placeholder="Enter Email" name="loginEmail" id="loginEmail" required></td>
 					</tr>
 						
 					<tr>
-						<td><label for="password"><b>Password</b></label></td>
+						<td><label for="loginPassword"><b>Password</b></label></td>
 					</tr>
 					<tr class="inputItems">
-						<td><input class="userCredentials" type="password" placeholder="Enter Password" name="password" required></td>
+						<td><input class="userCredentials" type="password" placeholder="Enter Password" name="loginPassword"  id="loginPassword" required></td>
 					</tr>
 						
 					<tr class="formSubmit">
@@ -50,17 +50,17 @@
 			<form id="registerForm">
 				<table>
 					<tr>
-						<td><label for="email"><b>Email</b></label></td>
+						<td><label for="registerEmail"><b>Email</b></label></td>
 					</tr>
 					<tr class="inputItems">
-						<td><input class="userCredentials" type="email" placeholder="Enter Email" name="email" id="email" required></td>
+						<td><input class="userCredentials" type="email" placeholder="Enter Email" name="registerEmail" id="registerEmail" required></td>
 					</tr>
 						
 					<tr>
-						<td><label for="password"><b>Password</b></label></td>
+						<td><label for="registerPassword"><b>Password</b></label></td>
 					</tr>
 					<tr class="inputItems">
-						<td><input class="userCredentials" type="password" placeholder="Enter Password" name="password" required></td>
+						<td><input class="userCredentials" type="password" placeholder="Enter Password" name="registerPassword" id="registerPassword" required></td>
 					</tr>
 					
 					<tr>
@@ -82,53 +82,7 @@
 		</div>
 	</div>
 </div>
-<!-- End Login/Registration Grid -->
-</body>
 <!-- JavaScript -->
-<script>
-	/* Login to registration form and vice versa */
-	function switchForms(isLogin){
-		if(isLogin){
-			document.getElementById("loginForm").style.display="none";
-			document.getElementById("registerForm").style.display="block";
-		} else {
-			document.getElementById("registerForm").style.display="none";
-			document.getElementById("loginForm").style.display="block";
-		}
-	}
-	
-	/* AJAX to check on the fly if a username/email is already taken */
-	$('#email').change(function(){
-		$.ajax({
-			url: "check_registration_credentials.jsp",
-			method: "POST",
-			data: {'isEmail': true, 'data': $(this).val()},
-			
-			success: function(data){
-				// if data not empty, unavailable, throw alert and clear input
-				if($.trim(data)){
-					alert('That email is already registered under an account. Log in instead?');
-					$('#email').val('');
-				} 
-			}
-		})
-	});
-	
-	$('#displayName').change(function(){
-		$.ajax({
-			url: "check_registration_credentials.jsp",
-			method: "POST",
-			data: {'isEmail': false, 'data': $(this).val()},
-			
-			success: function(data){
-				// if data not empty, unavailable, throw alert and clear input
-				if($.trim(data)){
-					alert('That display name is already taken');
-					$('#displayName').val('');
-				} 
-			}
-	
-		})
-	});
-</script>
+<script src="js/login_scripts.js"></script>
+</body>
 </html>
