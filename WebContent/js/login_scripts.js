@@ -1,7 +1,7 @@
 /* External JavaScript for login.jsp */
-
-
 /* Switch login to registration form and vice versa */
+
+
 function switchForms(isLogin){
 	if(isLogin){
 		document.getElementById("loginForm").style.display="none";
@@ -11,7 +11,7 @@ function switchForms(isLogin){
 		document.getElementById("loginForm").style.display="block";
 	}
 }
-	
+
 /* AJAX to check on the fly if a display name/email is already taken */
 $('#registerEmail').change(function(){
 	// disable join button until availability confirmed, just in case
@@ -68,6 +68,8 @@ $('#loginForm').on('submit', function(e){
 			} else {
 				alert('You are logged in!');
 				// TODO redirect to some user logged in page here, make login inaccessible until user logged out etc.
+				window.location.href = 'profile.jsp';
+				//enableNavigation();	
 			}
 		}		
 	})	
