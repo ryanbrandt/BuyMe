@@ -1,4 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" import="javax.servlet.http.*"%>
+
+<% HttpSession curSession = request.getSession(false); %>
 <!DOCTYPE html>
 <html>
 <!-- Head -->
@@ -7,11 +9,20 @@
 	<script>
 		/* disable navigation items if user not logged in */
 		function disableNavigation(){
+			/*
 			document.getElementById("profile").className += " disabled";
 			document.getElementById("navbarDropdown").className += " disabled";
 			document.getElementById("cart").className += " disabled";
+			*/
+			
+			document.getElementById("profile").style.visibility = "hidden";
+			document.getElementById("navbarDropdown").style.visibility = "hidden";
+			document.getElementById("cart").style.visibility = "hidden";
+			document.getElementById("logout").style.visibility = "hidden";
+			
 		}
 	</script>
+	
 	<meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 	<title>Insert title here</title>
@@ -46,6 +57,9 @@
       <li class="nav-item">
         <a class="nav-link" href="#" id="cart">My Cart</a>
       </li>
+      <li class="nav-item">
+        <a class="nav-link" href="login.jsp" id="logout">Logout</a>
+      </li>
     </ul>
     <form class="form-inline my-2 my-lg-0">
       <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" required>
@@ -56,14 +70,15 @@
 <!-- JSP -->
 <%	
 	/* get current session, if user not logged in, disable user-oriented navigation bar buttons, else, leave enabled */
-	HttpSession curSession = request.getSession(false);
 	if(curSession.getAttribute("user") == null){
-%>
-	<script>
-	disableNavigation();
-	</script>
+%>		
+		<script>
+		disableNavigation();
+		</script>
 <% 
-	}	
+	}else{
+		System.out.println(curSession.getAttribute("user"));
+	}
 %>
 <!-- Bootstrap Required JS -->
 <script src="http://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
