@@ -1,7 +1,7 @@
 /* External JavaScript for login.jsp */
 /* Switch login to registration form and vice versa */
 
-
+/* switch register -> login and vice versa */
 function switchForms(isLogin){
 	if(isLogin){
 		document.getElementById("loginForm").style.display="none";
@@ -67,9 +67,8 @@ $('#loginForm').on('submit', function(e){
 				alert('Hmm, those credentials didnt match any accounts. Try again?');
 			} else {
 				alert('You are logged in!');
-				// TODO redirect to some user logged in page here, make login inaccessible until user logged out etc.
-				window.location.href = 'profile.jsp';
-				//enableNavigation();	
+				// TODO should probably forward to a servlet first, else someone can type in url and access
+				window.location.href = 'profile.jsp';	
 			}
 		}		
 	})	

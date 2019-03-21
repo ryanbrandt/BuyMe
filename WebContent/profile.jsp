@@ -3,14 +3,14 @@
 <html>
 <!-- Head -->
 <head>
-<meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1">
-<title>Welcome to BuyMe!</title>
+<title>My Profile</title>
 </head>
 <!-- Navigation Bar -->
-<%@ include file='navigation.jsp' %>
+<%@ include file='WEB-INF/navigation.jsp' %>
 <!-- Content -->
 <body>
-<body>
-HELLO WORLD
+	<div class="container" align="center">
+		HELLO WORLD you are logged in!
+	</div>
 </body>
 </html>
