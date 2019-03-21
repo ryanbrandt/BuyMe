@@ -1,5 +1,4 @@
 /* External JavaScript for login.jsp */
-/* Switch login to registration form and vice versa */
 
 /* switch register -> login and vice versa */
 function switchForms(isLogin){
