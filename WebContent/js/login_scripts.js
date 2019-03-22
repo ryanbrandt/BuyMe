@@ -1,5 +1,6 @@
 /* External JavaScript for login.jsp */
 
+
 /* switch register -> login and vice versa */
 function switchForms(isLogin){
 	if(isLogin){
@@ -55,7 +56,7 @@ $('#displayName').change(function(){
 $('#loginForm').on('submit', function(e){
 	e.preventDefault();
 	$.ajax({
-		// the actual relative url is '../validate_form.jsp', but for some reason this works and that doesn't
+		
 		url: "validate_form.jsp",
 		method: "POST",
 		data: {'isLogin': true, 'email': $('#loginEmail').val(), 'password': $('#loginPassword').val()},
@@ -66,7 +67,6 @@ $('#loginForm').on('submit', function(e){
 				alert('Hmm, those credentials didnt match any accounts. Try again?');
 			} else {
 				alert('You are logged in!');
-				// TODO should probably forward to a servlet first, else someone can type in url and access
 				window.location.href = 'profile.jsp';	
 			}
 		}		
@@ -76,7 +76,7 @@ $('#loginForm').on('submit', function(e){
 $('#registerForm').on('submit', function(e){
 	e.preventDefault();
 	$.ajax({
-		// the actual relative url is '../validate_form.jsp', but for some reason this works and that doesn't
+		
 		url: "validate_form.jsp",
 		method: "POST",
 		data: {'isLogin': false, 'email': $('#registerEmail').val(), 'password': $('#registerPassword').val(), 'displayName': $('#displayName').val()},

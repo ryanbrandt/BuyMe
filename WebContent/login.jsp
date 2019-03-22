@@ -8,6 +8,16 @@
 </head>
 <!-- Navigation Bar -->
 <%@ include file='WEB-INF/navigation.jsp' %>
+<% 
+	/* TODO There is definitely a better way to do this  */
+	if(curSession.getAttribute("user") != null){
+		curSession.setAttribute("user", null);
+%>		<script>
+			location.reload(true);
+		</script>	
+<%
+	}
+%>
 <!-- Content -->
 <body>
 <!-- Login/Registration Grid -->

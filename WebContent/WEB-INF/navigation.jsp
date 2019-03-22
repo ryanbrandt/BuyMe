@@ -15,7 +15,7 @@
 		}
 	</script>
 	<meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 </head>
 <!-- Navigation Bar -->
 <body>
@@ -48,7 +48,7 @@
         <a class="nav-link" href="#" id="cart">My Cart</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="login.jsp" id="logout" onclick=logOut()>Logout</a>
+        <a class="nav-link" href="#" id="logout" onclick=logOut()>Logout</a>
       </li>
     </ul>
     <form class="form-inline my-2 my-lg-0">
@@ -77,8 +77,11 @@
 <script>
 	/* log user out on click of logout button */
 	function logOut(){
-		alert('You have been logged out');
-		<% curSession.setAttribute("user", null); %>
+		if(confirm('Are you sure?')){
+			window.location.href = "login.jsp";
+		} else {
+			return false;
+		}
 	}
 </script>
 </body>
