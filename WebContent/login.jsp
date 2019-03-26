@@ -11,11 +11,7 @@
 <% 
 	/* TODO There is definitely a better way to do this  */
 	if(curSession.getAttribute("user") != null){
-		curSession.setAttribute("user", null);
-%>		<script>
-			location.reload(true);
-		</script>	
-<%
+		response.sendRedirect("profile.jsp");
 	}
 %>
 <!-- Content -->

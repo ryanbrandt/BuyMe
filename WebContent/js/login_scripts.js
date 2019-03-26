@@ -87,4 +87,3 @@ $('#registerForm').on('submit', function(e){
 		}		
 	})
 });
-

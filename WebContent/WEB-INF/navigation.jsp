@@ -78,7 +78,7 @@
 	/* log user out on click of logout button */
 	function logOut(){
 		if(confirm('Are you sure?')){
-			window.location.href = "login.jsp";
+			window.location.href = "logout.jsp";
 		} else {
 			return false;
 		}
