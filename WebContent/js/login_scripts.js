@@ -68,6 +68,7 @@ $('#loginForm').on('submit', function(e){
 			} else {
 				//alert('You are logged in!');
 				window.location.href = 'profile.jsp';	
+				showControls();
 			}
 		}		
 	})	

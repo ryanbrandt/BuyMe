@@ -12,8 +12,6 @@
 			document.getElementById("navbarDropdown").className += " disabled";
 			document.getElementById("cart").className += " disabled";
 			document.getElementById("logout").style.visibility = "hidden";	
-			document.getElementById("adminPage").style.visibility = "hidden";
-			document.getElementById("csRepPage").style.visibility = "hidden";
 		}
 	</script>
 	<meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1">
@@ -51,14 +49,7 @@
       </li>
       <li class="nav-item">
         <a class="nav-link" href="#" id="logout" onclick=logOut()>Logout</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#" id="adminPage">Admin</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#" id="csRepPage">CS Rep</a>
-      </li>
-        
+      </li>        
 
     </ul>
     <form class="form-inline my-2 my-lg-0">
@@ -93,14 +84,6 @@
 			return false;
 		}
 	}
-	function showControls(){
-		if( curSession.getAttribute("userType").equals("admin") ){
-			document.getElementById("adminPage").style.visibility = "hidden";
-		}else if( curSession.getAttrubute("userType").equals("cs_rep") ){
-			document.getElementById("csRepPage").style.visibility = "hidden";
-		}
-	}
-
 </script>
 </body>
 </html>

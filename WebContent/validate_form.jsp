@@ -19,18 +19,27 @@
 		
 		// validate information if log in, insert user into DB if registration
 		if(isLogin){
-			q = st.executeQuery("SELECT * FROM Users_End_Users UNION SELECT * FROM Users_Admin UNION SELECT * FROM Users_CS_Rep WHERE email='"+email+"' AND password='"+pass+"'");
-			// q must be nonempty if information is correct, set session attribute user to current user's email
+			q = st.executeQuery(  
+						"SELECT email, password FROM( " +
+							"SELECT email, password " +
+							"FROM BuyMe.Users_End_Users " +
+								"UNION " +
+							"SELECT email, password " + 
+							"FROM BuyMe.Users_Admin " +
+								"UNION " +
+							"SELECT email, password " + 
+							"FROM BuyMe.Users_CS_Rep) AS AllUsers " +
+						"WHERE email = '" + email + "' AND password = '" + pass + "'" );
 			if(q.next()){
 				// this unlocks navbar buttons in navigation.jsp and will probably be useful in other contexts, should use user_id instead probably
 				request.getSession().setAttribute("user", email);		
 				
 				request.getSession().setAttribute("userType", "end_user");
-				ResultSet userType = st.executeQuery("SELECT * FROM Users_Admin WHERE email='"+email);
+				ResultSet userType = st.executeQuery("SELECT * FROM Users_Admin WHERE email='" +email+ "'");
 				if(userType.next()){
 					request.getSession().setAttribute("userType", "admin");
 				}else{
-					userType = st.executeQuery("SELECT * FROM Users_CS_Rep WHERE email='"+email);
+					userType = st.executeQuery("SELECT * FROM Users_CS_Rep WHERE email='"+email+ "'");
 					if(userType.next()){
 						request.getSession().setAttribute("userType", "cs_rep");
 					}
