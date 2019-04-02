@@ -18,5 +18,9 @@
 	<div class="container" align="center">
 		HELLO WORLD, <%= curSession.getAttribute("user") %> is logged in!
 	</div>
+	<br>
+	<div class="container" align="center">
+		<button type="button" class="btn btn-danger" onclick=logOut()> Logout </button>
+	</div>
 </body>
 </html>
