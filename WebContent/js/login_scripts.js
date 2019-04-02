@@ -66,7 +66,7 @@ $('#loginForm').on('submit', function(e){
 			if($.trim(data)){
 				alert('Hmm, those credentials didnt match any accounts. Try again?');
 			} else {
-				alert('You are logged in!');
+				//alert('You are logged in!');
 				window.location.href = 'profile.jsp';	
 			}
 		}		
