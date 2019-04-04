@@ -1,0 +1,50 @@
+/* master stylesheet for common elements across the site */
+
+/* in-table input fields; add bottom-padding for rows that contain an input item */
+tr.inputItems>td {
+	padding-bottom: 2em; 
+}
+
+/* text input bars style (input bars for login email, auction title, etc) */
+input.textInput {
+	width: 100%; /* make sure width consistent */
+	border: none; /* get rid of input border box */
+	border-bottom: 1px solid #28a745; /* make bottom border same color as search hover */
+	transition: ease-in-out, width .35s ease-in-out; /* transition for focus */
+}
+
+/* text input bars on focus, add background and get rid of outline */
+input.textInput:focus {
+	width: 150%;
+	background-color: rgb(0,0,0,0.01);
+}
+
+/* any input, select or textarea */
+input, select, texarea {
+	outline: none !important; /* get rid of outline */
+}
+
+/* style for form submission buttons (login, create auction, etc) */
+tr.formSubmit {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	padding-bottom: 1em;
+}
+
+/* red asterisk for labels for required input fields */
+label.isRequired:after {
+	content: "*";
+	color: red;
+}
+
+/* optional note for non-required input fields */
+label.notRequired:after {
+	content: " (optional)";
+	font-style: italic;
+	color: #28a745;
+}
+/* add top margin for container div to justify content center */
+.container {
+	margin-top: 10em !important;
+}

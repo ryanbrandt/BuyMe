@@ -3,7 +3,8 @@
 <html>
 <!-- Head -->
 <head>
-<link rel="stylesheet" href="css/login.css">
+<!-- Master stylesheet -->
+<link rel="stylesheet" href="css/master.css">
 <title>Welcome to BuyMe!</title>
 </head>
 <!-- Navigation Bar -->
@@ -28,14 +29,14 @@
 						<td><label for="loginEmail"><b>Email</b></label></td>
 					</tr>
 					<tr class="inputItems">
-						<td><input class="userCredentials" type="email" placeholder="Enter Email" name="loginEmail" id="loginEmail" required></td>
+						<td><input class="textInput" type="email" placeholder="Enter Email" name="loginEmail" id="loginEmail" required></td>
 					</tr>
 						
 					<tr>
 						<td><label for="loginPassword"><b>Password</b></label></td>
 					</tr>
 					<tr class="inputItems">
-						<td><input class="userCredentials" type="password" placeholder="Enter Password" name="loginPassword"  id="loginPassword" required></td>
+						<td><input class="textInput" type="password" placeholder="Enter Password" name="loginPassword"  id="loginPassword" required></td>
 					</tr>
 						
 					<tr class="formSubmit">
@@ -52,27 +53,27 @@
 				</table>
 			</form>
 			<!-- Registration Form; Default is Hidden -->
-			<form id="registerForm">
+			<form id="registerForm" style="display: none;">
 				<table>
 					<tr>
-						<td><label for="registerEmail"><b>Email</b></label></td>
+						<td><label class="isRequired" for="registerEmail"><b>Email</b></label></td>
 					</tr>
 					<tr class="inputItems">
-						<td><input class="userCredentials" type="email" placeholder="Enter Email" name="registerEmail" id="registerEmail" required></td>
+						<td><input class="textInput" type="email" placeholder="Enter Email" name="registerEmail" id="registerEmail" required></td>
 					</tr>
 						
 					<tr>
-						<td><label for="registerPassword"><b>Password</b></label></td>
+						<td><label class="isRequired" for="registerPassword"><b>Password</b></label></td>
 					</tr>
 					<tr class="inputItems">
-						<td><input class="userCredentials" type="password" placeholder="Enter Password" name="registerPassword" id="registerPassword" required></td>
+						<td><input class="textInput" type="password" placeholder="Enter Password" name="registerPassword" id="registerPassword" required></td>
 					</tr>
 					
 					<tr>
-						<td><label for="displayName"><b>Display Name</b></label></td>
+						<td><label class="isRequired" for="displayName"><b>Display Name</b></label></td>
 					</tr>
 					<tr class="inputItems">
-						<td><input class="userCredentials" type="text" placeholder="Enter Display Name" name="displayName" id="displayName" required></td>
+						<td><input class="textInput" type="text" placeholder="Enter Display Name" name="displayName" id="displayName" required></td>
 					</tr>
 					
 					<tr class="formSubmit">
