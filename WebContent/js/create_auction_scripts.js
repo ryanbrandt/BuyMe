@@ -6,17 +6,17 @@ $('#newProductForm').on('submit', function(e){
 	this.style.display = "none";
 	var head = document.getElementById("formHead");
 	// show form for specific product type
-	switch($("#productType").val()){
+	switch($("#type").val()){
 	
-	case "s":
+	case "shirts":
 		document.getElementById("shirtForm").style.display = "block";
 		head.innerHTML = "Shirt Details";
 		break;
-	case "p":
+	case "pants":
 		document.getElementById("pantsForm").style.display = "block";
 		head.innerHTML = "Pants Details";
 		break;
-	case "j":
+	case "jackets":
 		head.innerHTML = "Jacket Details";
 		document.getElementById("jacketForm").style.display = "block";
 		
@@ -24,11 +24,11 @@ $('#newProductForm').on('submit', function(e){
 	$.ajax({
 		url: "/BuyMe/AuctionManagementServlet",
 		method: "POST",
-		// send c for create
-		data: {"method": "c", "data": $(this).serializeArray()},
+		// send action=c for create new clothing tuple
+		data: $(this).serialize() + "&action=c",
 		
 		success: function(){
-			// do stuff
+			console.log("success");
 		}
 	})
 });
@@ -43,8 +43,8 @@ $('.typeForm').on('submit', function(e){
 	$.ajax({
 		url: "/BuyMe/AuctionManagementServlet",
 		method: "POST",
-		// send m for manage? think will create all tuples on newProductForm submit and then manage them here
-		data: {"method": "m", "data": $(this).serializeArray()},
+		// send action=t for adding fields to related type of clothing tuple created in newProductForm
+		data: $(this).serialize() + "&action=t",
 		
 		success: function(){
 			// do stuff

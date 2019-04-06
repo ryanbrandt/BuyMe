@@ -6,13 +6,13 @@
 <html>
 <!-- Head -->
 <head>
-<!-- Master stylesheet -->
-<link rel="stylesheet" href="css/master.css">
+<!-- Master stylesheet -->     
+<link rel="stylesheet" href="css/master.css"> 
 <title>Start a New Auction</title>
 </head>
 <!-- Navigation Bar -->
-<%@ include file='../WEB-INF/navigation.jsp' %> 
-<!-- Content -->
+<%@ include file='../WEB-INF/navigation.jsp' %>  
+<!-- Content --> 
 <body>
 <div class="container"> 
 	<div class="row">
@@ -22,65 +22,65 @@
 			<form id="newProductForm">
 				<table>
 					<tr>
-						<td><label class="isRequired" for="productTitle"><b>What are you Selling?</b></label></td>
+						<td><label class="isRequired" for="name"><b>What are you Selling?</b></label></td>
 					</tr>
 					<tr class="inputItems">
-						<td><input class="textInput" type="text" placeholder="Item Name" name="productTitle" required></td>
+						<td><input class="textInput" type="text" placeholder="Item Name" name="name" required></td>
 					</tr>
 						
 					<tr>
 						<td><label class="isRequired" for="type"><b>What Type of Product is It?</b></label></td>
 					</tr>
 					<tr class="inputItems">
-						<td><select name="productType" class="form-control" id="productType" required>
+						<td><select name="type" class="form-control" id="type" required>
 								<option disabled selected value>--</option>
-								<option value="s">Shirt</option>
-								<option value="p">Pants</option>
-								<option value="j">Jacket</option>
+								<option value="shirts">Shirt</option>
+								<option value="pants">Pants</option>
+								<option value="jackets">Jacket</option>
 							</select>
-						</td>
+						</td>  
+					</tr>     
+					   
+					<tr>  
+						<td><label class="isRequired" for="condition"><b>What Condition is it In?</b></label></td>
 					</tr>
-					
-					<tr>
-						<td><label class="isRequired" for="productCondition"><b>What Condition is it In?</b></label></td>
-					</tr>
-					<tr class="inputItems">
-						<td><select name="productCondition" class="form-control" required>
+					<tr class="inputItems"> 
+						<td><select name="condition" class="form-control" required>
 								<option disabled selected value>--</option>
-								<option value="ua">Used-Acceptable</option>
-								<option value="ug">Used-Good</option>
-								<option value="uln">Used-Like-New</option>
-								<option value="n">New</option>
-							</select>
-						</td>
+								<option value="used-acceptable">Used-Acceptable</option>
+								<option value="used-good">Used-Good</option>
+								<option value="used-like-new">Used-Like-New</option>
+								<option value="new">New</option>
+							</select>    
+						</td>    
+					</tr> 
+					
+					<tr>
+						<td><label for="material"><b>What is it Made of?</b></label></td>
+					</tr> 
+					<tr class="inputItems">
+						<td><input class="textInput" type="text" placeholder="Item Brand" name="material"></td>
 					</tr>
 					
 					<tr>
-						<td><label for="productMaterial"><b>Who Makes It?</b></label></td>
-					</tr>
+						<td><label for="brand"><b>Who Makes It?</b></label></td>
+					</tr> 
 					<tr class="inputItems">
-						<td><input class="textInput" type="text" placeholder="Item Brand" name="productBrand"></td>
+						<td><input class="textInput" type="text" placeholder="Item Brand" name="brand"></td>
 					</tr>
-					
+					 
 					<tr>
-						<td><label for="productColor"><b>What Color is It?</b></label></td>
+						<td><label for="color"><b>What Color is It?</b></label></td>
 					</tr>
 					<tr class="inputItems">
-						<td><input class="textInput" type="text" placeholder="Item Color" name="productColor"></td>
+						<td><input class="textInput" type="text" placeholder="Item Color" name="color"></td>
 					</tr>
-					
+						
 					<tr>
-						<td><label for="productDescription"><b>Additional Details</b></label></td>
+						<td><label for="image"><b>Upload a Picture</b></label></td>
 					</tr>
 					<tr class="inputItems">
-						<td><textarea rows="7" cols="60" class="form-control" placeholder="What Should Buyers Know About your Item?" name="productDescription" id="productDescription"></textarea></td>
-					</tr>
-					
-					<tr>
-						<td><label for="productImage"><b>Upload a Picture</b></label></td>
-					</tr>
-					<tr class="inputItems">
-						<td><input type="file" name="productImage"></td>
+						<td><input type="file" name="image"></td>
 					</tr>
 						
 					<tr class="formSubmit">
@@ -92,11 +92,11 @@
 			<form id="shirtForm" class="typeForm" style="display: none;">
 				<table>
 					<tr>
-						<td><label for="shirtSize" class="isRequired"><b>Shirt Size</b></label></td>
+						<td><label for="size" class="isRequired"><b>Shirt Size</b></label></td>
 					</tr>
 					<tr class="inputItems">
 						<td>
-							<select name="shirtSize" class="form-control" required>
+							<select name="size" class="form-control" required>
 								<option disabled selected value>--</option>
 								<option value="s">Small</option>
 								<option value="m">Medium</option>
@@ -107,11 +107,11 @@
 					</tr>
 					
 					<tr>
-						<td><label for="shirtButtons"><b>Does it have buttons?</b></label></td>
+						<td><label for="buttons"><b>Does it have buttons?</b></label></td>
 					</tr>
 					<tr class="inputItems">
 						<td>
-							<select name="shirtButtons" class="form-control">
+							<select name="buttons" class="form-control">
 								<option disabled selected value>--</option>
 								<option value="1">Yes</option>
 								<option value="0">No</option>
@@ -120,11 +120,11 @@
 					</tr>
 					
 					<tr>
-						<td><label for="shirtSleeves"><b>Long or Short Sleeve?</b></label></td>
+						<td><label for="long_sleeve"><b>Long or Short Sleeve?</b></label></td>
 					</tr>
 					<tr class="inputItems">
 						<td>
-							<select name="shirtButtons" class="form-control">
+							<select name="long_sleeve" class="form-control">
 								<option disabled selected value>--</option>
 								<option value="1">Long</option>
 								<option value="0">Short</osption>
@@ -133,11 +133,11 @@
 					</tr>
 					
 					<tr>
-						<td><label for="shirtCollar"><b>Does it Have a Collar?</b></label></td>
+						<td><label for="collar"><b>Does it Have a Collar?</b></label></td>
 					</tr>
 					<tr class="inputItems">
 						<td>
-							<select name="shirtButtons" class="form-control">
+							<select name="collar" class="form-control">
 								<option disabled selected value>--</option>
 								<option value="1">Yes</option>
 								<option value="0">No</osption>
@@ -153,29 +153,29 @@
 			<form id="pantsForm" class="typeForm" style="display: none;">
 				<table>
 					<tr>
-						<td><label for="pantsWaist" class="isRequired"><b>Pants Waist</b></label></td>
+						<td><label for="waist" class="isRequired"><b>Pants Waist</b></label></td>
 					</tr>
 					<tr class="inputItems">
 						<td>
-							<input class="textInput" type="text" name="pantsWaist" placeholder="Waist in Inches" required>
+							<input class="textInput" type="text" name="waist" placeholder="Waist in Inches" required>
 						</td>
 					</tr>
 					
 					<tr>
-						<td><label for="pantsLength" class="isRequired"><b>Pants Length</b></label></td>
+						<td><label for="length" class="isRequired"><b>Pants Length</b></label></td>
 					</tr>
 					<tr class="inputItems">
 						<td>
-							<input class="textInput" type="text" name="pantsLength" placeholder="Length in Inches" required>
+							<input class="textInput" type="text" name="length" placeholder="Length in Inches" required>
 						</td>
 					</tr>
 					
 					<tr>
-						<td><label for="pantsLoops"><b>Does it have Belt Loops?</b></label></td>
+						<td><label for="has_belt_loops"><b>Does it have Belt Loops?</b></label></td>
 					</tr>
 					<tr class="inputItems">
 						<td>
-							<select name="pantsLoops" class="form-control">
+							<select name="has_belt_loops" class="form-control">
 								<option disabled selected value>--</option>
 								<option value="1">Yes</option>
 								<option value="0">No</option>
@@ -184,11 +184,11 @@
 					</tr>
 					
 					<tr>
-						<td><label for="pantsFit"><b>Pants Fit</b></label></td>
+						<td><label for="fit"><b>Pants Fit</b></label></td>
 					</tr>
 					<tr class="inputItems">
 						<td>
-							<select name="pantsFit" class="form-control">
+							<select name="fit" class="form-control">
 								<option disabled selected value>--</option>
 								<option value="r">Relaxed</option>
 								<option value="reg">Regular</option>
@@ -205,11 +205,11 @@
 			<form id="jacketForm" class="typeForm" style="display: none;">
 				<table>
 					<tr>
-						<td><label for="jacketSize" class="isRequired"><b>Jacket Size</b></label></td>
+						<td><label for="size" class="isRequired"><b>Jacket Size</b></label></td>
 					</tr>
 					<tr class="inputItems">
 						<td>
-							<select name="jacketSize" class="form-control">
+							<select name="size" class="form-control">
 								<option disabled selected value>--</option>
 								<option value="s">Small</option>
 								<option value="m">Medium</option>
@@ -220,11 +220,24 @@
 					</tr>
 					
 					<tr>
-						<td><label for="jacketResistant"><b>Is it Water Resistant?</b></label></td>
+						<td><label for="water_resistant"><b>Is it Water Resistant?</b></label></td>
+					</tr>
+					<tr class="inputItems">
+						<td> 
+							<select name="water_resistant" class="form-control">
+								<option disabled selected value>--</option>
+								<option value="1">Yes</option>
+								<option value="0">No</option>
+							</select>
+						</td>
+					</tr>   
+					   
+					<tr>  
+						<td><label for="hood"><b>Does it Have a Hood?</b></label></td>
 					</tr>
 					<tr class="inputItems">
 						<td>
-							<select name="jacketResistant" class="form-control">
+							<select name="hood" class="form-control">
 								<option disabled selected value>--</option>
 								<option value="1">Yes</option>
 								<option value="0">No</option>
@@ -233,35 +246,22 @@
 					</tr>
 					
 					<tr>
-						<td><label for="jacketHood"><b>Does it Have a Hood?</b></label></td>
+						<td><label for="insulated"><b>Is it Insulated?</b></label></td>
 					</tr>
 					<tr class="inputItems">
-						<td>
-							<select name="jacketHood" class="form-control">
+						<td> 
+							<select name="insulated" class="form-control">
 								<option disabled selected value>--</option>
 								<option value="1">Yes</option>
 								<option value="0">No</option>
 							</select>
-						</td>
-					</tr>
-					
-					<tr>
-						<td><label for="jacketInsulated"><b>Is it Insulated?</b></label></td>
-					</tr>
-					<tr class="inputItems">
-						<td>
-							<select name="jacketInsulated" class="form-control">
-								<option disabled selected value>--</option>
-								<option value="1">Yes</option>
-								<option value="0">No</option>
-							</select>
-						</td>
-					</tr>
+						</td> 
+					</tr>   
 					<tr class="formSubmit">
 						<td><button class="btn btn-outline-success my-2 my-sm-0" type="submit">Next</button></td>
-					</tr>
-				</table>
-			</form>
+					</tr> 
+				</table>          
+			</form>    
 			<!-- Auction Form -->
 			<form id ="auctionForm" style="display: none;">
 				<table>
@@ -272,7 +272,7 @@
 						<td><textarea rows="7" cols="60" class="form-control" name="auctionComments" placeholder="Enter Anything else Potential Buyers Should Know"></textarea>
 					</tr>
 					
-					<tr>
+					<tr> 
 						<td><label for="auctionRemarks"><b>Additional Condition Remarks</b></label></td>
 					</tr>
 					<tr class="inputItems">
@@ -281,7 +281,7 @@
 					<tr class="formSubmit">
 						<td><button class="btn btn-outline-success my-2 my-sm-0" type="submit">Finish</button></td>
 					</tr>
-				</table>
+				</table> 
 			</form>
 		</div>
 	</div>
