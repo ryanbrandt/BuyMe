@@ -13,6 +13,7 @@
 		
 		// get shared parameters from login/register form
 		boolean isLogin = Boolean.parseBoolean(request.getParameter("isLogin"));
+		boolean isCSRep = Boolean.parseBoolean(request.getParameter("isCSRep"));
 		String email = request.getParameter("email");
 		String pass = request.getParameter("password");
 		ResultSet q;
@@ -52,7 +53,11 @@
 			}
 		} else {
 			String displayName = request.getParameter("displayName");
-			st.executeUpdate("INSERT INTO Users_End_Users(email, password, display_name)VALUES('"+email+"', '"+pass+"', '"+displayName+"')");
+			if(isCSRep){
+				st.executeUpdate("INSERT INTO Users_CS_Rep(email, password, display_name)VALUES('"+email+"', '"+pass+"', '"+displayName+"')");
+			}else{
+				st.executeUpdate("INSERT INTO Users_End_Users(email, password, display_name)VALUES('"+email+"', '"+pass+"', '"+displayName+"')");
+			}
 		}
 		
 	}

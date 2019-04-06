@@ -40,6 +40,6 @@
 <!-- JS -->
 <script type="text/javascript">
     document.getElementById("adminButton").onclick = function () {
-        window.location.href = "adminPage.jsp";
+    	window.location.href = "adminPage.jsp";
     }
 </script>
