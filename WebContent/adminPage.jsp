@@ -12,7 +12,6 @@
 </head>
 <!-- Navigation Bar -->
 <%@ include file='WEB-INF/navigation.jsp' %>
-<!-- Content -->
 
 <body>
 

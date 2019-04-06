@@ -43,3 +43,8 @@
     	window.location.href = "adminPage.jsp";
     }
 </script>
+<script type="text/javascript">
+    document.getElementById("csRepButton").onclick = function () {
+    	window.location.href = "csrepPage.jsp";
+    }
+</script>
