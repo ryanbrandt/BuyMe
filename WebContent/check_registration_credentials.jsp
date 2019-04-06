@@ -18,9 +18,33 @@
 		ResultSet q;
 		// do query, check email availability if isEmail, else check display name
 		if(isEmail){
-			q = st.executeQuery("SELECT * FROM Users_End_Users WHERE email='"+data+"'");
+			q = st.executeQuery(
+					"SELECT * FROM( " +
+							"SELECT email " +
+							"FROM BuyMe.Users_End_Users " +
+								"UNION " +
+							"SELECT email " + 
+							"FROM BuyMe.Users_Admin " +
+								"UNION " +
+							"SELECT email " + 
+							"FROM BuyMe.Users_CS_Rep) AS AllUsers " +
+						"WHERE email = '" + data + "'");
+					
+					//"SELECT * FROM Users_End_Users WHERE email='"+data+"'");
 		} else {
-			q = st.executeQuery("SELECT * FROM Users_End_Users WHERE display_name='"+data+"'");
+			q = st.executeQuery(
+					"SELECT * FROM( " +
+							"SELECT display_name  " +
+							"FROM BuyMe.Users_End_Users " +
+								"UNION " +
+							"SELECT display_name " + 
+							"FROM BuyMe.Users_Admin " +
+								"UNION " +
+							"SELECT display_name " + 
+							"FROM BuyMe.Users_CS_Rep) AS AllUsers " +
+						"WHERE display_name = '" + data + "'");
+					
+					//"SELECT * FROM Users_End_Users WHERE display_name='"+data+"'");
 		}
 		// if q.next(), tuple exists with this credential, pass f back to AJAX to signal unavailable
 		if(q.next()){

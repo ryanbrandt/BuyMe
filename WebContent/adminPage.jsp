@@ -6,6 +6,8 @@
 <html>
 <!-- Head -->
 <head>
+<!-- Master stylesheet -->
+<link rel="stylesheet" href="css/master.css">
 <title>Admin</title>
 </head>
 <!-- Navigation Bar -->
@@ -46,19 +48,29 @@
    </table>
 </p>
 <p>
-<form>Display Name <input type="text" name="displayname"></form>
-<form>Email <input type="text" name="email"> </form>
-<form>Password <input type="text" name="password"> </form>
-<form>Confirm Password <input type="text" name="confirmPassword"> </form>
-<button type="button" id="newCSRepButton"> Add new </button> (not functional yet)
+<form id="registerForm">
+	<table>
+		<tr>
+			<td><label class="isRequired" for="displayName"><b>Display Name</b></label></td>
+			<td><input type="textInput" placeholder="Enter Display Name" name="displayName"  id="displayName" required></td>
+		</tr>	
+		<tr>
+			<td><label class="isRequired" for="registerEmail"><b>Email</b></label></td>
+			<td><input type="email" placeholder="Enter Email" name="registerEmail" id="registerEmail" required></td>
+		</tr>
+		<tr>
+			<td><label class="isRequired" for="registerPassword"><b>Password</b></label></td>
+			<td><input type="password" placeholder="Enter Password" name="registerPassword"  id="registerPassword" required></td>
+		</tr>						
+		<tr class="formSubmit">
+			<td><button type="submit">Add new</button></td>
+		</tr>
+	</table>
+</form>
 </p>
 </div>
 
+<script src="js/admin_scripts.js"></script>
+
 </body>
 </html>
-
-<script>
-    document.getElementById("newCSRepButton").onclick = function () {
-       
-    }
-</script>

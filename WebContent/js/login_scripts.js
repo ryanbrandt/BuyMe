@@ -15,7 +15,7 @@ function switchForms(isLogin){
 /* AJAX to check on the fly if a display name/email is already taken */
 $('#registerEmail').change(function(){
 	// disable join button until availability confirmed, just in case
-	$('#joinNow').attr('disbaled', 'disabled');
+	$('#joinNow').attr('disabled', 'disabled');
 	$.ajax({
 		url: "check_registration_credentials.jsp",
 		method: "POST",
@@ -59,7 +59,7 @@ $('#loginForm').on('submit', function(e){
 		
 		url: "validate_form.jsp",
 		method: "POST",
-		data: {'isLogin': true, 'email': $('#loginEmail').val(), 'password': $('#loginPassword').val()},
+		data: {'isCSRep': false, 'isLogin': true, 'email': $('#loginEmail').val(), 'password': $('#loginPassword').val()},
 		
 		success: function(data){
 			// if data not empty, invalid credentials, show user message and don't redirect
@@ -78,7 +78,7 @@ $('#registerForm').on('submit', function(e){
 		
 		url: "validate_form.jsp",
 		method: "POST",
-		data: {'isLogin': false, 'email': $('#registerEmail').val(), 'password': $('#registerPassword').val(), 'displayName': $('#displayName').val()},
+		data: {'isCSRep': false, 'isLogin': false, 'email': $('#registerEmail').val(), 'password': $('#registerPassword').val(), 'displayName': $('#displayName').val()},
 		
 		success: function(data){
 			alert('Account successfully created! Log in below.');
