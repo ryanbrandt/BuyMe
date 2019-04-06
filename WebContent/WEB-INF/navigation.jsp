@@ -39,7 +39,7 @@
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
           <a class="dropdown-item" href="#">My Bids</a>
-          <a class="dropdown-item" href="#">My Auctions</a>
+          <a class="dropdown-item" href="NavigationServlet?location=auctions">My Auctions</a>
           <div class="dropdown-divider"></div>
           <a class="dropdown-item" href="#">My Alerts</a>
         </div>
@@ -67,8 +67,6 @@
 		disableNavigation();
 		</script>
 <% 
-	} else {
-		System.out.println(curSession.getAttribute("user") + " is currently logged in");
 	}
 %>
 <!-- Bootstrap Required JS -->

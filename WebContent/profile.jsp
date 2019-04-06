@@ -3,6 +3,8 @@
 <html>
 <!-- Head -->
 <head>
+<!-- Master stylesheet -->
+<link type="stylesheet" href="css/master.css">
 <title>My Profile</title>
 </head>
 <!-- Navigation Bar -->
@@ -39,9 +41,11 @@
 </html>
 <!-- JS -->
 <script type="text/javascript">
+/*
     document.getElementById("adminButton").onclick = function () {
     	window.location.href = "adminPage.jsp";
     }
+    */
 </script>
 <script type="text/javascript">
     document.getElementById("csRepButton").onclick = function () {

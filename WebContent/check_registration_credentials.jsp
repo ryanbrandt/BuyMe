@@ -54,7 +54,7 @@
 		
 	}
 	catch(Exception e){
-		// console.log(data) in login.jsp if you need to debug
+		// send error to ajax
 		out.println("Error: " + e);
 		out.flush();
 	}
