@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 @WebServlet("/NavigationServlet")
 public class NavigationServlet extends HttpServlet {
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L; 
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -55,7 +55,7 @@ public class NavigationServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-	
+		
 	}
 
 }
