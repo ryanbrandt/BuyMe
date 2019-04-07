@@ -1,13 +1,11 @@
-$('#lookupForm').on('submit', function(e){
-	e.preventDefault();
+$('#resetPassword').on('click', function(){
 	$.ajax({
-		url: "validate_form.jsp",
+		url: "resetPassword.jsp",
 		method: "POST",
-		data: { 'userLookup': $('userLookup').val()},
+		data: {'user': $('#userLookup').val()},
 		
 		success: function(data){
-			//return result table
-			location.reload();
+			alert('Password reset to \'password\'');
 		}		
 	})
 });

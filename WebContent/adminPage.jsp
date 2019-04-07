@@ -23,7 +23,7 @@
 	   <th>Display Name |</th>
 	   <th>Email</th>
 	</tr>
-<% 
+	<% 
 	try{
 		ApplicationDB db = new ApplicationDB();	
 		Connection con = db.getConnection();	
@@ -44,7 +44,7 @@
 		
 	}
     %>
-   </table>
+  </table>
 </p>
 <p>
 <form id="registerForm">
