@@ -13,6 +13,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.jasper.tagplugins.jstl.core.Out;
+
 /**
  * Servlet implementation class AuctionManagementServlet
  * 
@@ -48,6 +50,8 @@ public class AuctionManagementServlet extends HttpServlet {
 		switch(request.getParameter("location")) {
 		// after creating auction, redirect to view individual auction view for new auction
 		case "view":
+			// save new_prod_id in auction_id, since thats what will be used to populate information in this view
+			request.getSession().setAttribute("auction_id", request.getSession().getAttribute("new_prod_id"));
 			dispatcher = getServletContext().getRequestDispatcher("/auctions/view_auction.jsp");
 			dispatcher.forward(request, response);
 			break;

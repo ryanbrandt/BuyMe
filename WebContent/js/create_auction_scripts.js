@@ -63,6 +63,7 @@ $('#auctionForm').on('submit', function(e){
 		
 		success: function(){
 			// send to servlet with for redirect
+			alert("Success! Your new auction has been created! Click Ok to go there now");
 			window.location.replace("AuctionManagementServlet?location=view");
 			
 		}

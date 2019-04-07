@@ -17,11 +17,14 @@
 <div class="container">   
 	<div class="row">    
 		<div class="col-lg" align="center">
-			<h2>auction_id = <%= request.getSession().getAttribute("new_prod_id") %></h2><br/>
+			<h2>auction_id = <%= request.getSession().getAttribute("auction_id") %></h2><br/>
 				auction attributes go here
+				maybe have another attribute that indicates whether this is a newly ceated auction, so users get an alert or something
 		</div>
 	</div>
 </div>
+
+<!-- JavaScript -->
 
 </body>
 </html>

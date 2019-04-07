@@ -9,13 +9,13 @@
 <!-- Master stylesheet -->     
 <link rel="stylesheet" href="css/master.css"> 
 <title>Start a New Auction</title>
-</head> 
+</head>   
 <!-- Navigation Bar -->  
 <%@ include file='../WEB-INF/navigation.jsp' %>  
 <!-- Content --> 
 <body>        
-<div class="container">   
-	<div class="row">    
+<div class="container">     
+	<div class="row">     
 		<div class="col-lg" align="center">
 			<h2 id="formHead">Tell us About What You're Selling</h2><br/>
 			<!-- Create New Auction Form -->
@@ -270,11 +270,11 @@
 					</tr>
 					<tr class="inputItems">
 						<td><textarea rows="7" cols="60" class="form-control" name="additional_comments" placeholder="Enter Anything else Potential Buyers Should Know"></textarea>
-					</tr> 
-					               
-					<tr>    
+					</tr>  
+					                   
+					<tr>      
 						<td><label for="condition_remarks"><b>Additional Condition Remarks</b></label></td>
-					</tr>    
+					</tr>     
 					<tr class="inputItems">
 						<td><textarea rows="7" cols="60" class="form-control" name="condition_remarks" placeholder="Elaborate on the Condition of Your Item"></textarea>
 					</tr>
