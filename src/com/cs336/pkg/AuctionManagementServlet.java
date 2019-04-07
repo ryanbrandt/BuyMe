@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServletResponse;
  * Functions:
  * 1) Creating new auction records (Clothing, Clothing Type and Auction Tuples)
  * 2) Managing existing auction records
+ * 3) Redirecting after one of these actions
  * 
  */
 @WebServlet("/AuctionManagementServlet")
