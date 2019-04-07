@@ -9,18 +9,18 @@
 <!-- Master stylesheet -->     
 <link rel="stylesheet" href="css/master.css"> 
 <title>Start a New Auction</title>
-</head>
-<!-- Navigation Bar -->
+</head> 
+<!-- Navigation Bar -->  
 <%@ include file='../WEB-INF/navigation.jsp' %>  
 <!-- Content --> 
-<body>
-<div class="container"> 
-	<div class="row">
+<body>        
+<div class="container">   
+	<div class="row">    
 		<div class="col-lg" align="center">
 			<h2 id="formHead">Tell us About What You're Selling</h2><br/>
 			<!-- Create New Auction Form -->
 			<form id="newProductForm">
-				<table>
+				<table>  
 					<tr>
 						<td><label class="isRequired" for="name"><b>What are you Selling?</b></label></td>
 					</tr>
@@ -87,20 +87,20 @@
 						<td><button class="btn btn-outline-success my-2 my-sm-0" type="submit">Next</button></td>
 					</tr>
 				</table>
-			</form>
+			</form>      
 			<!-- Shirt Form -->
 			<form id="shirtForm" class="typeForm" style="display: none;">
-				<table>
-					<tr>
+				<table>    
+					<tr>    
 						<td><label for="size" class="isRequired"><b>Shirt Size</b></label></td>
 					</tr>
-					<tr class="inputItems">
-						<td>
+					<tr class="inputItems">   
+						<td>    
 							<select name="size" class="form-control" required>
 								<option disabled selected value>--</option>
-								<option value="s">Small</option>
-								<option value="m">Medium</option>
-								<option value="l">Large</option>
+								<option value="small">Small</option>
+								<option value="medium">Medium</option>
+								<option value="large">Large</option>
 								<option value="xl">XL</option>
 							</select>
 						</td>
@@ -113,8 +113,8 @@
 						<td>
 							<select name="buttons" class="form-control">
 								<option disabled selected value>--</option>
-								<option value="1">Yes</option>
-								<option value="0">No</option>
+								<option value=1>Yes</option>
+								<option value=0>No</option>
 							</select>
 						</td>
 					</tr>
@@ -126,8 +126,8 @@
 						<td>
 							<select name="long_sleeve" class="form-control">
 								<option disabled selected value>--</option>
-								<option value="1">Long</option>
-								<option value="0">Short</osption>
+								<option value=1>Long</option>
+								<option value=0>Short</osption>
 							</select>
 						</td>
 					</tr>
@@ -139,8 +139,8 @@
 						<td>
 							<select name="collar" class="form-control">
 								<option disabled selected value>--</option>
-								<option value="1">Yes</option>
-								<option value="0">No</osption>
+								<option value=1>Yes</option>
+								<option value=0>No</osption>
 							</select>
 						</td>
 					</tr>
@@ -177,8 +177,8 @@
 						<td>
 							<select name="has_belt_loops" class="form-control">
 								<option disabled selected value>--</option>
-								<option value="1">Yes</option>
-								<option value="0">No</option>
+								<option value=1>Yes</option>
+								<option value=0>No</option>
 							</select>
 						</td>
 					</tr>
@@ -190,9 +190,9 @@
 						<td>
 							<select name="fit" class="form-control">
 								<option disabled selected value>--</option>
-								<option value="r">Relaxed</option>
-								<option value="reg">Regular</option>
-								<option value="s">Slim</option>
+								<option value="relaxed">Relaxed</option>
+								<option value="regular">Regular</option>
+								<option value="slim">Slim</option>
 							</select>
 						</td>
 					</tr>
@@ -203,85 +203,93 @@
 			</form>
 			<!-- Jacket Form -->
 			<form id="jacketForm" class="typeForm" style="display: none;">
-				<table>
-					<tr>
+				<table> 
+					<tr> 
 						<td><label for="size" class="isRequired"><b>Jacket Size</b></label></td>
 					</tr>
 					<tr class="inputItems">
 						<td>
 							<select name="size" class="form-control">
 								<option disabled selected value>--</option>
-								<option value="s">Small</option>
-								<option value="m">Medium</option>
-								<option value="l">Large</option>
+								<option value="small">Small</option>
+								<option value="medium">Medium</option>
+								<option value="large">Large</option>
 								<option value="xl">XL</option>
-							</select>
+							</select> 
 						</td>
-					</tr>
+					</tr> 
 					
-					<tr>
+					<tr> 
 						<td><label for="water_resistant"><b>Is it Water Resistant?</b></label></td>
 					</tr>
 					<tr class="inputItems">
 						<td> 
 							<select name="water_resistant" class="form-control">
 								<option disabled selected value>--</option>
-								<option value="1">Yes</option>
-								<option value="0">No</option>
+								<option value=1>Yes</option>
+								<option value=0>No</option>
 							</select>
 						</td>
 					</tr>   
-					   
-					<tr>  
+					             
+					<tr>      
 						<td><label for="hood"><b>Does it Have a Hood?</b></label></td>
 					</tr>
 					<tr class="inputItems">
-						<td>
+						<td> 
 							<select name="hood" class="form-control">
 								<option disabled selected value>--</option>
-								<option value="1">Yes</option>
-								<option value="0">No</option>
+								<option value=1>Yes</option>
+								<option value=0>No</option>
 							</select>
 						</td>
-					</tr>
+					</tr>  
 					
-					<tr>
+					<tr> 
 						<td><label for="insulated"><b>Is it Insulated?</b></label></td>
 					</tr>
 					<tr class="inputItems">
-						<td> 
+						<td>  
 							<select name="insulated" class="form-control">
 								<option disabled selected value>--</option>
-								<option value="1">Yes</option>
-								<option value="0">No</option>
-							</select>
-						</td> 
-					</tr>   
+								<option value=1>Yes</option>
+								<option value=0>No</option>
+							</select>  
+						</td>  
+					</tr>      
 					<tr class="formSubmit">
 						<td><button class="btn btn-outline-success my-2 my-sm-0" type="submit">Next</button></td>
-					</tr> 
-				</table>          
-			</form>    
+					</tr>    
+				</table>                        
+			</form>        
 			<!-- Auction Form -->
 			<form id ="auctionForm" style="display: none;">
-				<table>
-					<tr>
-						<td><label for="auctionComments"><b>Additional Comments</b></label></td>
+				<table>       
+					<tr>     
+						<td><label for="additional_comments"><b>Additional Comments</b></label></td>
 					</tr>
 					<tr class="inputItems">
-						<td><textarea rows="7" cols="60" class="form-control" name="auctionComments" placeholder="Enter Anything else Potential Buyers Should Know"></textarea>
+						<td><textarea rows="7" cols="60" class="form-control" name="additional_comments" placeholder="Enter Anything else Potential Buyers Should Know"></textarea>
+					</tr> 
+					               
+					<tr>    
+						<td><label for="condition_remarks"><b>Additional Condition Remarks</b></label></td>
+					</tr>    
+					<tr class="inputItems">
+						<td><textarea rows="7" cols="60" class="form-control" name="condition_remarks" placeholder="Elaborate on the Condition of Your Item"></textarea>
 					</tr>
 					
 					<tr> 
-						<td><label for="auctionRemarks"><b>Additional Condition Remarks</b></label></td>
+						<td><label for="end_time" class="isRequired"><b>When Should your Auction End?</b></label></td>
 					</tr>
 					<tr class="inputItems">
-						<td><textarea rows="7" cols="60" class="form-control" name="auctionRemarks" placeholder="Elaborate on the Condition of Your Item"></textarea>
+						<td><input type="date" id="dateTest" class="form-control" name="end_time" required></td>
 					</tr>
+					
 					<tr class="formSubmit">
 						<td><button class="btn btn-outline-success my-2 my-sm-0" type="submit">Finish</button></td>
 					</tr>
-				</table> 
+				</table>  
 			</form>
 		</div>
 	</div>

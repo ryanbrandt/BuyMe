@@ -9,9 +9,9 @@
 		/* disable navigation items, hide logout button if user not logged in */
 		function disableNavigation(){
 			document.getElementById("profile").className += " disabled";
-			document.getElementById("navbarDropdown").className += " disabled";
-			document.getElementById("cart").className += " disabled";
-			document.getElementById("logout").style.visibility = "hidden";	
+			document.getElementById("auctionDropdown").className += " disabled";
+			document.getElementById("actionsDropdown").className += " disabled";
+			document.getElementById("alerts").className += " disabled";
 		}
 	</script>
 	<meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1">
@@ -34,23 +34,27 @@
         <a class="nav-link" href="#" id="profile">My Profile</a>
       </li>
       <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <a class="nav-link dropdown-toggle" href="#" id="auctionDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           Auctions
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="#">My Bids</a>
+          <a class="dropdown-item" href="NavigationServlet?location=createAuction">Create an Auction</a>
           <a class="dropdown-item" href="NavigationServlet?location=auctions">My Auctions</a>
+     	</div>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" id="alerts" href="#">My Alerts</a>
+      </li>    
+	<li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="actionsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Actions
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="#">Speak with a Customer Representative</a>
           <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="#">My Alerts</a>
-        </div>
+          <a class="dropdown-item" href="#" id="logout" onclick=logOut()>Logout</a>  
+     	</div>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#" id="cart">My Cart</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#" id="logout" onclick=logOut()>Logout</a>
-      </li>        
-
     </ul>
     <form class="form-inline my-2 my-lg-0">
       <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" required>

@@ -54,5 +54,17 @@ $('.typeForm').on('submit', function(e){
 
 /* on submit of final auction form, do something */
 $('#auctionForm').on('submit', function(e){
-	
+	e.preventDefault();
+	$.ajax({
+		url: "/BuyMe/AuctionManagementServlet",
+		method: "POST",
+		// send action=a for creating auction tuple associated with product and type
+		data: $(this).serialize() + "&action=a",
+		
+		success: function(){
+			// send to servlet with for redirect
+			window.location.replace("AuctionManagementServlet?location=view");
+			
+		}
+	})
 });

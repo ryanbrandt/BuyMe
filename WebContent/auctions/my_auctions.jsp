@@ -13,8 +13,8 @@
 <!-- Navigation Bar -->
 <%@ include file='../WEB-INF/navigation.jsp' %>
 <!-- Content -->
-<body>
-<div class="container"> 
+<body>  
+<div class="container">  
 	<div class="row">
 		<div class="col-lg" align="center">
 			<h2 id="formHead">My Auctions</h2><br/>

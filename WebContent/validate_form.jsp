@@ -32,22 +32,29 @@
 							"FROM BuyMe.Users_CS_Rep) AS AllUsers " +
 						"WHERE email = '" + email + "' AND password = '" + pass + "'" );
 			if(q.next()){
-				// this unlocks navbar buttons in navigation.jsp and will probably be useful in other contexts, should use user_id instead probably
-				request.getSession().setAttribute("user", email);		
-				
-				request.getSession().setAttribute("userType", "end_user");
-				ResultSet userType = st.executeQuery("SELECT * FROM Users_Admin WHERE email='" +email+ "'");
+				// assume end user, identify end users by user_id	
+				ResultSet userType = st.executeQuery("SELECT user_id FROM Users_End_Users WHERE email = " + "'" + email + "'");
 				if(userType.next()){
-					request.getSession().setAttribute("userType", "admin");
-				}else{
-					userType = st.executeQuery("SELECT * FROM Users_CS_Rep WHERE email='"+email+ "'");
+					request.getSession().setAttribute("user", userType.getInt(1));
+					request.getSession().setAttribute("userType", "end_user");
+				// else check if admin, identify by admin_id
+				} else {
+					userType = st.executeQuery("SELECT admin_id FROM Users_Admin WHERE email='" +email+ "'");
 					if(userType.next()){
-						request.getSession().setAttribute("userType", "cs_rep");
+						request.getSession().setAttribute("user", userType.getInt(1));
+						request.getSession().setAttribute("userType", "admin");
+					// else check if cs rep, identify by cs_rep_id
+					}else{
+						userType = st.executeQuery("SELECT cs_rep_id FROM Users_CS_Rep WHERE email='"+email+ "'");
+						if(userType.next()){
+							request.getSession().setAttribute("user", userType.getInt(1));
+							request.getSession().setAttribute("userType", "cs_rep");
+						}
 					}
 				}
 				
-			} else {
-				// send data back to AJAX so we know invalid credentials
+				} else {
+				// send random data back to AJAX so we know invalid credentials
 				out.print("f");
 				out.flush();
 			}

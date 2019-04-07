@@ -14,7 +14,7 @@
 	if(curSession.getAttribute("user") != null){
 		response.sendRedirect("profile.jsp");
 	}
-%>
+%> 
 <!-- Content -->
 <body>
 <!-- Login/Registration Grid -->
