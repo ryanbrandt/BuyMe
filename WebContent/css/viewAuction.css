@@ -1,0 +1,24 @@
+/* padding for nested table in image row */
+ tr.subTable>td {
+ 	padding-bottom: 5em;
+ }
+ 
+ /* padding for larger table under image */
+ tr.attrTable>td{
+ 	padding-bottom: 2em;
+ }
+ /* style for bottom divider */
+ hr {
+ 	border: 0;
+ 	clear: both;
+ 	display: block;
+ 	width: 96%;
+ 	background-color: #28a745;
+ 	height: 1px;
+ 
+ }
+ 
+ table {
+ 	 table-layout: fixed; 
+ 	 border-collapse: collapse; 
+ }

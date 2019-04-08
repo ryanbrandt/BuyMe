@@ -5,10 +5,12 @@
 function switchForms(isLogin){
 	if(isLogin){
 		document.getElementById("loginForm").style.display="none";
-		document.getElementById("registerForm").style.display="block";
+		$('#registerForm').slideDown("slow", function(){
+		});
 	} else {
 		document.getElementById("registerForm").style.display="none";
-		document.getElementById("loginForm").style.display="block";
+		$('#loginForm').slideDown("slow", function(){
+		});
 	}
 }
 

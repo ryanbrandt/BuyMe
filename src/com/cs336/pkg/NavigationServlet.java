@@ -33,7 +33,7 @@ public class NavigationServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// figure out where to redirect user based on parameter location
 		RequestDispatcher dispatcher;
-		switch(request.getParameter("location")) {
+		switch(request.getParameter("location")){
 		// to my auctions list page
 		case "auctions":
 			dispatcher = getServletContext().getRequestDispatcher("/auctions/my_auctions.jsp");
@@ -44,7 +44,13 @@ public class NavigationServlet extends HttpServlet {
 			dispatcher = getServletContext().getRequestDispatcher("/auctions/create_auction.jsp");
 			dispatcher.forward(request, response);
 			break;
-				
+		// to view an auction page
+		case "view":
+			// set auction id
+			request.getSession().setAttribute("auction_id", request.getParameter("id"));
+			dispatcher = getServletContext().getRequestDispatcher("/auctions/view_auction.jsp");
+			dispatcher.forward(request, response);
+			break;
 		//TODO rest of cases as modules created
 			
 		}

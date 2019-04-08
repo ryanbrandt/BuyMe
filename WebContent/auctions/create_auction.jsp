@@ -14,7 +14,7 @@
 <%@ include file='../WEB-INF/navigation.jsp' %>  
 <!-- Content --> 
 <body>        
-<div class="container">     
+<div class="container">      
 	<div class="row">     
 		<div class="col-lg" align="center">
 			<h2 id="formHead">Tell us About What You're Selling</h2><br/>
@@ -27,16 +27,16 @@
 					<tr class="inputItems">
 						<td><input class="textInput" type="text" placeholder="Item Name" name="name" required></td>
 					</tr>
-						
+						  
 					<tr>
 						<td><label class="isRequired" for="type"><b>What Type of Product is It?</b></label></td>
 					</tr>
 					<tr class="inputItems">
 						<td><select name="type" class="form-control" id="type" required>
 								<option disabled selected value>--</option>
-								<option value="shirts">Shirt</option>
-								<option value="pants">Pants</option>
-								<option value="jackets">Jacket</option>
+								<option value="Shirts">Shirt</option>
+								<option value="Pants">Pants</option>
+								<option value="Jackets">Jacket</option>
 							</select>
 						</td>  
 					</tr>     
@@ -118,12 +118,12 @@
 							</select>
 						</td>
 					</tr>
-					
-					<tr>
+					    
+					<tr> 
 						<td><label for="long_sleeve"><b>Long or Short Sleeve?</b></label></td>
-					</tr>
-					<tr class="inputItems">
-						<td>
+					</tr>   
+					<tr class="inputItems"> 
+						<td>         
 							<select name="long_sleeve" class="form-control">
 								<option disabled selected value>--</option>
 								<option value=1>Long</option>
@@ -134,9 +134,9 @@
 					
 					<tr>
 						<td><label for="collar"><b>Does it Have a Collar?</b></label></td>
-					</tr>
-					<tr class="inputItems">
-						<td>
+					</tr>  
+					<tr class="inputItems"> 
+						<td>    
 							<select name="collar" class="form-control">
 								<option disabled selected value>--</option>
 								<option value=1>Yes</option>
@@ -194,13 +194,13 @@
 								<option value="regular">Regular</option>
 								<option value="slim">Slim</option>
 							</select>
-						</td>
-					</tr>
+						</td>  
+					</tr>    
 					<tr class="formSubmit">
 						<td><button class="btn btn-outline-success my-2 my-sm-0" type="submit">Next</button></td>
 					</tr>
-				</table>
-			</form>
+				</table>   
+			</form>  
 			<!-- Jacket Form -->
 			<form id="jacketForm" class="typeForm" style="display: none;">
 				<table> 

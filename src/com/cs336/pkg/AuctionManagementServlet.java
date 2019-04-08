@@ -3,7 +3,6 @@ package com.cs336.pkg;
 import java.io.IOException;
 
 import java.util.Enumeration;
-import java.util.ArrayList;
 import java.sql.*;
 
 import javax.servlet.RequestDispatcher;
@@ -12,17 +11,12 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import org.apache.jasper.tagplugins.jstl.core.Out;
 
 /**
  * Servlet implementation class AuctionManagementServlet
  * 
- * Servlet for managing DB records for Auctions Module
- * Functions:
- * 1) Creating new auction records (Clothing, Clothing Type and Auction Tuples)
- * 2) Managing existing auction records
- * 3) Redirecting after one of these actions
+ * Servlet for handling creating new auctions and editing existing auctions
  * 
  */
 @WebServlet("/AuctionManagementServlet")
@@ -50,8 +44,10 @@ public class AuctionManagementServlet extends HttpServlet {
 		switch(request.getParameter("location")) {
 		// after creating auction, redirect to view individual auction view for new auction
 		case "view":
+			
 			// save new_prod_id in auction_id, since thats what will be used to populate information in this view
-			request.getSession().setAttribute("auction_id", request.getSession().getAttribute("new_prod_id"));
+			//request.getSession().setAttribute("auction_id", request.getSession().getAttribute("new_prod_id"));
+			request.getSession().setAttribute("is_new_auction", 1);
 			dispatcher = getServletContext().getRequestDispatcher("/auctions/view_auction.jsp");
 			dispatcher.forward(request, response);
 			break;
@@ -84,7 +80,7 @@ public class AuctionManagementServlet extends HttpServlet {
 		return insertQuery;
     }
     
-    /* dynamically builds an update query since not all form parameters required; parameters at first index, values at second */
+    /* dynamically builds an update query since not all form parameters required */
     public String buildUpdate(HttpServletRequest request) {
     	String updateQuery = "";
     	String[] charAttributes = {"size", "fit"};
@@ -129,17 +125,17 @@ public class AuctionManagementServlet extends HttpServlet {
 				// create associated type tuple, save its type as a session attribute for next steps
 				switch(request.getParameter("type")) {
 				
-				case "shirts":
+				case "Shirts":
 					st.executeUpdate("INSERT INTO BuyMe.Shirts(shirt_id)VALUES("+request.getSession().getAttribute("new_prod_id")+")");
 					request.getSession().setAttribute("new_prod_type", "s");
 					break;
 					
-				case "pants":
+				case "Pants":
 					st.executeUpdate("INSERT INTO BuyMe.Pants(pants_id)VALUES("+request.getSession().getAttribute("new_prod_id")+")");
 					request.getSession().setAttribute("new_prod_type", "p");
 					break;
 					
-				case "jackets":
+				case "Jackets":
 					st.executeUpdate("INSERT INTO BuyMe.Jackets(jacket_id)VALUES("+request.getSession().getAttribute("new_prod_id")+")");
 					request.getSession().setAttribute("new_prod_type", "j");
 					
@@ -172,7 +168,12 @@ public class AuctionManagementServlet extends HttpServlet {
 				String q = "INSERT INTO BuyMe.Auctions(`item_is`, `seller_is`";
 				q += auctionQuery[0].isEmpty() ? ")VALUES(" + request.getSession().getAttribute("new_prod_id") + "," + request.getSession().getAttribute("user") + ")"
 						: "," + auctionQuery[0] + ")VALUES(" + request.getSession().getAttribute("new_prod_id") + "," + request.getSession().getAttribute("user") + "," + auctionQuery[1] + ")";
-				st.executeUpdate(q);
+				st.executeUpdate(q, Statement.RETURN_GENERATED_KEYS);
+				// set auction_id since user gets redirected to their new auction; this can be updated whenever a user clicks on an auction to view
+				ResultSet auctionKey = st.getGeneratedKeys();
+				if(auctionKey.next()) {
+					request.getSession().setAttribute("auction_id", auctionKey.getInt(1));
+				}
 				
 				break;
 				

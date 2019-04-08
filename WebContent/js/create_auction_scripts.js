@@ -8,17 +8,20 @@ $('#newProductForm').on('submit', function(e){
 	// show form for specific product type
 	switch($("#type").val()){
 	
-	case "shirts":
-		document.getElementById("shirtForm").style.display = "block";
+	case "Shirts":
+		$('#shirtForm').slideDown("slow", function(){
+		});
 		head.innerHTML = "Shirt Details";
 		break;
-	case "pants":
-		document.getElementById("pantsForm").style.display = "block";
+	case "Pants":
+		$('#pantsForm').slideDown("slow", function(){
+		});
 		head.innerHTML = "Pants Details";
 		break;
-	case "jackets":
+	case "Jackets":
+		$('#jacketForm').slideDown("slow", function(){
+		});
 		head.innerHTML = "Jacket Details";
-		document.getElementById("jacketForm").style.display = "block";
 		
 	}
 	$.ajax({
@@ -37,7 +40,8 @@ $('#newProductForm').on('submit', function(e){
 $('.typeForm').on('submit', function(e){
 	e.preventDefault();
 	this.style.display = "none";
-	document.getElementById('auctionForm').style.display = "block";
+	$('#auctionForm').slideDown("slow", function(){
+	});
 	document.getElementById('formHead').innerHTML = "Additional Details";
 	
 	$.ajax({
@@ -63,9 +67,19 @@ $('#auctionForm').on('submit', function(e){
 		
 		success: function(){
 			// send to servlet with for redirect
-			alert("Success! Your new auction has been created! Click Ok to go there now");
 			window.location.replace("AuctionManagementServlet?location=view");
 			
 		}
 	})
 });
+/* make sure end_date after today */
+window.onload = function(){
+	var d = new Date();
+	var s = d.getFullYear() + '-' +
+	('0' + (d.getMonth()+1)).slice(-2) + '-' +
+	('0' + (d.getDate() + 1)).slice(-2);
+	
+	document.getElementById('dateTest').setAttribute('min', s);
+}
+
+/* TODO script to update image, if one exists */
