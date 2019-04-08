@@ -10,14 +10,12 @@
 		ApplicationDB db = new ApplicationDB();	
 		Connection con = db.getConnection();	
 		Statement st = con.createStatement();
-		
 		// get shared parameters from login/register form
 		boolean isLogin = Boolean.parseBoolean(request.getParameter("isLogin"));
 		boolean isCSRep = Boolean.parseBoolean(request.getParameter("isCSRep"));
 		String email = request.getParameter("email");
 		String pass = request.getParameter("password");
 		ResultSet q;
-		
 		// validate information if log in, insert user into DB if registration
 		if(isLogin){
 			q = st.executeQuery(  

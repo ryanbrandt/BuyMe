@@ -10,7 +10,7 @@
 <!-- Navigation Bar -->
 <%@ include file='WEB-INF/navigation.jsp' %>
 <% 
-	/* TODO There is definitely a better way to do this  */
+	/* if user logged in, redirect to profile  */
 	if(curSession.getAttribute("user") != null){
 		response.sendRedirect("profile.jsp");
 	}

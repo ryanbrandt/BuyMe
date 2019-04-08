@@ -19,7 +19,7 @@
 		<div class="col-lg" align="center">
 			<h2 id="formHead">Tell us About What You're Selling</h2><br/>
 			<!-- Create New Auction Form -->
-			<form id="newProductForm">
+			<form id="newProductForm" style="display: none;">
 				<table>  
 					<tr>
 						<td><label class="isRequired" for="name"><b>What are you Selling?</b></label></td>

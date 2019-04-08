@@ -72,8 +72,10 @@ $('#auctionForm').on('submit', function(e){
 		}
 	})
 });
-/* make sure end_date after today */
+/* make sure end_date after today and slide newProductForm */
 window.onload = function(){
+	$('#newProductForm').slideDown("slow", function(){
+	});
 	var d = new Date();
 	var s = d.getFullYear() + '-' +
 	('0' + (d.getMonth()+1)).slice(-2) + '-' +

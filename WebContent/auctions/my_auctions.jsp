@@ -10,18 +10,19 @@
 		Connection con = db.getConnection();
 		Statement st = con.createStatement();
 		// get all auctions user owns; product_id is key, name is value
-		ResultSet q = st.executeQuery("SELECT item_is, name FROM BuyMe.Auctions JOIN BuyMe.Clothing WHERE seller_is = " + request.getSession().getAttribute("user") + " AND item_is = product_id");
-		// TODO something here is wrong, keys values messed up
+		ResultSet q = st.executeQuery("SELECT a.auction_id, c.name FROM BuyMe.Auctions AS a JOIN BuyMe.Clothing AS c WHERE seller_is = " + request.getSession().getAttribute("user") + " AND a.item_is = c.product_id");
 		while(q.next()){
 			ownedAuctions.put(q.getInt(1), q.getString(2));
 		}
-			
+		 
+		st.close();
+		con.close();
 	}
 	catch(Exception e){
 		System.out.println("Exception: " + e);
 	}
 %>
-<!DOCTYPE html>
+<!DOCTYPE html>  
 <html>
 <!-- Head -->
 <head>
@@ -33,10 +34,10 @@
 <!-- Navigation Bar -->
 <%@ include file='../WEB-INF/navigation.jsp' %>
 <!-- Content -->
-<body>  
-<div class="container" style="margin-top: 2em !important;">  
-	<div class="row">
-		<div class="col-lg" align="left">
+<body>   
+<div class="container" style="margin-top: 2em !important;">   
+	<div class="row"> 
+		<div class="col-lg" align="left"> 
 			<h2 id="formHead">My Auctions</h2><br/>
 			<table>
 			<%

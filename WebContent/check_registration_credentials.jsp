@@ -30,7 +30,6 @@
 							"FROM BuyMe.Users_CS_Rep) AS AllUsers " +
 						"WHERE email = '" + data + "'");
 					
-					//"SELECT * FROM Users_End_Users WHERE email='"+data+"'");
 		} else {
 			q = st.executeQuery(
 					"SELECT * FROM( " +
@@ -44,14 +43,15 @@
 							"FROM BuyMe.Users_CS_Rep) AS AllUsers " +
 						"WHERE display_name = '" + data + "'");
 					
-					//"SELECT * FROM Users_End_Users WHERE display_name='"+data+"'");
 		}
 		// if q.next(), tuple exists with this credential, pass f back to AJAX to signal unavailable
 		if(q.next()){
 			out.println("f");
 			out.flush();
 		}
-		
+		q.close();
+		st.close();
+		con.close();
 	}
 	catch(Exception e){
 		// send error to ajax

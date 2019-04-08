@@ -18,6 +18,7 @@
 			}
 			names.close();
 			vals.close();
+			
 		}
 		catch(Exception e){
 			System.out.println("Exception in view_auction.dbToMap: " + e);
@@ -56,7 +57,9 @@
 			auctionData.put("seller_name", names.getString(1));
 		}
 		names.close();
-		
+		st.close();
+		stTwo.close();
+		con.close();
 	}
 	catch(Exception e){
 		System.out.println("Exception: " + e);
@@ -178,7 +181,7 @@
 					<td><strong>Has Belt Loops?</strong></td>
 				</tr>
 				<tr class="attrTable">
-					<td><%=auctionData.get("has_belt_loops") != null? auctionData.get("has_belts_loops").contentEquals("1") ? "Yes" : "No" :"<small style=font-style:italic;>" + "N/A" + "</small>" %></td>
+					<td><%=auctionData.get("has_belt_loops") != null? auctionData.get("has_belt_loops").contentEquals("1")? "Yes" : "No" : "<small style=font-style:italic;>" + "N/A" + "</small>" %></td>
 				</tr>
 			</table>
 			<!-- Display if type Shirts -->
@@ -246,7 +249,7 @@
 </div>
 
 <!-- JavaScript -->
-<% if((int)request.getSession().getAttribute("is_new_auction") == 1){%> <script>alert("Success! Welcome to your new auction!");</script> <% request.getSession().setAttribute("is_new_auction", 0);}%>
+<% if(request.getSession().getAttribute("is_new_auction") != null){ if((int)request.getSession().getAttribute("is_new_auction")==1){%> <script>alert("Success! Welcome to your new auction! Click edit to change details");</script> <% request.getSession().setAttribute("is_new_auction", 0);}}%>
 </body>
 <script>
 window.onload = function(){
@@ -273,6 +276,7 @@ window.onload = function(){
 		document.getElementById("jacketsTable").style.display = "block";
 	
 	}
+
 }
 </script>
 </html>

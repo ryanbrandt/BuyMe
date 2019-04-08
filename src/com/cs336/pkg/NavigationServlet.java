@@ -51,6 +51,13 @@ public class NavigationServlet extends HttpServlet {
 			dispatcher = getServletContext().getRequestDispatcher("/auctions/view_auction.jsp");
 			dispatcher.forward(request, response);
 			break;
+		// to auction search page
+		case "search":
+			// set search_query attribute 
+			request.getSession().setAttribute("search_query", request.getParameter("q"));
+			dispatcher = getServletContext().getRequestDispatcher("/auctions/search_auctions.jsp");
+			dispatcher.forward(request, response);
+			break;
 		//TODO rest of cases as modules created
 			
 		}
@@ -61,7 +68,6 @@ public class NavigationServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		
 	}
 
 }

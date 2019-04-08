@@ -181,6 +181,8 @@ public class AuctionManagementServlet extends HttpServlet {
 			case "e":
 				
 			}
+			st.close();
+			con.close();
 		}
 		catch(Exception e) {
 			System.out.println(e);

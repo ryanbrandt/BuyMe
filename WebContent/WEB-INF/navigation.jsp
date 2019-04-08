@@ -4,16 +4,6 @@
 <html>
 <!-- Head -->
 <head>
-	<!-- JS function needs to be in head for JSP to call below -->
-	<script>
-		/* disable navigation items, hide logout button if user not logged in */
-		function disableNavigation(){
-			document.getElementById("profile").className += " disabled";
-			document.getElementById("auctionDropdown").className += " disabled";
-			document.getElementById("actionsDropdown").className += " disabled";
-			document.getElementById("alerts").className += " disabled";
-		}
-	</script>
 	<meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 </head>
@@ -56,23 +46,12 @@
      	</div>
       </li>
     </ul>
-    <form class="form-inline my-2 my-lg-0">
-      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" required>
-      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+    <form class="form-inline my-2 my-lg-0" id="searchForm">
+      <input class="form-control mr-sm-2" type="search" placeholder="Search Auctions" aria-label="Search" id="q" required>
+      <button class="btn btn-outline-success my-2 my-sm-0" id="searchSubmit">Search</button>
     </form>
   </div>
 </nav>
-<!-- JSP -->
-<%	
-	/* get current session, if user not logged in, disable user-oriented navigation bar buttons, else, leave enabled */
-	if(curSession.getAttribute("user") == null){
-%>		
-		<script>
-		disableNavigation();
-		</script>
-<% 
-	}
-%>
 <!-- Bootstrap Required JS -->
 <script src="http://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
@@ -84,6 +63,24 @@
 			window.location.href = "logout.jsp";
 		} else {
 			return false;
+		}
+	}
+	/* on submit go to search page with search query */
+	$('#searchForm').on('submit', function(e){
+		e.preventDefault();
+		var args = "&q=" + $('#q').val();
+		var dest = "NavigationServlet?location=search" + args;
+		window.location.href = dest;
+	});
+	/* if user not logged in disable navbar functionality */
+	window.onload = function(){
+		var user = <%=curSession.getAttribute("user")%>;
+		if(!user){
+			document.getElementById("profile").className += " disabled";
+			document.getElementById("auctionDropdown").className += " disabled";
+			document.getElementById("actionsDropdown").className += " disabled";
+			document.getElementById("alerts").className += " disabled"; 
+			$('#searchSubmit').attr('disabled', 'disabled');	
 		}
 	}
 </script>
