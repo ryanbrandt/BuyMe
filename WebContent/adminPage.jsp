@@ -12,7 +12,6 @@
 </head>
 <!-- Navigation Bar -->
 <%@ include file='WEB-INF/navigation.jsp' %>
-<!-- Content -->
 
 <body>
 
@@ -24,7 +23,7 @@
 	   <th>Display Name |</th>
 	   <th>Email</th>
 	</tr>
-<% 
+	<% 
 	try{
 		ApplicationDB db = new ApplicationDB();	
 		Connection con = db.getConnection();	
@@ -45,7 +44,7 @@
 		
 	}
     %>
-   </table>
+  </table>
 </p>
 <p>
 <form id="registerForm">

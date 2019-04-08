@@ -23,7 +23,8 @@
 	</div>
 	
 	<br>
-	<% if(curSession.getAttribute("userType").equals("admin") ){ %>
+	<%
+	if(curSession.getAttribute("userType").equals("admin") ){ %>
 	<div class="container" align="center">
 		<button type="button" id="adminButton">Admin Page</button>
 	</div>
@@ -46,4 +47,9 @@
     	window.location.href = "adminPage.jsp";
     }
     */
+</script>
+<script type="text/javascript">
+    document.getElementById("csRepButton").onclick = function () {
+    	window.location.href = "csrepPage.jsp";
+    }
 </script>
