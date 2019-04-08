@@ -38,20 +38,43 @@
 <div class="container" style="margin-top: 2em !important;">   
 	<div class="row"> 
 		<div class="col-lg" align="left"> 
-			<h2 id="formHead">My Auctions</h2><br/>
+			<!-- Owned Auctions List -->
+			<h2>My Auctions</h2><hr><br/>
 			<table>
+			<col width="20%">
+			<col width="20%"> 
+			<col width="20%">
+			<col width="20%">
+			<col width="20%">
 			<%
-				for(Map.Entry<Integer, String> entry : ownedAuctions.entrySet()){
+				int i = 0;
+				for(Map.Entry<Integer, String> entry : ownedAuctions.entrySet()){ 
 			%>
-					<tr class="attrTable">
-						<td><a href="/BuyMe/NavigationServlet?location=view&id=<%=entry.getKey()%>"><%=entry.getValue()%></a>
+			<%		if(i == 0){ %>
+					<tr class="attrTable" align="center">
+			<%		} %>
+						<td>
+							<div class="card" style="margin-left: 2em; margin-right: 2em;">
+								<div class="card-header">You're Selling</div>
+								  <div class="card-body">
+								    <h5 class="card-title"><%=entry.getValue() %></h5>
+								    <p class="card-text">description here</p>
+								    <a href="/BuyMe/NavigationServlet?location=view&id=<%=entry.getKey()%>" class="btn btn-primary">Go There</a>
+								 </div>
+							</div>
+						</td>
+			<% i++; if(i > 4){ %>
 					</tr>
 			<%
+				i = 0;}
 				}
 			%>
 			</table>
+			<div class="container" align="center" style="margin-top: 2em !important;">
 				<a class="btn btn-outline-success my-2 my-sm-0" href="NavigationServlet?location=createAuction">Create a New Auction</a>
-				<!-- Add list for auctions started and auctions bid on -->
+			</div>
+				<!-- Auctions Bid on List -->
+				<h2>Auctions You Are Bidding On</h2><hr><br/>
 		</div>
 	</div>
 </div>

@@ -28,6 +28,7 @@
 <head>
 <!-- Master stylesheet -->     
 <link rel="stylesheet" href="css/master.css"> 
+<link rel="stylesheet" href="css/viewAuction.css">
 <title>Results for '<%=request.getSession().getAttribute("search_query") %>'</title>
 </head>
 <!-- Navigation Bar -->  
@@ -37,18 +38,37 @@
 <div class="container" style="margin-top: 2em !important;">   
 	<div class="row"> 
 		<div class="col-lg" align="left"> 
-			<h2>Results for '<%=request.getSession().getAttribute("search_query") %>'</h2><br/>
+			<h2>Results for '<%=request.getSession().getAttribute("search_query") %>'</h2><hr><br/>
 			<table>
+				<col width="20%">
+			<col width="20%"> 
+			<col width="20%">
+			<col width="20%">
+			<col width="20%">
 			<%
-				for(Map.Entry<Integer, String> entry : queryAuctions.entrySet()){
+				int i = 0;
+				for(Map.Entry<Integer, String> entry : queryAuctions.entrySet()){ 
 			%>
-					<tr class="attrTable">
-						<td><a href="/BuyMe/NavigationServlet?location=view&id=<%=entry.getKey()%>"><%=entry.getValue()%></a>
+			<%		if(i == 0){ %>
+					<tr class="attrTable" align="center">
+			<%		} %>
+						<td>
+							<div class="card" style="margin-left: 2em; margin-right: 2em;">
+								<div class="card-header">Insert Seller Name here</div>
+								  <div class="card-body">
+								    <h5 class="card-title"><%=entry.getValue() %></h5>
+								    <p class="card-text">description here</p>
+								    <a href="/BuyMe/NavigationServlet?location=view&id=<%=entry.getKey()%>" class="btn btn-primary">Go There</a>
+								 </div>
+							</div>
+						</td>
+			<% i++; if(i > 4){ %>
 					</tr>
 			<%
+				i = 0;}
 				}
 			%>
-		
+			</table>
 			</table>
 		</div>
 	</div>
