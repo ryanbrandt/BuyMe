@@ -182,7 +182,7 @@
 							</select>
 						</td>
 					</tr>
-					
+					 
 					<tr>
 						<td><label for="fit"><b>Pants Fit</b></label></td>
 					</tr>

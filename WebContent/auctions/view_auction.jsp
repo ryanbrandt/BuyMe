@@ -107,7 +107,8 @@
 						</table>
 					</td>
 				</tr>
-				
+			</table>
+			<table>
 				<tr>
 					<td><strong>Condition</strong></td>
 				</tr>

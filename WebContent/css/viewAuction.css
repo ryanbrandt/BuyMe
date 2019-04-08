@@ -2,7 +2,9 @@
  tr.subTable>td {
  	padding-bottom: 5em;
  }
- 
+ table {
+ 	padding-bottom: 5em;
+ }
  /* padding for larger table under image */
  tr.attrTable>td{
  	padding-bottom: 2em;

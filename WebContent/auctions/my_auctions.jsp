@@ -11,6 +11,7 @@
 		Statement st = con.createStatement();
 		// get all auctions user owns; product_id is key, name is value
 		ResultSet q = st.executeQuery("SELECT item_is, name FROM BuyMe.Auctions JOIN BuyMe.Clothing WHERE seller_is = " + request.getSession().getAttribute("user") + " AND item_is = product_id");
+		// TODO something here is wrong, keys values messed up
 		while(q.next()){
 			ownedAuctions.put(q.getInt(1), q.getString(2));
 		}
