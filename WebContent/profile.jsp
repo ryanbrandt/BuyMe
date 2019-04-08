@@ -10,46 +10,35 @@
 <!-- Navigation Bar -->
 <%@ include file='WEB-INF/navigation.jsp' %>
 <%
-	/* TODO there is a better way to handle this; redirects so people dont access this view via URL when not logged in */
+	/* TODO overhaul this page to a 'user' folder and use a servlet to redirect */
 	if(curSession.getAttribute("user") == null){
 		response.sendRedirect("login.jsp");
 	}
 %>
 <!-- Content -->
 <body>
-	<div class="container" align="center">
-		HELLO WORLD, <%= curSession.getAttribute("user") %> is logged in!
+	<div class="container" align="center" style="margin-top: 2em !important;">
+		Hello World, user_id = <%= curSession.getAttribute("user") %> is logged in!
 		userType = <%= curSession.getAttribute("userType") %>
 	</div>
-	
-	<br>
-	<%
-	if(curSession.getAttribute("userType").equals("admin") ){ %>
-	<div class="container" align="center">
-		<button type="button" id="adminButton">Admin Page</button>
-	</div>
-	<%} else if(curSession.getAttribute("userType").equals("cs_rep")) {%>
-	<div class="container" align="center">
-		<button type="button" id="csRepButton">CS Rep Page</button>
-	</div>
-	<% } %>
-	
-	<div class="container" align="center">
-		<button type="button" class="btn btn-danger" onclick=logOut()>Logout</button>
-	</div>
-	
-</body>
-</html>
+	<br/>
+	<div class="container" align="center" id="additionalButtons"></div>
+
 <!-- JS -->
 <script type="text/javascript">
-/*
-    document.getElementById("adminButton").onclick = function () {
-    	window.location.href = "adminPage.jsp";
-    }
-    */
-</script>
-<script type="text/javascript">
-    document.getElementById("csRepButton").onclick = function () {
-    	window.location.href = "csrepPage.jsp";
-    }
-</script>
+	window.onload = function(){
+		var userType = '<%=request.getSession().getAttribute("userType")%>';
+		switch(userType){
+		
+		case "admin":
+			document.getElementById('additionalButtons').innerHTML = "<a class='btn btn-outline-success my-2 my-sm-0' href='adminPage.jsp'>Admin Page</a>";
+			break;
+		case "cs_rep":
+			document.getElementById('additionalButtons').innerHTML = "<a class='btn btn-outline-success my-2 my-sm-0' href='csrepPage.jsp'>CS Rep Page</a>";
+		
+		}
+	}
+</script>		
+</body>
+</html>
+

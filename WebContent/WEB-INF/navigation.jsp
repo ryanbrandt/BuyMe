@@ -75,7 +75,7 @@
 	/* if user not logged in disable navbar functionality */
 	window.onload = function(){
 		var user = <%=curSession.getAttribute("user")%>;
-		if(!user){
+		if(user == null){
 			document.getElementById("profile").className += " disabled";
 			document.getElementById("auctionDropdown").className += " disabled";
 			document.getElementById("actionsDropdown").className += " disabled";
