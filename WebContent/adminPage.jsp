@@ -29,17 +29,21 @@
 		Connection con = db.getConnection();	
 		Statement st = con.createStatement();
 		
-		ResultSet csTable = st.executeQuery( "SELECT display_name, email FROM Users_CS_Rep");
+		ResultSet csUserID = st.executeQuery("SELECT user_id FROM Users_CS_Rep");
 		
-		while(csTable.next()){
-	        %>
+		while(csUserID.next()){
+			ResultSet csDisplay = st.executeQuery( "SELECT display_name, email FROM Users WHERE user_id= '" + csUserID.getInt(1) +"'");
+			while(csDisplay.next()){%>
 	        <tr>
-	            <td><%=csTable.getString("display_name") %></td>
-	            <td><%=csTable.getString("email") %></td>
+	            <td><%=csDisplay.getString("display_name") %></td>
+	            <td><%=csDisplay.getString("email") %></td>
 	        </tr>
-	        <%
+        <%}
+
 	    }
-	    csTable.close();
+		st.close();
+		con.close();
+	    
 	}catch(Exception e){
 		
 	}

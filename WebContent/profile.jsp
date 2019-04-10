@@ -34,7 +34,7 @@
 			document.getElementById('additionalButtons').innerHTML = "<a class='btn btn-outline-success my-2 my-sm-0' href='adminPage.jsp'>Admin Page</a>";
 			break;
 		case "cs_rep":
-			document.getElementById('additionalButtons').innerHTML = "<a class='btn btn-outline-success my-2 my-sm-0' href='csrepPage.jsp'>CS Rep Page</a>";
+			document.getElementById('additionalButtons').innerHTML = "<a class='btn btn-outline-success my-2 my-sm-0' href='csrep/csrepPage.jsp'>CS Rep Page</a>";
 		
 		}
 	}

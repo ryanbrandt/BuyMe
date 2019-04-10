@@ -17,7 +17,7 @@
 	<div class ="col-lg" align="center">
 	<h2 id="formHead"> Ask a Question </h2>
 	
-	<form id="questionForm" stype="display: nome;">
+	<form id="questionForm" type="display: none;">
 		
 		<table>
 			<tr>
@@ -34,7 +34,6 @@
 				<td><textarea rows="7" cols="60" class ="form-control" placeholder="Provide additional details" name="details" required></textarea></td>
 			</tr>
 		
-		
 			<tr class="formSubmit">
 				<td><button class="btn btn-outline-success my-2 my-sm-0" type="submit">Submit</button></td>
 			</tr>
@@ -45,5 +44,7 @@
 		
 	</div>
 </div>
+
+<script src="../js/communication_scripts.js"></script>
 
 </body>

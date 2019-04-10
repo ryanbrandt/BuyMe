@@ -40,8 +40,8 @@
           Actions
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="#">Email</a>
-          <a class="dropdown-item" href="csQuestionForm.jsp">Speak with a Customer Representative</a>
+          <a class="dropdown-item" href="../email/email_inbox.jsp">Email</a>
+          <a class="dropdown-item" href="../email/csQuestionForm.jsp">Speak with a Customer Representative</a>
           <div class="dropdown-divider"></div>
           <a class="dropdown-item" href="#" id="logout" onclick=logOut()>Logout</a>  
      	</div>

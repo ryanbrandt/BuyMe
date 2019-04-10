@@ -10,7 +10,7 @@
 
 </head>
 <!-- Navigation Bar -->
-<%@ include file='WEB-INF/navigation.jsp' %>
+<%@ include file='../WEB-INF/navigation.jsp' %>
 <!-- Master stylesheet -->
 <link rel="stylesheet" href="css/master.css">
 
@@ -51,10 +51,10 @@ document.getElementById("lookupButton").onclick = function(){
 		ResultSet csTable;
 		
 		if(user == null || user.equals("*")){
-			csTable = st.executeQuery( "SELECT display_name, email FROM Users_End_Users");
+			csTable = st.executeQuery( "SELECT display_name, email FROM Users");
 		}else{
 			csTable = st.executeQuery("SELECT display_name, email "+
-									"FROM Users_End_Users " +
+									"FROM Users " +
 									"WHERE display_name = '" + user +"' OR email = '" + user +"'");
 		}
 		
@@ -89,7 +89,7 @@ document.getElementById("lookupButton").onclick = function(){
 <%}%>
 </div>
 
-<script src="js/csrep_scripts.js"></script>
+<script src="../js/csrep_scripts.js"></script>
 
 </body>
 </html>

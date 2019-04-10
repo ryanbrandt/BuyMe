@@ -17,13 +17,14 @@
 		//System.out.println("16" + user);
 		
 		st.executeUpdate(
-				"UPDATE BuyMe.Users_End_Users " +
+				"UPDATE Users " +
 				"SET password = 'password' " +
 				"WHERE email = '" + user + "' OR display_name =" + "'" +user+ "'"
 				
 		);
 
 		con.close();
+		st.close();
 	
 	}catch(Exception e){
 	
