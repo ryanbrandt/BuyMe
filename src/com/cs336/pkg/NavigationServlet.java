@@ -58,8 +58,18 @@ public class NavigationServlet extends HttpServlet {
 			dispatcher = getServletContext().getRequestDispatcher("/auctions/search_auctions.jsp");
 			dispatcher.forward(request, response);
 			break;
-		//TODO rest of cases as modules created
+		case "email":
+			dispatcher = getServletContext().getRequestDispatcher("/email/email_inbox.jsp");
+			dispatcher.forward(request, response);
+			break;
+		case "question":
+			dispatcher = getServletContext().getRequestDispatcher("/email/csQuestionForm.jsp");
+			dispatcher.forward(request, response);
+			break;
 			
+			
+			//TODO rest of cases as modules created
+
 		}
 	}
 

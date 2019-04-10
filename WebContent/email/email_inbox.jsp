@@ -9,8 +9,8 @@
 <title>Emails</title>
 </head>
 <!-- Master stylesheet -->     
-<link rel="stylesheet" href="../css/master.css"> 
-<link rel="stylesheet" href="../css/email.css"> 
+<link rel="stylesheet" href="css/master.css"> 
+<link rel="stylesheet" href="css/email.css"> 
 </head>   
 <!-- Navigation Bar -->  
 <%@ include file='../WEB-INF/navigation.jsp' %>  
