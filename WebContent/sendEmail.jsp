@@ -5,37 +5,39 @@
 
 <%
 	try{
+		
 		ApplicationDB db = new ApplicationDB();	
 		Connection con = db.getConnection();	
 		
 		Statement st = con.createStatement();
 		ResultSet q;
 		
-		
 		HttpSession curSession = request.getSession(false); 
-		String sender = (String) curSession.getAttribute("user");
+		
 		String recipient = request.getParameter("recipient");
+		String receiverid="";
+		
+		q = st.executeQuery("SELECT user_id FROM Users WHERE email = '"+recipient+"' OR display_name= '"+recipient+"'");
+		if(q.next()){
+			receiverid = q.getString("user_id");
+		}
+		
 		String subject = request.getParameter("subject");
+		
 		String email = request.getParameter("email");
+		
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 		
-        
-        q = st.executeQuery(
-			"SELECT user_id FROM"
-        );
-        
-        
-        
-        
-		st.executeUpdate(
-				"hello"
-		);
-
+ 		String query =  "INSERT INTO BuyMe.Emails (sender_id, receiver_id, email_subject, email_text, time_stamp) " +
+				"VALUES ( '"+curSession.getAttribute("user")+ "', '"+ receiverid+ "', '"+subject+ "', '"+email+ "', '"+timestamp+"' )";
+ 		
+		st.executeUpdate(query);
+		
 		con.close();
 		st.close();
-	
+		
 	}catch(Exception e){
-	
+		System.out.println("ERROR");
 	}
 	
 %>

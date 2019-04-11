@@ -1,3 +1,4 @@
+/*
 $('#questionForm').on('submit', function(e){
 	e.preventDefault();
 	$.ajax({
@@ -10,16 +11,32 @@ $('#questionForm').on('submit', function(e){
 		}		
 	})
 });
+*/
 
-$('#emailForm').on('submit', function(e){
-	e.preventDefault();
+$('#emailForm').on('submit', function(){
 	$.ajax({
 		url: "sendEmail.jsp",
 		method: "POST",
-		data: {'subject': $('#subject').val(), 'content': $('content').val(), 'recipient': $('recipient')},
-		
-		success: function(data){
-			alert('Your email has been sent');
-		}		
+		data:{'recipient': $('#recipient').val(), 'subject': $('#subject').val(), 'email':$('#email').val()},
 	})
 });
+
+
+
+$('#recipient').change(function(){
+	$.ajax({
+		url: "check_registration_credentials.jsp",
+		method: "POST",
+		data: {'isEmail': false, 'data': $(this).val()},
+		success: function(data){
+			// if data not empty, unavailable, throw alert and clear input
+			if($.trim(data)){
+
+			}else{
+				alert('User does not exist');
+				$('#recipient').val('');
+			} 
+		}
+	})
+});
+

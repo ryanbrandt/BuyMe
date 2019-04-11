@@ -55,7 +55,7 @@
 			}
 		} else {
 			String displayName = request.getParameter("displayName");
-			st.executeUpdate("INSERT INTO USERS(email, password, display_name)VALUES('"+email+"', '"+pass+"', '"+displayName+"')");
+			st.executeUpdate("INSERT INTO Users(email, password, display_name)VALUES('"+email+"', '"+pass+"', '"+displayName+"')");
 			
 			ResultSet usertable;
 			int userid = 0;

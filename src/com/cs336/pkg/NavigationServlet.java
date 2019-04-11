@@ -33,6 +33,10 @@ public class NavigationServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// figure out where to redirect user based on parameter location
 		RequestDispatcher dispatcher;
+		
+		String page = request.getParameter("location");
+		System.out.println("page:" + page);
+		
 		switch(request.getParameter("location")){
 		// to my auctions list page
 		case "auctions":

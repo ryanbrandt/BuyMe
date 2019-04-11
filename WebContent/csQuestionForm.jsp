@@ -35,7 +35,7 @@
 			</tr>
 		
 			<tr class="formSubmit">
-				<td><button class="btn btn-outline-success my-2 my-sm-0" type="submit">Submit</button></td>
+				<td><button class="btn btn-outline-success my-2 my-sm-0" type="send">Submit</button></td>
 			</tr>
 			
 		</table>

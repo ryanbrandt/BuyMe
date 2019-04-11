@@ -30,22 +30,24 @@
 		Statement st = con.createStatement();
 		
 		ResultSet csUserID = st.executeQuery("SELECT user_id FROM Users_CS_Rep");
-		
+		ArrayList<Integer> list = new ArrayList<Integer>();
 		while(csUserID.next()){
-			ResultSet csDisplay = st.executeQuery( "SELECT display_name, email FROM Users WHERE user_id= '" + csUserID.getInt(1) +"'");
+			list.add(csUserID.getInt(1));		
+		}
+		
+		for( int i = 0; i < list.size(); i++ ){
+			ResultSet csDisplay = st.executeQuery( "SELECT display_name, email FROM Users WHERE user_id= '" + list.get(i) +"'");
 			while(csDisplay.next()){%>
 	        <tr>
 	            <td><%=csDisplay.getString("display_name") %></td>
 	            <td><%=csDisplay.getString("email") %></td>
 	        </tr>
         <%}
-
-	    }
+		}
 		st.close();
 		con.close();
 	    
 	}catch(Exception e){
-		
 	}
     %>
   </table>

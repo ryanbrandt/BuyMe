@@ -40,7 +40,7 @@
           Actions
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="NavigationServlet?location=email">Email</a>
+          <a class="dropdown-item" href="email_inbox.jsp">Email</a>
           <a class="dropdown-item" href="NavigationServlet?location=question">Speak with a Customer Representative</a>
           <div class="dropdown-divider"></div>
           <a class="dropdown-item" href="#" id="logout" onclick=logOut()>Logout</a>  
