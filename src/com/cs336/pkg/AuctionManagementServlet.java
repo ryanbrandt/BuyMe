@@ -16,7 +16,7 @@ import org.apache.jasper.tagplugins.jstl.core.Out;
 /**
  * Servlet implementation class AuctionManagementServlet
  * 
- * Servlet for handling creating new auctions and editing existing auctions
+ * Servlet for handling creating new auctions, bidding and editing existing auctions
  * 
  */
 @WebServlet("/AuctionManagementServlet")
@@ -44,9 +44,7 @@ public class AuctionManagementServlet extends HttpServlet {
 		switch(request.getParameter("location")) {
 		// after creating auction, redirect to view individual auction view for new auction
 		case "view":
-			
 			// save new_prod_id in auction_id, since thats what will be used to populate information in this view
-			//request.getSession().setAttribute("auction_id", request.getSession().getAttribute("new_prod_id"));
 			request.getSession().setAttribute("is_new_auction", 1);
 			dispatcher = getServletContext().getRequestDispatcher("/auctions/view_auction.jsp");
 			dispatcher.forward(request, response);
@@ -83,7 +81,6 @@ public class AuctionManagementServlet extends HttpServlet {
     /* dynamically builds an update query since not all form parameters required */
     public String buildUpdate(HttpServletRequest request) {
     	String updateQuery = "";
-    	String[] charAttributes = {"size", "fit"};
     	Enumeration params = request.getParameterNames();
     	while(params.hasMoreElements()) {
     		boolean isChar = false;
@@ -110,7 +107,7 @@ public class AuctionManagementServlet extends HttpServlet {
 			ApplicationDB db = new ApplicationDB();	
 			Connection con = db.getConnection();	
 			Statement st = con.createStatement();
-			// manage or create based off method parameter
+			// manage or create or bid based off action parameter
 			switch(request.getParameter("action")) {
 			// create new clothing record
 			case "c":
@@ -180,6 +177,13 @@ public class AuctionManagementServlet extends HttpServlet {
 			//TODO edit an already existing auction/clothing/type 
 			case "e":
 				
+				break;
+				
+				
+			// bid on an existing auction
+			case "b":
+				st.executeUpdate("INSERT INTO BuyMe.Bids(`from_user`, `for_auction`, `amount`)VALUES(" + request.getSession().getAttribute("user") + "," + request.getSession().getAttribute("auction_id") + "," + request.getParameter("amount") + ")");
+				response.getWriter().write(request.getParameter("amount"));				
 			}
 			st.close();
 			con.close();

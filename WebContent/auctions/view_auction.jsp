@@ -29,6 +29,7 @@
 <%
 	// get necessary data to populate page 
 	Map<String, String> auctionData = new HashMap<String, String>();
+	double lead_bid = 0.00;
 	try{ 
 		// establish DB connection
 		ApplicationDB db = new ApplicationDB();	
@@ -50,9 +51,14 @@
 		q += auctionData.get("type").contentEquals("Pants") ? auctionData.get("type").toLowerCase() + "_id = " + auctionData.get("item_is") : 
 					auctionData.get("type").toLowerCase().substring(0, auctionData.get("type").length()-1) + "_id = " + auctionData.get("item_is");
 		vals = stTwo.executeQuery(q);
-		dbToMap(names, vals, auctionData, auctionData.get("type").toLowerCase() + "_id");	
+		dbToMap(names, vals, auctionData, auctionData.get("type").toLowerCase() + "_id");
+		// get current leading bid to display minimum user can bid
+		names = st.executeQuery("SELECT MAX(amount) FROM BuyMe.Bids WHERE for_auction = " + request.getSession().getAttribute("auction_id"));
+		if(names.next()){
+			lead_bid = names.getString(1) != null? (double) Math.round(names.getDouble(1)*100)/100 : 0.00;
+		}
 		// get seller display_name into map
-		names = st.executeQuery("SELECT display_name FROM Users_End_Users WHERE user_id = " + auctionData.get("seller_is"));
+		names = st.executeQuery("SELECT display_name FROM Users WHERE user_id = " + auctionData.get("seller_is"));
 		if(names.next()){
 			auctionData.put("seller_name", names.getString(1));
 		}
@@ -99,9 +105,9 @@
 								<td><h3>Highest Bid</h3><hr></td>
 							</tr>
 							<tr class="subTable">
-								<td><%= auctionData.get("highest_bid") != null?"<strong>$" + auctionData.get("highest_bid") + "</strong>" : "<small style: font-style: italic;>No bids yet...</small>"%></td>
+								<td><strong id="maxBid">$<%=lead_bid%></strong></td>
 							</tr>
-							<tr>
+							<tr> 
 								<td><h3>Ends On</h3><hr></td>
 							</tr>
 							<tr class="subTable">
@@ -156,7 +162,7 @@
 			</table>	
 			<!-- Display if type Pants -->
 			<table id="pantsTable" style="display: none;">
-				<tr>
+				<tr> 
 					<td><strong>Waist</strong></td>
 				</tr>
 				<tr class="attrTable">
@@ -247,10 +253,46 @@
 		</div>
 	</div>
 </div>
-
+<!-- Bid Popup -->
+<div class="modal" tabindex="-1" role="dialog" id="myModal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Bid on <%=auctionData.get("name")%></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <!-- Bid Form -->
+      <form id="bidForm">
+      <div class="modal-body">
+        <table id="bidTable">
+        	<tr class="isRequired">
+        		<td><label for="amount">Your Bid</label></td>
+        	</tr>
+        	<tr class="inputItems">
+        		<td><input class="textInput" type="number" min="<%= (double) Math.round((lead_bid + 0.01)*100)/100 %>" step="0.01" placeholder="Min: $<%= (double) Math.round((lead_bid + 0.01)*100)/100  %>" name="amount" id="amount"></td>
+        	</tr>
+        </table>
+        <!-- Loader -->
+        <div class="d-flex justify-content-center">
+      		<div class="spinner-border text-success" style="color: #28a745; display: none;" role="status" id="load">
+  				<span class="sr-only">Loading...</span>
+			</div>
+		</div>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-outline-success my-2 my-sm-0">Bid Now</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" id ="close">Cancel</button>
+      </div>
+      </form>
+    </div>
+  </div>
+</div>
 <!-- JavaScript -->
 <% if(request.getSession().getAttribute("is_new_auction") != null){ if((int)request.getSession().getAttribute("is_new_auction")==1){%> <script>alert("Success! Welcome to your new auction! Click edit to change details");</script> <% request.getSession().setAttribute("is_new_auction", 0);}}%>
 </body>
+<script src="js/view_auction_scripts.js"></script>
 <script>
 window.onload = function(){
 	/* if seller = user, make edit button instead of bid */
@@ -260,7 +302,8 @@ window.onload = function(){
 		var button = document.getElementById("bid");
 		button.className = "btn btn-outline-info my-2 my-sm-0";
 		button.innerHTML = "Edit";
-		button.setAttribute.href = "" // edit page TODO 
+		button.id = "edit";
+		button.setAttribute.href = ""; // edit page TODO 
 	}
 	/* show attributes based on type */
 	var type = "<%= auctionData.get("type") %>";

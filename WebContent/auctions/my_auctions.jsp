@@ -4,7 +4,7 @@
 <%
 	// get necessary data to populate page 
 	Map<Integer, String> ownedAuctions = new HashMap<Integer, String>();
-	try{ 
+	try{  
 		// establish DB connection
 		ApplicationDB db = new ApplicationDB();	
 		Connection con = db.getConnection();

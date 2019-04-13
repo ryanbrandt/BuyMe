@@ -35,7 +35,7 @@ public class NavigationServlet extends HttpServlet {
 		RequestDispatcher dispatcher;
 		
 		String page = request.getParameter("location");
-		System.out.println("page:" + page);
+		System.out.println("page: " + page);
 		
 		switch(request.getParameter("location")){
 		// to my auctions list page
