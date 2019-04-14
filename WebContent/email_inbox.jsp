@@ -24,7 +24,7 @@
 	  <button class="tablinks" onclick="openTab(event, 'sent')">Sent</button>
 	</div>
 	
-	<div id="compose" class="tabcontent">
+	<div id="compose" class="tabcontent" align="center">
 		<br>
 		<h2 id="formHead"> Compose New Email </h2>
 		<form id="emailForm">

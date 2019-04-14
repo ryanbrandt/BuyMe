@@ -4,17 +4,20 @@
 <%
 	// get necessary data to populate page 
 	Map<Integer, String> queryAuctions = new HashMap<Integer, String>();
+	ArrayList<String> prodType = new ArrayList<String>();
 	try{ 
 		// establish DB connection
 		ApplicationDB db = new ApplicationDB();	
 		Connection con = db.getConnection();
 		Statement st = con.createStatement();
 		// do query based on user's search query; right now it just matches against a product title, maybe do against description too
-		ResultSet q = st.executeQuery("SELECT auction_id," + "`" + "name" + "`, MATCH (" + "`" + "name" + "`) AGAINST ('" +request.getSession().getAttribute("search_query") + "') AS title_relevance FROM BuyMe.Clothing JOIN Auctions ON item_is = product_id WHERE MATCH (" + "`" + "name" + "`) AGAINST ('" + request.getSession().getAttribute("search_query") + "') ORDER BY title_relevance DESC");
+		ResultSet q = st.executeQuery("SELECT a.auction_id, c.type," + "c.`" + "name" + "`, MATCH (" + "`" + "name" + "`) AGAINST ('" +request.getSession().getAttribute("search_query") + "') AS title_relevance FROM BuyMe.Clothing AS c JOIN Auctions AS a ON item_is = product_id WHERE MATCH (" + "`" + "name" + "`) AGAINST ('" + request.getSession().getAttribute("search_query") + "') ORDER BY title_relevance DESC");
 		// auction_id as key, product name as value
 		while(q.next()){
-			queryAuctions.put(q.getInt(1), q.getString(2));
+			queryAuctions.put(q.getInt(1), q.getString(3));
+			prodType.add(q.getString(2));
 		}
+		
 		
 		st.close();
 		con.close();
@@ -40,13 +43,13 @@
 		<div class="col-lg" align="left"> 
 			<h2>Results for '<%=request.getSession().getAttribute("search_query") %>'</h2><hr><br/>
 			<table>
-				<col width="20%">
 			<col width="20%"> 
 			<col width="20%">
 			<col width="20%">
 			<col width="20%">
 			<%
 				int i = 0;
+				int j = 0;
 				for(Map.Entry<Integer, String> entry : queryAuctions.entrySet()){ 
 			%>
 			<%		if(i == 0){ %>
@@ -54,21 +57,20 @@
 			<%		} %>
 						<td>
 							<div class="card" style="margin-left: 2em; margin-right: 2em;">
-								<div class="card-header">Insert Seller Name here</div>
+								<div class="card-header">Active Auction</div>
 								  <div class="card-body">
 								    <h5 class="card-title"><%=entry.getValue() %></h5>
-								    <p class="card-text">description here</p>
-								    <a href="/BuyMe/NavigationServlet?location=view&id=<%=entry.getKey()%>" class="btn btn-primary">Go There</a>
+								    <p class="card-text">Clothing: <%=prodType.get(j) %></p>
+								    <a href="/BuyMe/NavigationServlet?location=view&id=<%=entry.getKey()%>" class="btn btn-primary">View Now</a>
 								 </div>
 							</div>
 						</td>
-			<% i++; if(i > 4){ %>
+			<% i++; j++; if(i > 3){ %>
 					</tr>
 			<%
 				i = 0;}
 				}
 			%>
-			</table>
 			</table>
 		</div>
 	</div>

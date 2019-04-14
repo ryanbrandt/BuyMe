@@ -29,6 +29,8 @@
 <%
 	// get necessary data to populate page 
 	Map<String, String> auctionData = new HashMap<String, String>();
+	double lead_bid = 0.00;
+	String bid_leader = "";
 	try{ 
 		// establish DB connection
 		ApplicationDB db = new ApplicationDB();	
@@ -50,9 +52,24 @@
 		q += auctionData.get("type").contentEquals("Pants") ? auctionData.get("type").toLowerCase() + "_id = " + auctionData.get("item_is") : 
 					auctionData.get("type").toLowerCase().substring(0, auctionData.get("type").length()-1) + "_id = " + auctionData.get("item_is");
 		vals = stTwo.executeQuery(q);
-		dbToMap(names, vals, auctionData, auctionData.get("type").toLowerCase() + "_id");	
+		dbToMap(names, vals, auctionData, auctionData.get("type").toLowerCase() + "_id");
+		
+		// get current leading bid to display minimum user can bid; get associated display_name, set to 'You' if current user
+		names = st.executeQuery("SELECT MAX(amount), from_user FROM BuyMe.Bids WHERE for_auction = " + request.getSession().getAttribute("auction_id"));
+		if(names.next()){
+			if(names.getString(1) != null){
+				lead_bid = (double) Math.round(names.getDouble(1)*100)/100;
+				names = st.executeQuery("SELECT display_name, user_id FROM Users WHERE user_id = " + names.getString(2));
+			} else {
+				lead_bid = Double.parseDouble(auctionData.get("initial_price"));
+			}
+			if(names.next()){
+				bid_leader = names.getInt(2) == (int) request.getSession().getAttribute("user") ? "You" : names.getString(1);
+			}
+			
+		}
 		// get seller display_name into map
-		names = st.executeQuery("SELECT display_name FROM Users_End_Users WHERE user_id = " + auctionData.get("seller_is"));
+		names = st.executeQuery("SELECT display_name FROM Users WHERE user_id = " + auctionData.get("seller_is"));
 		if(names.next()){
 			auctionData.put("seller_name", names.getString(1));
 		}
@@ -65,8 +82,8 @@
 		System.out.println("Exception: " + e);
 	}
 %>
-<!DOCTYPE html>  
-<html>
+<!DOCTYPE html>    
+<html> 
 <!-- Head -->
 <head>
 <!-- Master stylesheet -->     
@@ -81,7 +98,7 @@
 <div class="container" style="margin-top: 2em !important;">   
 	<div class="row">    
 		<div class="col-lg" align="left">
-			<h1 style="display: inline-block;"><%= auctionData.get("name") %></h1><button id="bid" class="btn btn-outline-success my-2 my-sm-0" style="float: right;">Bid Now</button><br/>
+			<h1 style="display: inline-block;"><%= auctionData.get("name") %></h1><button id="bid" class="btn btn-outline-success my-2 my-sm-0" style="float: right;">Bid Now</button><button class="btn btn-outline-info my-2 my-sm-0" style="float: right; display: none;" id="edit">Edit</button><br/>
 			<table>
 				<tr>
 					<td style="width: 50%;"><img class="img-thumbnail img-fluid" src="${pageContext.request.contextPath}/images/no-image-icon-23494.png" alt="" style="width: 400px; height: 400px; object-fit: contain;"></img></td>
@@ -99,9 +116,9 @@
 								<td><h3>Highest Bid</h3><hr></td>
 							</tr>
 							<tr class="subTable">
-								<td><%= auctionData.get("highest_bid") != null?"<strong>$" + auctionData.get("highest_bid") + "</strong>" : "<small style: font-style: italic;>No bids yet...</small>"%></td>
+								<td><strong id="maxBid">$<%=String.format("%.2f", lead_bid)%><%= !bid_leader.isEmpty()? " From " + bid_leader : " (Initial Price, No Bids Yet)"%></strong></td>
 							</tr>
-							<tr>
+							<tr> 
 								<td><h3>Ends On</h3><hr></td>
 							</tr>
 							<tr class="subTable">
@@ -112,6 +129,13 @@
 				</tr>
 			</table>
 			<table>
+				<tr>
+					<td><strong>Product Type</strong></td>
+				</tr>
+				<tr class="attrTable">
+					<td>Clothing: <%=auctionData.get("type")%></td>
+				</tr>
+			
 				<tr>
 					<td><strong>Condition</strong></td>
 				</tr>
@@ -156,7 +180,7 @@
 			</table>	
 			<!-- Display if type Pants -->
 			<table id="pantsTable" style="display: none;">
-				<tr>
+				<tr> 
 					<td><strong>Waist</strong></td>
 				</tr>
 				<tr class="attrTable">
@@ -247,20 +271,125 @@
 		</div>
 	</div>
 </div>
-
+<!-- Bid Popup -->
+<div align="center" class="modal" tabindex="-1" role="dialog" id="bidModal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Bid on <%=auctionData.get("name")%></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <!-- Bid Form -->
+      <form id="bidForm">
+      <div class="modal-body">
+        <table id="bidTable">
+        	<tr>
+        		<td><label class="isRequired" for="amount">Your Bid</label></td>
+        	</tr>
+        	<tr class="inputItems">
+        		<td><input class="textInput" type="number" min="<%= (double) Math.round((lead_bid + 0.01)*100)/100 %>" step="0.01" placeholder="Min: $<%= (double) Math.round((lead_bid + 0.01)*100)/100  %>" name="amount" id="amount" required></td>
+        	</tr>
+        </table>
+        <!-- Loader -->
+        <div class="d-flex justify-content-center">
+      		<div class="spinner-border text-success" style="color: #28a745; display: none;" role="status" id="load">
+  				<span class="sr-only">Loading...</span>
+			</div>
+		</div>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-outline-success my-2 my-sm-0">Bid Now</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" id ="close">Cancel</button>
+      </div>
+      </form>
+    </div>
+  </div>
+</div>
+<!-- Edit Popup -->
+<div class="modal" align="center" tabindex="-1" role="dialog" id="editModal">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Edit <%=auctionData.get("name")%></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <!-- Edit Form -->
+      <form id="editForm">
+      <div class="modal-body">
+        <table>
+        	<tr>
+        		<td><label class="isRequired" for="name">Item Name</label></td>
+        	</tr>
+        	<tr class="inputItems">
+        		<td><input name="name" class="textInput" type="text" value="<%=auctionData.get("name")%>" required></td>
+        	</tr>
+       	
+			<tr>
+				<td><label for="material"><b>What is it Made of?</b></label></td>
+			</tr> 
+			<tr class="inputItems">
+				<td><input class="textInput" type="text" placeholder="Item Brand" name="material" value="<%=auctionData.get("material") != null? auctionData.get("material"): "" %>"></td>
+			</tr>
+			
+			<tr>
+				<td><label for="brand"><b>Who Makes It?</b></label></td>
+			</tr> 
+			<tr class="inputItems">
+				<td><input class="textInput" type="text" placeholder="Item Brand" name="brand" value="<%=auctionData.get("brand") != null? auctionData.get("color"): "" %>"></td>
+			</tr>
+			
+			<tr>
+				<td><label for="color"><b>What Color is It?</b></label></td>
+			</tr>
+			<tr class="inputItems">
+				<td><input class="textInput" type="text" placeholder="Item Color" name="color" value="<%=auctionData.get("color") != null? auctionData.get("color"): "" %>"></td>
+			</tr>
+			     
+			<tr>      
+				<td><label for="additional_comments"><b>Additional Comments</b></label></td>
+			</tr>
+			<tr class="inputItems">
+				<td><textarea rows="7" cols="60" class="form-control" name="additional_comments" placeholder="Enter Anything else Potential Buyers Should Know"><%=auctionData.get("additional_comments") != null? auctionData.get("additional_comments"): "" %></textarea>
+			</tr>  
+					                   
+			<tr>      
+				<td><label for="condition_remarks"><b>Additional Condition Remarks</b></label></td>
+			</tr>     
+			<tr class="inputItems">
+				<td><textarea rows="7" cols="60" class="form-control" name="condition_remarks" placeholder="Elaborate on the Condition of Your Item"><%=auctionData.get("condition_remarks") != null? auctionData.get("condition_remarks"): "" %></textarea>
+			</tr>	
+        </table>
+        <!-- Loader -->
+        <div class="d-flex justify-content-center">
+      		<div class="spinner-border text-success" style="color: #28a745; display: none;" role="status" id="editLoad">
+  				<span class="sr-only">Loading...</span>
+			</div>
+		</div>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-outline-success my-2 my-sm-0">Save Changes</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" id ="editClose">Cancel</button>
+      </div>
+      </form>
+    </div>
+  </div>
+</div>
 <!-- JavaScript -->
 <% if(request.getSession().getAttribute("is_new_auction") != null){ if((int)request.getSession().getAttribute("is_new_auction")==1){%> <script>alert("Success! Welcome to your new auction! Click edit to change details");</script> <% request.getSession().setAttribute("is_new_auction", 0);}}%>
 </body>
+<script src="js/view_auction_scripts.js"></script>
 <script>
 window.onload = function(){
 	/* if seller = user, make edit button instead of bid */
-	var user = <%= request.getSession().getAttribute("user")%>;
+	var user = <%=request.getSession().getAttribute("user")%>;
 	var seller = <%= auctionData.get("seller_is")%>;
 	if(user == seller){
-		var button = document.getElementById("bid");
-		button.className = "btn btn-outline-info my-2 my-sm-0";
-		button.innerHTML = "Edit";
-		button.setAttribute.href = "" // edit page TODO 
+		document.getElementById("bid").style.display = "none";
+		document.getElementById("edit").style.display = "block";
 	}
 	/* show attributes based on type */
 	var type = "<%= auctionData.get("type") %>";

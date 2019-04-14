@@ -16,7 +16,7 @@ import org.apache.jasper.tagplugins.jstl.core.Out;
 /**
  * Servlet implementation class AuctionManagementServlet
  * 
- * Servlet for handling creating new auctions and editing existing auctions
+ * Servlet for handling creating new auctions, bidding and editing existing auctions
  * 
  */
 @WebServlet("/AuctionManagementServlet")
@@ -44,9 +44,7 @@ public class AuctionManagementServlet extends HttpServlet {
 		switch(request.getParameter("location")) {
 		// after creating auction, redirect to view individual auction view for new auction
 		case "view":
-			
 			// save new_prod_id in auction_id, since thats what will be used to populate information in this view
-			//request.getSession().setAttribute("auction_id", request.getSession().getAttribute("new_prod_id"));
 			request.getSession().setAttribute("is_new_auction", 1);
 			dispatcher = getServletContext().getRequestDispatcher("/auctions/view_auction.jsp");
 			dispatcher.forward(request, response);
@@ -66,7 +64,7 @@ public class AuctionManagementServlet extends HttpServlet {
 			String el = (String) params.nextElement();
 			String val = request.getParameter(el);
 			// if a int attribute need to do query without ''
-			if(el.contentEquals("item_is") || el.contentEquals("seller_is")) {
+			if(el.contentEquals("item_is") || el.contentEquals("seller_is") || el.contentEquals("min_price") || el.contentEquals("initial_price")) {
 				isNum = true;
 			} 
 			
@@ -81,9 +79,8 @@ public class AuctionManagementServlet extends HttpServlet {
     }
     
     /* dynamically builds an update query since not all form parameters required */
-    public String buildUpdate(HttpServletRequest request) {
+    public String buildUpdate(HttpServletRequest request, boolean allChar) {
     	String updateQuery = "";
-    	String[] charAttributes = {"size", "fit"};
     	Enumeration params = request.getParameterNames();
     	while(params.hasMoreElements()) {
     		boolean isChar = false;
@@ -94,10 +91,12 @@ public class AuctionManagementServlet extends HttpServlet {
     			isChar = true;
     		} 
     		if((el != null && !el.equals("action")) && !val.equals("")) {
-    			updateQuery += isChar?  el + " = " + "'" + val + "'" + ",": el + " = " + Integer.parseInt(val) + ","; 
+    			updateQuery += isChar || allChar?  el + " = " + "'" + val + "'" + ",": el + " = " + Integer.parseInt(val) + ","; 
 			}
     	}
-    	updateQuery = updateQuery.substring(0, updateQuery.length()-1);
+    	if(updateQuery.length() > 0) {
+    		updateQuery = updateQuery.substring(0, updateQuery.length()-1);
+    	}
     	return updateQuery;
     }
     
@@ -110,7 +109,7 @@ public class AuctionManagementServlet extends HttpServlet {
 			ApplicationDB db = new ApplicationDB();	
 			Connection con = db.getConnection();	
 			Statement st = con.createStatement();
-			// manage or create based off method parameter
+			// manage or create or bid based off action parameter
 			switch(request.getParameter("action")) {
 			// create new clothing record
 			case "c":
@@ -145,7 +144,7 @@ public class AuctionManagementServlet extends HttpServlet {
 			// add attributes from type-specific form, if any added
 			case "t":
 				
-				String updateQuery = buildUpdate(request);
+				String updateQuery = buildUpdate(request, false);
 				switch((String) request.getSession().getAttribute("new_prod_type")) {
 				
 				case "s":
@@ -161,7 +160,6 @@ public class AuctionManagementServlet extends HttpServlet {
 				
 				}
 				break;
-				
 			// finally, create associated auction tuple 
 			case "a":
 				String[] auctionQuery = buildInsert(request);
@@ -176,10 +174,23 @@ public class AuctionManagementServlet extends HttpServlet {
 				}
 				
 				break;
-				
-			//TODO edit an already existing auction/clothing/type 
+			// edit an already existing auction/clothing item 
 			case "e":
-				
+				String editQuery = buildUpdate(request, true);
+				if(!editQuery.isEmpty()) {
+					st.executeUpdate("UPDATE BuyMe.Auctions JOIN BuyMe.Clothing ON item_is = product_id SET "+editQuery+" WHERE auction_id = "+request.getSession().getAttribute("auction_id")+";");
+				}
+				break;
+			// bid on an existing auction
+			case "b":
+				st.executeUpdate("INSERT INTO BuyMe.Bids(`from_user`, `for_auction`, `amount`)VALUES(" + request.getSession().getAttribute("user") + "," + request.getSession().getAttribute("auction_id") + "," + request.getParameter("amount") + ")", Statement.RETURN_GENERATED_KEYS);
+				// update auction instance to have new highest_bid 
+				ResultSet bidKey = st.getGeneratedKeys();
+				if(bidKey.next()) {
+					st.executeUpdate("UPDATE BuyMe.Auctions SET highest_bid = " + bidKey.getInt(1) + " WHERE auction_id = " + request.getSession().getAttribute("auction_id"));
+				}
+				// send back amount bid to reflect update async
+				response.getWriter().write(request.getParameter("amount"));	
 			}
 			st.close();
 			con.close();
