@@ -24,18 +24,18 @@
 				<td><label class="isRequired" for="subject"><b>Subject</b></label>
 			</tr>
 			<tr class="inputItems">
-				<td><input class ="textInput" type="text" placeholder="Subject" name="subject" required></td>
+				<td><input class ="textInput" type="text" placeholder="Subject" name="subject" id="subject" required></td>
 			</tr>
 		
 			<tr>
 				<td><label class="isRequired" for="details"><b>Details</b></label></td>
 			</tr>
 			<tr class="inputItems">
-				<td><textarea rows="7" cols="60" class ="form-control" placeholder="Provide additional details" name="details" required></textarea></td>
+				<td><textarea rows="7" cols="60" class ="form-control" placeholder="Provide additional details" name="details" id="details" required></textarea></td>
 			</tr>
 		
 			<tr class="formSubmit">
-				<td><button class="btn btn-outline-success my-2 my-sm-0" type="send">Submit</button></td>
+				<td><button class="btn btn-outline-success my-2 my-sm-0" type="submit">Submit</button></td>
 			</tr>
 			
 		</table>
@@ -45,6 +45,6 @@
 	</div>
 </div>
 
-<script src="../js/communication_scripts.js"></script>
+<script src="js/email_scripts.js"></script>
 
 </body>

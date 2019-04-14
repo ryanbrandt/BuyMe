@@ -21,10 +21,15 @@
 		if(q.next()){
 			receiverid = q.getString("user_id");
 		}
+		//System.out.println(receiverid);
 		
 		String subject = request.getParameter("subject");
 		
+		//System.out.println(subject);
+		
 		String email = request.getParameter("email");
+		
+		//System.out.println(email);
 		
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 		
@@ -32,6 +37,12 @@
 				"VALUES ( '"+curSession.getAttribute("user")+ "', '"+ receiverid+ "', '"+subject+ "', '"+email+ "', '"+timestamp+"' )";
  		
 		st.executeUpdate(query);
+		
+		
+		if( Integer.parseInt(request.getParameter("isQuestion")) >= 0 ){
+			st.executeUpdate("UPDATE Questions SET isAnswered = '1' WHERE (question_id = '"+ request.getParameter("isQuestion")+"')");			
+		}
+		
 		
 		con.close();
 		st.close();

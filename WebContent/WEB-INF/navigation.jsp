@@ -41,11 +41,37 @@
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
           <a class="dropdown-item" href="email_inbox.jsp">Email</a>
-          <a class="dropdown-item" href="NavigationServlet?location=question">Speak with a Customer Representative</a>
+          <a class="dropdown-item" href="csQuestionForm.jsp">Speak with a Customer Representative</a>
           <div class="dropdown-divider"></div>
           <a class="dropdown-item" href="#" id="logout" onclick=logOut()>Logout</a>  
      	</div>
-      </li>
+     </li>
+     
+     <% if( "admin".equals((curSession.getAttribute("userType"))) ){ %>
+     	   <li class="nav-item dropdown">
+             <a class="nav-link dropdown-toggle" href="#" id="actionsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+               Admin Center
+             </a>
+             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+               <a class="dropdown-item" href="adminPage.jsp">CS Account Management</a>
+               <a class="dropdown-item" href="#">Generate Sales Report</a>
+          	</div>
+           </li> 
+     		
+     <% }else if( "cs_rep".equals((curSession.getAttribute("userType"))) ){ %>
+     	   <li class="nav-item dropdown">
+             <a class="nav-link dropdown-toggle" href="#" id="actionsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+               Customer Support Center
+             </a>
+             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+               <a class="dropdown-item" href="csrepPage.jsp">User Account Management</a>
+               <a class="dropdown-item" href="csAnswer.jsp">Answer Questions</a>
+          	</div>
+          </li> 
+     <%} %>
+      
+ 
+      
     </ul>
     <form class="form-inline my-2 my-lg-0" id="searchForm">
       <input class="form-control mr-sm-2" type="search" placeholder="Search Auctions" aria-label="Search" id="q" required>

@@ -33,9 +33,9 @@ document.getElementById("lookupButton").onclick = function(){
 	<label class="formSubmit" for="lookupButton"></label>
 	<button type="submit" id="lookupButton" name="lookupButton">Lookup</button>
 </form>
+</div>
 
-
-<p>
+<div>
 <table>
 	<tr>
 	   <th>Display Name |</th>
@@ -43,7 +43,6 @@ document.getElementById("lookupButton").onclick = function(){
 	</tr>
 	<% 
 	String user = (String) curSession.getAttribute("userLookup");
-	System.out.println(user);
 	try{
 		ApplicationDB db = new ApplicationDB();	
 		Connection con = db.getConnection();	
@@ -74,8 +73,9 @@ document.getElementById("lookupButton").onclick = function(){
 	}catch(Exception e){}%>
 
 </table>
-</p>
+</div>
 
+<div>
 <%if( curSession.getAttribute("userLookup") != null && !curSession.getAttribute("userLookup").equals("*") ){%>
 	<p>
 	<button id="resetPassword">Reset Password</button>
@@ -88,6 +88,7 @@ document.getElementById("lookupButton").onclick = function(){
 	</p>
 <%}%>
 </div>
+
 
 <script src="../js/csrep_scripts.js"></script>
 
