@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/**
+/** 
  * Servlet implementation class NavigationServlet
  * 
  * Servlet to redirect users to submodules (e.g. auctions module, admin module, alerts module etc) that can't be accessed directly
@@ -35,7 +35,7 @@ public class NavigationServlet extends HttpServlet {
 		RequestDispatcher dispatcher;
 		
 		String page = request.getParameter("location");
-		System.out.println("page: " + page);
+		//System.out.println("page: " + page);
 		
 		switch(request.getParameter("location")){
 		// to my auctions list page
@@ -62,10 +62,12 @@ public class NavigationServlet extends HttpServlet {
 			dispatcher = getServletContext().getRequestDispatcher("/auctions/search_auctions.jsp");
 			dispatcher.forward(request, response);
 			break;
+		// to email page
 		case "email":
 			dispatcher = getServletContext().getRequestDispatcher("/email/email_inbox.jsp");
 			dispatcher.forward(request, response);
 			break;
+		// to question page
 		case "question":
 			dispatcher = getServletContext().getRequestDispatcher("/email/csQuestionForm.jsp");
 			dispatcher.forward(request, response);

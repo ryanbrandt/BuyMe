@@ -79,7 +79,7 @@ public class AuctionManagementServlet extends HttpServlet {
     }
     
     /* dynamically builds an update query since not all form parameters required */
-    public String buildUpdate(HttpServletRequest request) {
+    public String buildUpdate(HttpServletRequest request, boolean allChar) {
     	String updateQuery = "";
     	Enumeration params = request.getParameterNames();
     	while(params.hasMoreElements()) {
@@ -91,10 +91,12 @@ public class AuctionManagementServlet extends HttpServlet {
     			isChar = true;
     		} 
     		if((el != null && !el.equals("action")) && !val.equals("")) {
-    			updateQuery += isChar?  el + " = " + "'" + val + "'" + ",": el + " = " + Integer.parseInt(val) + ","; 
+    			updateQuery += isChar || allChar?  el + " = " + "'" + val + "'" + ",": el + " = " + Integer.parseInt(val) + ","; 
 			}
     	}
-    	updateQuery = updateQuery.substring(0, updateQuery.length()-1);
+    	if(updateQuery.length() > 0) {
+    		updateQuery = updateQuery.substring(0, updateQuery.length()-1);
+    	}
     	return updateQuery;
     }
     
@@ -142,7 +144,7 @@ public class AuctionManagementServlet extends HttpServlet {
 			// add attributes from type-specific form, if any added
 			case "t":
 				
-				String updateQuery = buildUpdate(request);
+				String updateQuery = buildUpdate(request, false);
 				switch((String) request.getSession().getAttribute("new_prod_type")) {
 				
 				case "s":
@@ -174,16 +176,18 @@ public class AuctionManagementServlet extends HttpServlet {
 				
 				break;
 				
-			//TODO edit an already existing auction/clothing/type 
+			// edit an already existing auction/clothing/type 
 			case "e":
-				
+				String editQuery = buildUpdate(request, true);
+				if(!editQuery.isEmpty()) {
+					st.executeUpdate("UPDATE BuyMe.Auctions JOIN BuyMe.Clothing ON item_is = product_id SET "+editQuery+" WHERE auction_id = "+request.getSession().getAttribute("auction_id")+";");
+				}
 				break;
 				
-				
-			// bid on an existing auction
+			// bid on an existing auction, send back bid amount and user display name to update screen async
 			case "b":
 				st.executeUpdate("INSERT INTO BuyMe.Bids(`from_user`, `for_auction`, `amount`)VALUES(" + request.getSession().getAttribute("user") + "," + request.getSession().getAttribute("auction_id") + "," + request.getParameter("amount") + ")");
-				response.getWriter().write(request.getParameter("amount"));				
+				response.getWriter().write(request.getParameter("amount"));	
 			}
 			st.close();
 			con.close();
