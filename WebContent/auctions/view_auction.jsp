@@ -60,6 +60,8 @@
 			if(names.getString(1) != null){
 				lead_bid = (double) Math.round(names.getDouble(1)*100)/100;
 				names = st.executeQuery("SELECT display_name, user_id FROM Users WHERE user_id = " + names.getString(2));
+			} else {
+				lead_bid = Double.parseDouble(auctionData.get("initial_price"));
 			}
 			if(names.next()){
 				bid_leader = names.getInt(2) == (int) request.getSession().getAttribute("user") ? "You" : names.getString(1);
@@ -80,8 +82,8 @@
 		System.out.println("Exception: " + e);
 	}
 %>
-<!DOCTYPE html>  
-<html>
+<!DOCTYPE html>    
+<html> 
 <!-- Head -->
 <head>
 <!-- Master stylesheet -->     
@@ -114,7 +116,7 @@
 								<td><h3>Highest Bid</h3><hr></td>
 							</tr>
 							<tr class="subTable">
-								<td><strong id="maxBid">$<%=String.format("%.2f", lead_bid)%><%= !bid_leader.isEmpty()? " From " + bid_leader : ""%></strong></td>
+								<td><strong id="maxBid">$<%=String.format("%.2f", lead_bid)%><%= !bid_leader.isEmpty()? " From " + bid_leader : " (Initial Price, No Bids Yet)"%></strong></td>
 							</tr>
 							<tr> 
 								<td><h3>Ends On</h3><hr></td>
@@ -270,7 +272,7 @@
 	</div>
 </div>
 <!-- Bid Popup -->
-<div class="modal" tabindex="-1" role="dialog" id="bidModal">
+<div align="center" class="modal" tabindex="-1" role="dialog" id="bidModal">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -346,7 +348,7 @@
 			<tr class="inputItems">
 				<td><input class="textInput" type="text" placeholder="Item Color" name="color" value="<%=auctionData.get("color") != null? auctionData.get("color"): "" %>"></td>
 			</tr>
-			   
+			     
 			<tr>      
 				<td><label for="additional_comments"><b>Additional Comments</b></label></td>
 			</tr>

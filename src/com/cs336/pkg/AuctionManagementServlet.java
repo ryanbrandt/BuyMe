@@ -64,7 +64,7 @@ public class AuctionManagementServlet extends HttpServlet {
 			String el = (String) params.nextElement();
 			String val = request.getParameter(el);
 			// if a int attribute need to do query without ''
-			if(el.contentEquals("item_is") || el.contentEquals("seller_is")) {
+			if(el.contentEquals("item_is") || el.contentEquals("seller_is") || el.contentEquals("min_price") || el.contentEquals("initial_price")) {
 				isNum = true;
 			} 
 			
@@ -160,7 +160,6 @@ public class AuctionManagementServlet extends HttpServlet {
 				
 				}
 				break;
-				
 			// finally, create associated auction tuple 
 			case "a":
 				String[] auctionQuery = buildInsert(request);
@@ -175,18 +174,22 @@ public class AuctionManagementServlet extends HttpServlet {
 				}
 				
 				break;
-				
-			// edit an already existing auction/clothing/type 
+			// edit an already existing auction/clothing item 
 			case "e":
 				String editQuery = buildUpdate(request, true);
 				if(!editQuery.isEmpty()) {
 					st.executeUpdate("UPDATE BuyMe.Auctions JOIN BuyMe.Clothing ON item_is = product_id SET "+editQuery+" WHERE auction_id = "+request.getSession().getAttribute("auction_id")+";");
 				}
 				break;
-				
-			// bid on an existing auction, send back bid amount and user display name to update screen async
+			// bid on an existing auction
 			case "b":
-				st.executeUpdate("INSERT INTO BuyMe.Bids(`from_user`, `for_auction`, `amount`)VALUES(" + request.getSession().getAttribute("user") + "," + request.getSession().getAttribute("auction_id") + "," + request.getParameter("amount") + ")");
+				st.executeUpdate("INSERT INTO BuyMe.Bids(`from_user`, `for_auction`, `amount`)VALUES(" + request.getSession().getAttribute("user") + "," + request.getSession().getAttribute("auction_id") + "," + request.getParameter("amount") + ")", Statement.RETURN_GENERATED_KEYS);
+				// update auction instance to have new highest_bid 
+				ResultSet bidKey = st.getGeneratedKeys();
+				if(bidKey.next()) {
+					st.executeUpdate("UPDATE BuyMe.Auctions SET highest_bid = " + bidKey.getInt(1) + " WHERE auction_id = " + request.getSession().getAttribute("auction_id"));
+				}
+				// send back amount bid to reflect update async
 				response.getWriter().write(request.getParameter("amount"));	
 			}
 			st.close();

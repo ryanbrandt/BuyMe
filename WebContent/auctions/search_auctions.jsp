@@ -43,7 +43,6 @@
 		<div class="col-lg" align="left"> 
 			<h2>Results for '<%=request.getSession().getAttribute("search_query") %>'</h2><hr><br/>
 			<table>
-				<col width="20%">
 			<col width="20%"> 
 			<col width="20%">
 			<col width="20%">
@@ -66,7 +65,7 @@
 								 </div>
 							</div>
 						</td>
-			<% i++; j++; if(i > 4){ %>
+			<% i++; j++; if(i > 3){ %>
 					</tr>
 			<%
 				i = 0;}

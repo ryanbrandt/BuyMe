@@ -264,7 +264,21 @@
 			</form>        
 			<!-- Auction Form -->
 			<form id ="auctionForm" style="display: none;">
-				<table>       
+				<table>      
+					<tr>
+						<td><label class="isRequired" for="initial_price"><b>What Price Should Bidding Begin At?</b></label></td>
+					</tr>
+					<tr class="inputItems">
+						<td><input class="textInput" min="0" step="0.01" type="number" placeholder="0.00" name="initial_price" required></td>
+					</tr>
+					
+					<tr>
+						<td><label for="min_price"><b>What is your Hidden Minimum Price?</b></label></td>
+					</tr>
+					<tr class="inputItems">
+						<td><input class="textInput" type="number" min="0" step="0.01" placeholder="0.00" name="min_price"></td>
+					</tr>
+					
 					<tr>     
 						<td><label for="additional_comments"><b>Additional Comments</b></label></td>
 					</tr>
