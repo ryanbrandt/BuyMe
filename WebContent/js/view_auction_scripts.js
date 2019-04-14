@@ -15,7 +15,7 @@ $('#bidForm').on('submit', function(e){
 		
 		success: function(bid){
 			// close modal, reset modal, show success message, update maxBid
-			document.getElementById('maxBid').innerHTML = "$" + bid + " From You"; 
+			document.getElementById('maxBid').innerHTML = "$" + bid + " From You Just Now"; 
 			var amount = $('#amount');
 			amount.val('');
 			amount.attr('placeholder', 'Min: $' + (parseFloat(bid)+0.01));
@@ -59,4 +59,9 @@ $('#editForm').on('submit', function(e){
 /* this marks if a form field has been changed so we only update changes */
 $('input, textarea').on('change', function(){
 	$(this).addClass('changed');
+});
+
+/* open bid history modal */
+$('#openHistory').on('click', function(){
+	$('#historyModal').modal('show');
 });

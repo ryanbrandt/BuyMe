@@ -29,6 +29,8 @@
 <%
 	// get necessary data to populate page 
 	Map<String, String> auctionData = new HashMap<String, String>();
+	Map<String, String> bidData = new LinkedHashMap<String, String>();
+	ArrayList<String> bidUsers = new ArrayList<String>();
 	double lead_bid = 0.00;
 	String bid_leader = "";
 	try{ 
@@ -53,7 +55,12 @@
 					auctionData.get("type").toLowerCase().substring(0, auctionData.get("type").length()-1) + "_id = " + auctionData.get("item_is");
 		vals = stTwo.executeQuery(q);
 		dbToMap(names, vals, auctionData, auctionData.get("type").toLowerCase() + "_id");
-		
+		// get bid data; amount should be unique, so is key and timestamp is value; arraylist has corresponding display_names
+		names = st.executeQuery("SELECT b.amount, b.timestamp, u.display_name FROM BuyMe.Bids AS b JOIN BuyMe.Users AS u ON from_user = user_id WHERE for_auction = " + request.getSession().getAttribute("auction_id") + " ORDER BY b.timestamp DESC;");
+		while(names.next()){
+			bidData.put(names.getString(1), names.getString(2));
+			bidUsers.add(names.getString(3));
+		}
 		// get current leading bid to display minimum user can bid; get associated display_name, set to 'You' if current user
 		names = st.executeQuery("SELECT MAX(amount), from_user FROM BuyMe.Bids WHERE for_auction = " + request.getSession().getAttribute("auction_id"));
 		if(names.next()){
@@ -116,7 +123,7 @@
 								<td><h3>Highest Bid</h3><hr></td>
 							</tr>
 							<tr class="subTable">
-								<td><strong id="maxBid">$<%=String.format("%.2f", lead_bid)%><%= !bid_leader.isEmpty()? " From " + bid_leader : " (Initial Price, No Bids Yet)"%></strong></td>
+								<td><strong id="maxBid">$<%=String.format("%.2f", lead_bid)%><%= !bid_leader.isEmpty()? " From " + bid_leader : " (Initial Price, No Bids Yet)"%></strong><p><a href="#" style="text-decoration: none;" id="openHistory">Bid History</a></p></td>
 							</tr>
 							<tr> 
 								<td><h3>Ends On</h3><hr></td>
@@ -375,6 +382,43 @@
         <button type="button" class="btn btn-secondary" data-dismiss="modal" id ="editClose">Cancel</button>
       </div>
       </form>
+    </div>
+  </div>
+</div>
+<!-- Bid History Popup -->
+<div class="modal" tabindex="-1" role="dialog" id="historyModal">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Bid History for <%=auctionData.get("name")%></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <table class="table">
+  			<thead>
+    			<tr>
+			      <th scope="col">User</th>
+			      <th scope="col">Amount</th>
+			      <th scope="col">Date</th>
+			    </tr>
+  			</thead>
+			<tbody id="historyBody">
+		<% 	int i = 0;
+			for(Map.Entry<String,String> entry : bidData.entrySet()){ %>
+			  <tr>
+			  	<td><%=bidUsers.get(i)%></td>
+			  	<td>$<%=entry.getKey()%></td>
+			  	<td><%=entry.getValue()%></td>
+			  </tr>
+		<%  i++;} %>
+			</tbody>
+		</table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
     </div>
   </div>
 </div>
