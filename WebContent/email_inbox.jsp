@@ -12,7 +12,7 @@
 <link rel="stylesheet" href="css/email.css"> 
 </head>   
 <!-- Navigation Bar -->  
-<%@ include file='../WEB-INF/navigation.jsp' %>  
+<%@ include file='WEB-INF/navigation.jsp' %>  
 
 <body>
 
@@ -75,15 +75,21 @@
 				<button class="accordion">
 					 <table>
 					 	<tr>
-					 		<td width=100>From: <%=fromUser%></td>
+					 		<td width=100><%=fromUser%></td>
 					 		<td width=100><%=inboxTable.getString("email_subject")%></td>
 					 		<td width=400><%=inboxTable.getString("time_stamp")%></td>
 					 	</tr>
 					 </table>
 				</button>
 				<div class="panel">
-					<p><button onclick="reply()" style="float: right;">Reply</button></p>
-					<p><%=inboxTable.getString("email_text")%></p>
+					<table>
+						<tr><td>
+							<button class="replyButton" id="replyButton">Reply</button>
+						</td></tr>
+						<tr><td>
+							<%=inboxTable.getString("email_text")%>
+						</td></tr>
+					</table>
 				</div>
 		<%	}
 		}catch(Exception e){
@@ -127,6 +133,26 @@
 		}%>
 	</div>
 	
+<script> //For reply button
+
+var reply = document.getElementsByClassName("replyButton");
+var i;
+for( i=0; reply.length; i++){
+	reply[i].addEventListener("click", function(){
+		var panel = this.parentElement.parentElement.parentElement.parentElement.parentElement;
+		var user = panel.previousElementSibling.firstElementChild.firstElementChild.firstElementChild.firstElementChild;
+		var subject = user.nextElementSibling;
+		var content = this.parentElement.parentElement.nextElementSibling.firstElementChild;
+		
+		openTab(event, 'compose');
+		document.getElementById('recipient').value = user.innerText;
+		document.getElementById('subject').value = "Re: "+subject.innerText;
+		document.getElementById('email').value = "\""+ content.innerText +"\""+"\n--\n";
+	});
+}
+
+</script>		
+	
 <script> //For compose/inbox/sent tabs
 	function openTab(evt, tabname) {
 	  var i, tabcontent, tablinks;
@@ -159,15 +185,7 @@
 	}
 </script>
 
-<script> //For reply button
-function reply() {
-	openTab(event, 'compose');
-	document.getElementById('recipient').value = "(person)";
-	document.getElementById('subject').value = "Re: (subject)";
-	document.getElementById('email').value = "\"email\"\n--\n(reply)";
-	
-}
-</script>	
+
 
 <script>
 	openTab(event, 'inbox');
@@ -176,9 +194,4 @@ function reply() {
 
 </div>
 </body>
-
-
-
-
-
 </html>
