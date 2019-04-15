@@ -13,10 +13,20 @@
 </head>   
 <!-- Navigation Bar -->  
 <%@ include file='WEB-INF/navigation.jsp' %>  
-
 <body>
-
 <div class = "container">	
+
+	<table><tr>
+		<td><form id="searchForm">
+			<input type="text" placeholder="search question" id="questionLookup" required>
+			<button type="submit" id="searchButton">Search</button>
+		</form></td>
+		<td><button id="resetButton">Reset</button></td>
+		<td><button onclick="window.location.href='questionFormPage.jsp'">Post New Question</button></td>
+	</tr></table>
+	
+	
+	
 	<div class="tab">
 	  <button class="tablinks" onclick="openTab(event, 'unanswered')">Unanswered</button>
 	  <button class="tablinks" onclick="openTab(event, 'answered')">Answered</button>
@@ -28,7 +38,16 @@
 			Connection con = db.getConnection();	
 			Statement st = con.createStatement();
 		
-			ResultSet questionTable = st.executeQuery("SELECT * FROM Questions WHERE isAnswered = 0");
+			ResultSet questionTable;
+			
+			String questionLookup = (String) curSession.getAttribute("questionLookup");
+			if( questionLookup == null ){
+				questionTable = st.executeQuery("SELECT * FROM Questions WHERE isAnswered = 0");
+			}else{
+				questionTable = st.executeQuery("SELECT * FROM Questions WHERE isAnswered = 0 && question_subject LIKE '%"+questionLookup+"%'");
+			}
+				
+
 						
 			while(questionTable.next()){ 
 				Statement st2 = con.createStatement();
@@ -50,20 +69,22 @@
 						<tr><td>
 							"<%=questionTable.getString("question_text")%>"
 						</td></tr>
+						
+					<%if(curSession.getAttribute("userType").equals("cs_rep")){%>
 						<tr><td>
 							<textarea rows="4" cols="60" id="answerText"></textarea><br>
 						</td></tr>
 						<tr><td>
 							<button class="answerButton" id="answerButton">Answer</button>
 						</td></tr>
+					<%} %>
 					</table>
 				</div>
 				
-		<%	}
+			<%}
 		con.close();
 		st.close();
 		}catch(Exception e){
-			System.out.println("something broke");
 		}%>
 	</div>
 
@@ -73,7 +94,14 @@
 			Connection con = db.getConnection();	
 			Statement st = con.createStatement();
 		
-			ResultSet answeredTable = st.executeQuery("SELECT * FROM Questions WHERE isAnswered = 1");
+			ResultSet answeredTable;
+			
+			String questionLookup = (String) curSession.getAttribute("questionLookup");
+			if( questionLookup == null ){
+				answeredTable = st.executeQuery("SELECT * FROM Questions WHERE isAnswered = 1");
+			}else{
+				answeredTable = st.executeQuery("SELECT * FROM Questions WHERE isAnswered = 1 && question_subject LIKE '%"+questionLookup+"%'");
+			}
 						
 			while(answeredTable.next()){ 
 				Statement st2 = con.createStatement();
@@ -109,7 +137,9 @@
 					</table>
 				</div>
 				
-		<%	}
+		<%}
+		con.close();
+		st.close();
 		}catch(Exception e){
 		}%>
 	</div>
@@ -150,7 +180,11 @@
 	}
 </script>
 
-<script src="js/email_scripts.js"></script>
+<script>
+	openTab(event, 'unanswered');
+</script>
+
+<script src="js/communication_scripts.js"></script>
 
 
 </html>

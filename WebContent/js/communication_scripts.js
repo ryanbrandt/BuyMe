@@ -1,4 +1,25 @@
 
+$('#searchButton').on('click', function(){
+	$.ajax({
+		url: "communication/searchQuestion.jsp",
+		method: "POST",
+		data: {'isReset': "0", 'questionLookup': $('#questionLookup').val()},
+	})
+});
+
+$('#resetButton').on('click', function(){
+	$.ajax({
+		url: "communication/searchQuestion.jsp",
+		method: "POST",
+		data: {'isReset': "1"},
+		success: function(data){
+			location.reload();
+		}
+	})
+});
+
+
+
 $('#questionForm').on('submit', function(e){
 	e.preventDefault();
 	$.ajax({
@@ -7,11 +28,12 @@ $('#questionForm').on('submit', function(e){
 		data: {'subject': $('#subject').val(), 'content': $('#details').val() },
 		
 		success: function(data){
-			alert('Your question has been submitted to a customer service representative');
+			window.location.href = "qaPage.jsp";
+			alert('Your question has been posted');
+			
 		}		
 	})
 });
-
 
 $('#emailForm').on('submit', function(){
 	$.ajax({
@@ -54,15 +76,15 @@ for( i=0; answer.length; i++){
 		var subject = user.nextElementSibling;
 		
 		$.ajax({
-			url: "communication/sendEmail.jsp",
+			url: "communication/postAnswer.jsp",
 			method: "POST",
-			data:{'isQuestion': user.id, 'recipient': user.innerText, 
-					'subject': "RE: " + subject.innerText, 
-					'email':question.innerText+"\n"+answer.innerText},
+			data:{'questionID': user.id, 'answer': answer.innerText},
 			success: function(data){
 				location.reload();
-				alert('Answer has been sent as an email');
+				alert('Answer has been posted');
 			}	
 		})
 	});
 }
+
+

@@ -19,7 +19,7 @@
 document.getElementById("lookupButton").onclick = function(){
 		<%curSession.setAttribute("userLookup", request.getParameter("userLookup"));%>
 		location.reload();
-	}
+}
 </script>
 
 

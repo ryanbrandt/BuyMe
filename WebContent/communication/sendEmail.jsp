@@ -38,12 +38,6 @@
  		
 		st.executeUpdate(query);
 		
-		
-		if( Integer.parseInt(request.getParameter("isQuestion")) >= 0 ){
-			st.executeUpdate("UPDATE Questions SET isAnswered = '1' WHERE (question_id = '"+ request.getParameter("isQuestion")+"')");			
-		}
-		
-		
 		con.close();
 		st.close();
 		

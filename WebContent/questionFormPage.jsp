@@ -45,6 +45,6 @@
 	</div>
 </div>
 
-<script src="js/email_scripts.js"></script>
+<script src="js/communication_scripts.js"></script>
 
 </body>

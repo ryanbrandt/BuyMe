@@ -42,7 +42,7 @@
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
           <a class="dropdown-item" href="email_inbox.jsp">Email</a>
-          <a class="dropdown-item" href="csQuestionForm.jsp">Speak with a Customer Representative</a>
+          <a class="dropdown-item" href="qaPage.jsp">Q&A</a>
           <div class="dropdown-divider"></div>
           <a class="dropdown-item" href="#" id="logout" onclick=logOut()>Logout</a>  
      	</div>
@@ -65,8 +65,7 @@
                Customer Support Center
              </a>
              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-               <a class="dropdown-item" href="csrepPage.jsp">User Account Management</a>
-               <a class="dropdown-item" href="csAnswer.jsp">Answer Questions</a>
+               <a class="dropdown-item" href="csUserMgtPage.jsp">User Account Management</a>
           	</div>
           </li> 
      <%} %>
