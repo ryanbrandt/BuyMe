@@ -180,7 +180,7 @@ public class AuctionManagementServlet extends HttpServlet {
 				if(!editQuery.isEmpty()) {
 					st.executeUpdate("UPDATE BuyMe.Auctions JOIN BuyMe.Clothing ON item_is = product_id SET "+editQuery+" WHERE auction_id = "+request.getSession().getAttribute("auction_id")+";");
 				}
-				break;
+				break; 
 			// bid on an existing auction
 			case "b":
 				st.executeUpdate("INSERT INTO BuyMe.Bids(`from_user`, `for_auction`, `amount`)VALUES(" + request.getSession().getAttribute("user") + "," + request.getSession().getAttribute("auction_id") + "," + request.getParameter("amount") + ")", Statement.RETURN_GENERATED_KEYS);
@@ -191,6 +191,16 @@ public class AuctionManagementServlet extends HttpServlet {
 				}
 				// send back amount bid to reflect update async
 				response.getWriter().write(request.getParameter("amount"));	
+				break;
+			// configure auto-bidding on an existing auction
+			case "ab":
+				// if auto bid for user/auction already exists, just update it, else, create new
+				ResultSet autoBid = st.executeQuery("SELECT * FROM BuyMe.Auto_Bids WHERE user_id = " + request.getSession().getAttribute("user") + " AND auction_id = " + request.getSession().getAttribute("auction_id") + ";");
+				if(autoBid.next()) {
+					st.executeUpdate("UPDATE BuyMe.Auto_Bids SET `limit` = " + request.getParameter("limit") + " WHERE user_id = " + request.getSession().getAttribute("user") + " AND auction_id = " + request.getSession().getAttribute("auction_id") + ";");
+				} else {
+					st.executeUpdate("INSERT INTO BuyMe.Auto_Bids(`user_id`, `auction_id`, `limit`)VALUES(" + request.getSession().getAttribute("user") + "," + request.getSession().getAttribute("auction_id") + "," + request.getParameter("limit") + ");");
+				}
 			}
 			st.close();
 			con.close();

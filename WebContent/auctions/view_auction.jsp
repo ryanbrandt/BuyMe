@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" import="com.cs336.pkg.*, java.util.Map"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" import="com.cs336.pkg.*, java.util.Map, java.util.Date, java.text.SimpleDateFormat"%>
 <%@ page import="java.io.*,java.util.*,java.sql.*"%>
 <%@ page import="javax.servlet.http.*,javax.servlet.*"%>
 <%!
@@ -29,6 +29,9 @@
 <%
 	// get necessary data to populate page 
 	Map<String, String> auctionData = new HashMap<String, String>();
+	Map<String, String> bidData = new LinkedHashMap<String, String>();
+	ArrayList<String> bidUsers = new ArrayList<String>();
+	double autoBidLim = 0.00;
 	double lead_bid = 0.00;
 	String bid_leader = "";
 	try{ 
@@ -53,13 +56,18 @@
 					auctionData.get("type").toLowerCase().substring(0, auctionData.get("type").length()-1) + "_id = " + auctionData.get("item_is");
 		vals = stTwo.executeQuery(q);
 		dbToMap(names, vals, auctionData, auctionData.get("type").toLowerCase() + "_id");
-		
+		// get bid data; amount should be unique, so is key and timestamp is value; arraylist has corresponding display_names
+		names = st.executeQuery("SELECT b.amount, b.timestamp, u.display_name FROM BuyMe.Bids AS b JOIN BuyMe.Users AS u ON from_user = user_id WHERE for_auction = " + request.getSession().getAttribute("auction_id") + " ORDER BY b.timestamp DESC;");
+		while(names.next()){
+			bidData.put(names.getString(1), names.getString(2));
+			bidUsers.add(names.getString(3));
+		}
 		// get current leading bid to display minimum user can bid; get associated display_name, set to 'You' if current user
-		names = st.executeQuery("SELECT MAX(amount), from_user FROM BuyMe.Bids WHERE for_auction = " + request.getSession().getAttribute("auction_id"));
+		names = st.executeQuery("SELECT b.amount, b.from_user FROM BuyMe.Bids AS b JOIN BuyMe.Auctions AS a ON a.highest_bid = b.bid_id WHERE a.auction_id = " + request.getSession().getAttribute("auction_id"));
 		if(names.next()){
 			if(names.getString(1) != null){
 				lead_bid = (double) Math.round(names.getDouble(1)*100)/100;
-				names = st.executeQuery("SELECT display_name, user_id FROM Users WHERE user_id = " + names.getString(2));
+				names = st.executeQuery("SELECT display_name, user_id FROM BuyMe.Users WHERE user_id = " + names.getString(2));
 			} else {
 				lead_bid = Double.parseDouble(auctionData.get("initial_price"));
 			}
@@ -69,9 +77,14 @@
 			
 		}
 		// get seller display_name into map
-		names = st.executeQuery("SELECT display_name FROM Users WHERE user_id = " + auctionData.get("seller_is"));
+		names = st.executeQuery("SELECT display_name FROM BuyMe.Users WHERE user_id = " + auctionData.get("seller_is"));
 		if(names.next()){
 			auctionData.put("seller_name", names.getString(1));
+		}
+		// check if current user has auto_bid configured for this auction, get their current limit to placehold
+		names = st.executeQuery("SELECT `limit` FROM BuyMe.Auto_Bids WHERE user_id = " + request.getSession().getAttribute("user") + " AND auction_id = " + request.getSession().getAttribute("auction_id") + ";");
+		if(names.next()){
+			autoBidLim = names.getDouble(1);
 		}
 		names.close();
 		st.close();
@@ -116,7 +129,7 @@
 								<td><h3>Highest Bid</h3><hr></td>
 							</tr>
 							<tr class="subTable">
-								<td><strong id="maxBid">$<%=String.format("%.2f", lead_bid)%><%= !bid_leader.isEmpty()? " From " + bid_leader : " (Initial Price, No Bids Yet)"%></strong></td>
+								<td><strong id="maxBid">$<%=String.format("%.2f", lead_bid)%><%= !bid_leader.isEmpty()? " From " + bid_leader : " (Initial Price)"%></strong><p><a href="#" style="text-decoration: none;" id="openHistory">Bid History</a></p></td>
 							</tr>
 							<tr> 
 								<td><h3>Ends On</h3><hr></td>
@@ -281,15 +294,18 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <!-- Bid Form -->
+      <!-- One-Time Bid Form -->
       <form id="bidForm">
       <div class="modal-body">
         <table id="bidTable">
         	<tr>
-        		<td><label class="isRequired" for="amount">Your Bid</label></td>
+        		<td><label class="isRequired" for="amount">Your One-Time Bid</label></td>
         	</tr>
         	<tr class="inputItems">
         		<td><input class="textInput" type="number" min="<%= (double) Math.round((lead_bid + 0.01)*100)/100 %>" step="0.01" placeholder="Min: $<%= (double) Math.round((lead_bid + 0.01)*100)/100  %>" name="amount" id="amount" required></td>
+        	</tr>
+        	<tr>
+        		<td><small><a href="#" style="text-decoration: none; margin-top: 1em;" id="autoBid">Configure Auto Bidding Instead</a></small></td>
         	</tr>
         </table>
         <!-- Loader -->
@@ -301,7 +317,56 @@
       </div>
       <div class="modal-footer">
         <button type="submit" class="btn btn-outline-success my-2 my-sm-0">Bid Now</button>
-        <button type="button" class="btn btn-secondary" data-dismiss="modal" id ="close">Cancel</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" id ="bidClose">Cancel</button>
+      </div>
+      </form>
+    </div>
+  </div>
+</div>
+<!-- Auto Bid Popup -->
+<div align="center" class="modal" tabindex="-1" role="dialog" id="autoBidModal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Configure Auto Bidding for <%=auctionData.get("name")%></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <!-- Auto Bid Form -->
+      <form id="autoBidForm">
+      <div class="modal-body">
+      	<h4>How it Works</h4>
+      	<p>  
+      		Set an upper limit and we will take care of the bidding so you remain bid leader untill your upper limit is reached!
+      	</p>
+        <table> 
+        	<tr>
+        		<td><label class="isRequired" for="limit">Your Upper Limit</label></td>
+        	</tr>
+        	<tr class="inputItems">
+        		<td><input class="textInput" type="number" min="<%= (double) Math.round((lead_bid + 0.01)*100)/100 %>" step="0.01" placeholder="Min: $<%= (double) Math.round((lead_bid + 0.01)*100)/100  %>" name="limit" id="amount" required></td>
+        	</tr>
+        	<tr>
+        		<td><label>Your Current Set Limit</label></td>
+        	</tr>
+        	<tr class="inputItems">
+        		<td align="center"><strong><%=autoBidLim > 0.00? "$" + autoBidLim : "N/A" %></strong></td>
+        	</tr>
+        	<tr>
+        		<td><small><a href="#" style="text-decoration: none; margin-top: 1em;" id="regBid">Send a One-Time Bid Instead</a></small></td>
+        	</tr>
+        </table>
+        <!-- Loader -->
+        <div class="d-flex justify-content-center">
+      		<div class="spinner-border text-success" style="color: #28a745; display: none;" role="status" id="autoLoad">
+  				<span class="sr-only">Loading...</span>
+			</div>
+		</div>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-outline-success my-2 my-sm-0">Configure</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" id ="autoBidClose">Cancel</button>
       </div>
       </form>
     </div>
@@ -375,6 +440,43 @@
         <button type="button" class="btn btn-secondary" data-dismiss="modal" id ="editClose">Cancel</button>
       </div>
       </form>
+    </div>
+  </div>
+</div>
+<!-- Bid History Popup -->
+<div class="modal" tabindex="-1" role="dialog" id="historyModal">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Bid History for <%=auctionData.get("name")%></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <table class="table">
+  			<thead>
+    			<tr>
+			      <th scope="col">User</th>
+			      <th scope="col">Amount</th>
+			      <th scope="col">Date</th>
+			    </tr>
+  			</thead>
+			<tbody id="historyBody">
+		<% 	int i = 0;
+			for(Map.Entry<String,String> entry : bidData.entrySet()){ %>
+			  <tr>
+			  	<td><%=bidUsers.get(i)%></td>
+			  	<td>$<%=entry.getKey()%></td>
+			  	<td><%=entry.getValue()%></td>
+			  </tr>
+		<%  i++;} %>
+			</tbody>
+		</table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
     </div>
   </div>
 </div>
