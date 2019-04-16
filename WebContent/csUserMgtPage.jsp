@@ -5,70 +5,63 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="ISO-8859-1">
-<title>Customer Service Rep</title>
-
-</head>
+<title>User Account Management</title>
 <!-- Navigation Bar -->
 <%@ include file='../WEB-INF/navigation.jsp' %>
 <!-- Master stylesheet -->
 <link rel="stylesheet" href="css/master.css">
 <link rel="stylesheet" href="css/tabdisplay.css">
-
-
+</head>
 <body>
-<br><br>
-
-<div>
-	<table><tr>
-		<td><input type="text" placeholder="display name or email" id="userLookup" required></td>
-		<td><button id="searchButton">Search</button></td>
-		<td><button id="resetButton">Reset</button></td>
-	</tr></table>
+<div class="container">
+	<div class="row">
+		<div class="col-lg" align="center">
+			<table><tr>
+				<td><input type="text" placeholder="display name or email" id="userLookup" required></td>
+				<td><button id="searchButton">Search</button></td>
+				<td><button id="resetButton">Reset</button></td>
+				</tr>
+			</table>	
+			<table>
+				<tr>
+			  	 	<th>Display Name |</th>
+			   		<th>Email</th>
+				</tr>
+			<% 
+			String user = (String) curSession.getAttribute("userLookupID");
+			try{
+				ApplicationDB db = new ApplicationDB();	
+				Connection con = db.getConnection();	
+				Statement st = con.createStatement();
+				ResultSet csTable;
+				
+				if(user == null){
+					csTable = st.executeQuery( "SELECT display_name, email FROM Users");
+				}else{
+					csTable = st.executeQuery("SELECT display_name, email "+
+											"FROM Users " +
+											"WHERE user_id = '" + user + "'");
+				}
+				
+				if( csTable.next()){
+					do{%>
+					 <tr>
+			            <td><%=csTable.getString("display_name") %></td>
+			            <td><%=csTable.getString("email") %></td>
+			        </tr>
+					<%}while(csTable.next());
+				}else{
+					curSession.setAttribute("userLookupID", null);%>
+					<tr><td>no users found</td></tr>
+					
+				<%}
+				con.close();
+				st.close();
+			}catch(Exception e){}%>
+		</table>
+		</div>
+	</div>
 </div>
-
-<div>
-<table>
-	<tr>
-	   <th>Display Name |</th>
-	   <th>Email</th>
-	</tr>
-	<% 
-	String user = (String) curSession.getAttribute("userLookupID");
-	try{
-		ApplicationDB db = new ApplicationDB();	
-		Connection con = db.getConnection();	
-		Statement st = con.createStatement();
-		ResultSet csTable;
-		
-		if(user == null){
-			csTable = st.executeQuery( "SELECT display_name, email FROM Users");
-		}else{
-			csTable = st.executeQuery("SELECT display_name, email "+
-									"FROM Users " +
-									"WHERE user_id = '" + user + "'");
-		}
-		
-		if( csTable.next()){
-			do{%>
-			 <tr>
-	            <td><%=csTable.getString("display_name") %></td>
-	            <td><%=csTable.getString("email") %></td>
-	        </tr>
-			<%}while(csTable.next());
-		}else{
-			curSession.setAttribute("userLookupID", null);%>
-			<tr><td>no users found</td></tr>
-			
-		<%}
-		con.close();
-		st.close();
-	}catch(Exception e){}%>
-
-</table>
-</div>
-
-
 <div>
 <%if( curSession.getAttribute("userLookupID") != null ){%>
 	<p>
@@ -136,26 +129,23 @@
 					while(bidTable.next()){ %>
 						<table>
 							<tr id=<%=bidTable.getString("bid_id")%>>
-								<td>amount: <%=bidTable.getString("amount")%></td>
-								<td>timestamp: <%=bidTable.getString("timestamp")%></td>
+								<td>Amount: <%=bidTable.getString("amount")%></td>
+								<td>Timestamp: <%=bidTable.getString("timestamp")%></td>
 								<td><button class=removebid>Remove bid</button>
 							</tr>
 						</table>
 					<% }%>	
 				</div>
 				
-			<%}
+			<% }
 		con.close();
 		st.close();
-		}catch(Exception e){
-		}%>
+		} catch(Exception e){
+		} %>
 	</div>
 <%}%>
 </div>
-
 <script src="js/csrep_scripts.js"></script>
 <script src="js/tabdisplay_scripts.js"></script>
-
 </body>
 </html>
-
