@@ -2,7 +2,11 @@ package com.cs336.pkg;
 
 import java.io.IOException;
 
+
 import java.util.Enumeration;
+import java.util.Map;
+import java.util.HashMap;
+
 import java.sql.*;
 
 import javax.servlet.RequestDispatcher;
@@ -11,7 +15,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.apache.jasper.tagplugins.jstl.core.Out;
+
 
 /**
  * Servlet implementation class AuctionManagementServlet
@@ -98,8 +102,81 @@ public class AuctionManagementServlet extends HttpServlet {
     		updateQuery = updateQuery.substring(0, updateQuery.length()-1);
     	}
     	return updateQuery;
-    }
+    }    
     
+    /* handles executing auto bids */
+    public void autoBid(Statement st, String auction_id) {
+    	Map<Integer, Double> autoBids = new HashMap<Integer, Double>();
+    	try {
+    		double lastAmt = 0.00;
+    		// get all associated active auto bids (is_exceeded = 0) into a map
+    		ResultSet q = st.executeQuery("SELECT `user_id`, `limit` FROM BuyMe.Auto_Bids WHERE `auction_id` = " + auction_id + " AND `is_exceeded` = 0;");
+    		while(q.next()) {
+    			autoBids.put(q.getInt(1), q.getDouble(2));
+    		}
+    		if(autoBids.isEmpty()) { return; }
+    		// base case, only one auto bid associated with this auction
+    		int len = autoBids.size();
+    		if(len == 1) {
+    			int key = autoBids.keySet().iterator().next();
+    			// if auto bid user == auction highest_bid user, return, else bid on their behalf
+    			q = st.executeQuery("SELECT from_user, amount FROM BuyMe.Bids WHERE bid_id = (SELECT highest_bid FROM BuyMe.Auctions WHERE auction_id = " + auction_id + ");");
+    			q.next();
+    			if(q.getInt(1) == key) {
+    				return;
+    			} else {
+    				lastAmt = q.getDouble(2) + 0.25 > autoBids.get(key) ? autoBids.get(key) : q.getDouble(2) + 0.25;
+    				st.executeUpdate("INSERT INTO BuyMe.Bids(`from_user`, `for_auction`, `amount`)VALUES(" + key + "," + auction_id + "," + lastAmt + ");");
+    			}
+    		// if len > 1, build the query iteratively simulating auto bidding but really inserting all the bids at once
+    		} else {
+    			String bidVals = "";
+    			int lastUser = 0;
+    			Map<Integer, Double> exceeded = new HashMap<Integer, Double>();
+    			while(len > 1) {
+    				for(Map.Entry<Integer, Double> entry : autoBids.entrySet()) {
+    					if(!exceeded.containsKey(entry.getKey())) {
+    						if(entry.getValue() >= (lastAmt + 0.25)) {
+	    						bidVals += "(" + entry.getKey() + "," + auction_id + "," + (lastAmt + 0.25) + "),";
+	    						lastUser = entry.getKey();
+	    						lastAmt += 0.25;
+    						} else {
+    							exceeded.put(entry.getKey(), entry.getValue());
+    							len--;
+    						}
+    					}
+    				}
+    			}
+    			// find the set difference between exceeded and autoBids (get the last, not yet exceeded auto bid)
+    			int lastAutoUser = 0;
+    			for(Map.Entry<Integer, Double> entry : autoBids.entrySet()) {
+    				if(!exceeded.containsKey(entry.getKey())) {
+    					lastAutoUser = entry.getKey();
+    					break;
+    				}
+    			}
+    			// make sure this auto bid gets the last bid so it is leader
+    			if(lastUser != lastAutoUser) {
+    				bidVals += "(" + lastAutoUser + "," + auction_id + ",";
+    				// since they are last auto bid user, give them 25c higher or their limit
+    				bidVals += autoBids.get(lastAutoUser) >= (lastAmt + 0.25) ? (lastAmt + 0.25) + ")," : autoBids.get(lastAutoUser) + "),";
+    				lastAmt = autoBids.get(lastAutoUser) >= (lastAmt + 0.25) ? lastAmt + 0.25 : autoBids.get(lastAutoUser);
+    			}
+    			// do inserts all at once with bidVals
+    			bidVals = bidVals.substring(0, bidVals.length()-1);
+    			System.out.println(bidVals);
+    			st.executeUpdate("INSERT INTO BuyMe.Bids(`from_user`, `for_auction` ,`amount`) VALUES " + bidVals + ";");
+    			
+    		}
+    		// finally, set is_exceeded for all auto bids that were exceeded in this event
+    		st.executeUpdate("UPDATE BuyMe.Auto_Bids SET `is_exceeded` = 1 WHERE `limit` <= " + lastAmt);
+    		
+    	
+    	} catch(Exception e) {
+    		System.out.println("Auto Bid err: " + e);
+    	}
+    	
+    }
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
@@ -183,13 +260,10 @@ public class AuctionManagementServlet extends HttpServlet {
 				break; 
 			// bid on an existing auction
 			case "b":
-				st.executeUpdate("INSERT INTO BuyMe.Bids(`from_user`, `for_auction`, `amount`)VALUES(" + request.getSession().getAttribute("user") + "," + request.getSession().getAttribute("auction_id") + "," + request.getParameter("amount") + ")", Statement.RETURN_GENERATED_KEYS);
-				// update auction instance to have new highest_bid 
-				ResultSet bidKey = st.getGeneratedKeys();
-				if(bidKey.next()) {
-					st.executeUpdate("UPDATE BuyMe.Auctions SET highest_bid = " + bidKey.getInt(1) + " WHERE auction_id = " + request.getSession().getAttribute("auction_id"));
-				}
-				// send back amount bid to reflect update async
+				st.executeUpdate("INSERT INTO BuyMe.Bids(`from_user`, `for_auction`, `amount`)VALUES(" + request.getSession().getAttribute("user") + "," + request.getSession().getAttribute("auction_id") + "," + request.getParameter("amount") + ")");
+				// handle auto bidding that this event triggers
+				autoBid(st, (String) request.getSession().getAttribute("auction_id"));
+				// send back amount bid to confirm
 				response.getWriter().write(request.getParameter("amount"));	
 				break;
 			// configure auto-bidding on an existing auction
@@ -197,10 +271,33 @@ public class AuctionManagementServlet extends HttpServlet {
 				// if auto bid for user/auction already exists, just update it, else, create new
 				ResultSet autoBid = st.executeQuery("SELECT * FROM BuyMe.Auto_Bids WHERE user_id = " + request.getSession().getAttribute("user") + " AND auction_id = " + request.getSession().getAttribute("auction_id") + ";");
 				if(autoBid.next()) {
-					st.executeUpdate("UPDATE BuyMe.Auto_Bids SET `limit` = " + request.getParameter("limit") + " WHERE user_id = " + request.getSession().getAttribute("user") + " AND auction_id = " + request.getSession().getAttribute("auction_id") + ";");
+					st.executeUpdate("UPDATE BuyMe.Auto_Bids SET `limit` = " + request.getParameter("limit") + ", `is_exceeded` = 0 WHERE user_id = " + request.getSession().getAttribute("user") + " AND auction_id = " + request.getSession().getAttribute("auction_id") + ";");
 				} else {
 					st.executeUpdate("INSERT INTO BuyMe.Auto_Bids(`user_id`, `auction_id`, `limit`)VALUES(" + request.getSession().getAttribute("user") + "," + request.getSession().getAttribute("auction_id") + "," + request.getParameter("limit") + ");");
 				}
+				// after user configures auto bids, send in first bid
+				autoBid = st.executeQuery("SELECT amount, from_user FROM BuyMe.Bids WHERE bid_id = (SELECT highest_bid FROM BuyMe.Auctions WHERE auction_id = " + request.getSession().getAttribute("auction_id") + ");");
+				double newAmt = 0.00;
+				double lim = Double.parseDouble(request.getParameter("limit"));
+				// check if auction has a highest bid
+				if(autoBid.next()) {
+					newAmt = autoBid.getDouble(1) + 0.25 <= lim? autoBid.getDouble(1) + 0.25: lim;
+					// if user not already the auction bid leader, bid on behalf
+					if(autoBid.getInt(2) != (int) request.getSession().getAttribute("user")) {
+						st.executeUpdate("INSERT INTO BuyMe.Bids(`from_user`, `for_auction`, `amount`)VALUES(" + request.getSession().getAttribute("user") + "," + request.getSession().getAttribute("auction_id") + "," + newAmt + ");");
+					}
+				// if not, bid on users behalf
+				} else {
+					autoBid = st.executeQuery("SELECT initial_price FROM BuyMe.Auctions WHERE auction_id = " + request.getSession().getAttribute("auction_id") + ";");
+					if(autoBid.next()) {
+						newAmt = autoBid.getDouble(1) + 0.25 <= lim? autoBid.getDouble(1) + 0.25: lim;
+						// first bid on auction 
+						st.executeUpdate("INSERT INTO BuyMe.Bids(`from_user`, `for_auction`, `amount`)VALUES(" + request.getSession().getAttribute("user") + "," + request.getSession().getAttribute("auction_id") + "," + newAmt + ");");
+					}
+				}
+				// handle any auto bidding the new insert triggered
+				autoBid(st, (String) request.getSession().getAttribute("auction_id"));
+				
 			}
 			st.close();
 			con.close();
