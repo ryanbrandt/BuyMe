@@ -69,16 +69,11 @@ var answer = document.getElementsByClassName("answerButton");
 var i;
 for( i=0; answer.length; i++){
 	answer[i].addEventListener("click", function(){
-		var panel = this.parentElement.parentElement.parentElement.parentElement.parentElement;
-		var question = panel.firstElementChild.firstElementChild.firstElementChild.firstElementChild;
-		var answer = question.parentElement.nextElementSibling.firstElementChild;
-		var user = panel.previousElementSibling.firstElementChild.firstElementChild.firstElementChild.firstElementChild;
-		var subject = user.nextElementSibling;
-		
+		var arr = $(this).val().split(",");
 		$.ajax({
 			url: "communication/postAnswer.jsp",
 			method: "POST",
-			data:{'questionID': user.id, 'answer': answer.innerText},
+			data:{'questionID': arr[0], 'answer': $('#answerText').val()},
 			success: function(data){
 				location.reload();
 				alert('Answer has been posted');

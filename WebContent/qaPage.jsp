@@ -60,7 +60,7 @@
 				<button class="accordion">
 					 	<table><tr> 
 						 	<td width=100 id=<%=questionTable.getString("question_id")%>><%=fromUser%></td>
-						 	<td width=100><%=questionTable.getString("question_subject")%></td>
+						 	<td width=200><%=questionTable.getString("question_subject")%></td>
 						 	<td width=400><%=questionTable.getString("timestamp")%></td>
 						 </tr></table>
 				</button>
@@ -75,7 +75,8 @@
 							<textarea rows="4" cols="60" id="answerText"></textarea><br>
 						</td></tr>
 						<tr><td>
-							<button class="answerButton" id="answerButton">Answer</button>
+							<button class="answerButton" id="answerButton" 
+								value="<%=questionTable.getString("question_id")%>">Answer</button>
 						</td></tr>
 					<%} %>
 					</table>
