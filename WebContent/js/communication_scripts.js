@@ -7,6 +7,7 @@ $('#searchButton').on('click', function(){
 	})
 });
 
+
 $('#resetButton').on('click', function(){
 	$.ajax({
 		url: "communication/searchQuestion.jsp",
@@ -17,7 +18,6 @@ $('#resetButton').on('click', function(){
 		}
 	})
 });
-
 
 
 $('#questionForm').on('submit', function(e){
@@ -50,7 +50,7 @@ $('#emailForm').on('submit', function(){
 
 $('#recipient').change(function(){ 
 	$.ajax({
-		url: "check_registration_credentials.jsp",
+		url: "validation/validateUser.jsp",
 		method: "POST",
 		data: {'isEmail': false, 'data': $(this).val()},
 		success: function(data){

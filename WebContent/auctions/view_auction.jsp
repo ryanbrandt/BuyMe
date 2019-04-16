@@ -33,19 +33,19 @@
 	ArrayList<String> bidUsers = new ArrayList<String>();
 	double autoBidLim = 0.00;
 	double lead_bid = 0.00;
-	String bid_leader = "";
-	try{ 
-		// establish DB connection
+	String bid_leader = ""; 
+	try{   
+		// establish DB connection 
 		ApplicationDB db = new ApplicationDB();	
 		Connection con = db.getConnection();
-		Statement st = con.createStatement();
+		Statement st = con.createStatement();     
 		Statement stTwo = con.createStatement();
 		// get Auction data into map
 		ResultSet names = st.executeQuery("DESCRIBE BuyMe.Auctions");
 		ResultSet vals = stTwo.executeQuery("SELECT * FROM BuyMe.Auctions WHERE auction_id = " + request.getSession().getAttribute("auction_id"));
 		dbToMap(names, vals, auctionData, "auction_id");
 		// get Clothing data into map
-		names = st.executeQuery("DESCRIBE BuyMe.Clothing");
+		names = st.executeQuery("DESCRIBE BuyMe.Clothing");  
 		vals = stTwo.executeQuery("SELECT * FROM BuyMe.Clothing WHERE product_id = " + auctionData.get("item_is"));
 		dbToMap(names, vals, auctionData, "item_is");
 		// get type data into map
@@ -57,24 +57,23 @@
 		vals = stTwo.executeQuery(q);
 		dbToMap(names, vals, auctionData, auctionData.get("type").toLowerCase() + "_id");
 		// get bid data; amount should be unique, so is key and timestamp is value; arraylist has corresponding display_names
-		names = st.executeQuery("SELECT b.amount, b.timestamp, u.display_name FROM BuyMe.Bids AS b JOIN BuyMe.Users AS u ON from_user = user_id WHERE for_auction = " + request.getSession().getAttribute("auction_id") + " ORDER BY b.timestamp DESC;");
-		while(names.next()){
+		names = st.executeQuery("SELECT b.amount, b.timestamp, u.display_name FROM BuyMe.Bids AS b JOIN BuyMe.Users AS u ON from_user = user_id WHERE for_auction = " + request.getSession().getAttribute("auction_id") + " ORDER BY b.amount DESC;");
+		while(names.next()){    
 			bidData.put(names.getString(1), names.getString(2));
 			bidUsers.add(names.getString(3));
-		}
+		}         
 		// get current leading bid to display minimum user can bid; get associated display_name, set to 'You' if current user
 		names = st.executeQuery("SELECT b.amount, b.from_user FROM BuyMe.Bids AS b JOIN BuyMe.Auctions AS a ON a.highest_bid = b.bid_id WHERE a.auction_id = " + request.getSession().getAttribute("auction_id"));
-		if(names.next()){
+		if(names.next()){ 
 			if(names.getString(1) != null){
 				lead_bid = (double) Math.round(names.getDouble(1)*100)/100;
 				names = st.executeQuery("SELECT display_name, user_id FROM BuyMe.Users WHERE user_id = " + names.getString(2));
-			} else {
-				lead_bid = Double.parseDouble(auctionData.get("initial_price"));
+				if(names.next()){
+					bid_leader = names.getInt(2) == (int) request.getSession().getAttribute("user") ? "You" : names.getString(1);
+				}
 			}
-			if(names.next()){
-				bid_leader = names.getInt(2) == (int) request.getSession().getAttribute("user") ? "You" : names.getString(1);
-			}
-			
+		} else {
+			lead_bid = Double.parseDouble(auctionData.get("initial_price"));
 		}
 		// get seller display_name into map
 		names = st.executeQuery("SELECT display_name FROM BuyMe.Users WHERE user_id = " + auctionData.get("seller_is"));
@@ -107,12 +106,12 @@
 <!-- Navigation Bar -->  
 <%@ include file='../WEB-INF/navigation.jsp' %>  
 <!-- Content --> 
-<body>
+<body> 
 <div class="container" style="margin-top: 2em !important;">   
 	<div class="row">    
 		<div class="col-lg" align="left">
 			<h1 style="display: inline-block;"><%= auctionData.get("name") %></h1><button id="bid" class="btn btn-outline-success my-2 my-sm-0" style="float: right;">Bid Now</button><button class="btn btn-outline-info my-2 my-sm-0" style="float: right; display: none;" id="edit">Edit</button><br/>
-			<table>
+			<table> 
 				<tr>
 					<td style="width: 50%;"><img class="img-thumbnail img-fluid" src="${pageContext.request.contextPath}/images/no-image-icon-23494.png" alt="" style="width: 400px; height: 400px; object-fit: contain;"></img></td>
 					<td style="text-align: center; float: right; width: 50%;">
@@ -130,26 +129,26 @@
 							</tr>
 							<tr class="subTable">
 								<td><strong id="maxBid">$<%=String.format("%.2f", lead_bid)%><%= !bid_leader.isEmpty()? " From " + bid_leader : " (Initial Price)"%></strong><p><a href="#" style="text-decoration: none;" id="openHistory">Bid History</a></p></td>
-							</tr>
+							</tr> 
 							<tr> 
 								<td><h3>Ends On</h3><hr></td>
 							</tr>
 							<tr class="subTable">
 								<td><strong><%=auctionData.get("end_time")%></strong></td>
 							</tr>
-						</table>
-					</td>
-				</tr>
-			</table>
-			<table>
-				<tr>
+						</table>     
+					</td>       
+				</tr>              
+			</table>         
+			<table>                                 
+				<tr>    
 					<td><strong>Product Type</strong></td>
-				</tr>
+				</tr> 
 				<tr class="attrTable">
 					<td>Clothing: <%=auctionData.get("type")%></td>
-				</tr>
+				</tr> 
 			
-				<tr>
+				<tr>        
 					<td><strong>Condition</strong></td>
 				</tr>
 				<tr class="attrTable">
@@ -332,13 +331,14 @@
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
-      </div>
+      </div> 
       <!-- Auto Bid Form -->
       <form id="autoBidForm">
       <div class="modal-body">
       	<h4>How it Works</h4>
       	<p>  
-      		Set an upper limit and we will take care of the bidding so you remain bid leader untill your upper limit is reached!
+      		Set an upper limit and we will automatically bid in small increments on your behalf so you remain bid leader until your upper limit is reached. When your 
+      		limit is exceeded, you will received a notification.
       	</p>
         <table> 
         	<tr>
@@ -399,7 +399,7 @@
 			<tr class="inputItems">
 				<td><input class="textInput" type="text" placeholder="Item Brand" name="material" value="<%=auctionData.get("material") != null? auctionData.get("material"): "" %>"></td>
 			</tr>
-			
+			  
 			<tr>
 				<td><label for="brand"><b>Who Makes It?</b></label></td>
 			</tr> 

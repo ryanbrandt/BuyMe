@@ -5,28 +5,24 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Emails</title>
-</head>
+<title>Email Center</title>
 <!-- Master stylesheet -->     
 <link rel="stylesheet" href="css/master.css"> 
-<link rel="stylesheet" href="css/email.css"> 
+<link rel="stylesheet" href="css/tabdisplay.css"> 
 </head>   
 <!-- Navigation Bar -->  
 <%@ include file='WEB-INF/navigation.jsp' %>  
-
+<!-- Content -->
 <body>
-
-
-<div class = "container">	
+<div class="container">	
 	<div class="tab">
 	  <button class="tablinks" onclick="openTab(event, 'compose')">Compose</button>
 	  <button class="tablinks" onclick="openTab(event, 'inbox')">Inbox</button>
 	  <button class="tablinks" onclick="openTab(event, 'sent')">Sent</button>
 	</div>
-	
 	<div id="compose" class="tabcontent" align="center">
 		<br>
-		<h2 id="formHead"> Compose New Email </h2>
+		<h2 id="formHead">Compose New Email</h2>
 		<form id="emailForm">
 			<table>
 				<tr>
@@ -36,13 +32,13 @@
 					<td><input class ="textInput" type="text" name="recipient" id="recipient" required></td>
 				</tr>
 				<tr>
-					<td><label class="isRequired" for="subject"><b>Subject</b></label>
+					<td><label class="isRequired" for="subject"><b>Subject:</b></label>
 				</tr>
 				<tr class="inputItems">
 					<td><input class ="textInput" type="text" name="subject" id="subject" required></td>
 				</tr>
 				<tr>
-					<td><label class="isRequired" for="email"><b>Email</b></label></td>
+					<td><label class="isRequired" for="email"><b>Email:</b></label></td>
 				</tr>
 				<tr class="inputItems">
 					<td><textarea rows="7" cols="60" class ="form-control" name="email" id="email" required></textarea></td>
@@ -51,8 +47,7 @@
 					<td><button class="btn btn-outline-success my-2 my-sm-0" type="submit">Send</button></td>
 				</tr>
 			</table>
-		</form>
-		
+		</form>	
 	</div>
 	<div id="inbox" class="tabcontent">
 		<% 
@@ -75,28 +70,27 @@
 				<button class="accordion">
 					 <table>
 					 	<tr>
-					 		<td width=100><%=fromUser%></td>
-					 		<td width=100><%=inboxTable.getString("email_subject")%></td>
-					 		<td width=400><%=inboxTable.getString("time_stamp")%></td>
+					 		<td width=100><strong>From: </strong><%=fromUser%></td>
+					 		<td width=200 style="font-style: italic; padding-left: 5em;"><%=inboxTable.getString("email_subject")%></td>
+					 		<td width=400><strong>Timestamp: </strong><%=inboxTable.getString("time_stamp")%></td>
 					 	</tr>
 					 </table>
 				</button>
 				<div class="panel">
 					<table>
-						<tr><td>
-							<button class="replyButton" id="replyButton">Reply</button>
-						</td></tr>
-						<tr><td>
-							<%=inboxTable.getString("email_text")%>
-						</td></tr>
+						<tr>
+							<td><p><%=inboxTable.getString("email_text")%></p></td>
+						</tr>
+						<tr>
+							<td><button class="btn btn-outline-success my-2 my-sm-0 replyButton" value="<%=fromUser%>,<%=inboxTable.getString("email_subject")%>,<%=inboxTable.getString("email_text")%>">Reply</button></td>
+						</tr>
 					</table>
 				</div>
 		<%	}
-		}catch(Exception e){
+		} catch(Exception e){
 			System.out.println("something broke");
 		}%>
 	</div>
-	
 	<div id="sent" class="tabcontent">
 		<% 
 		try{
@@ -118,9 +112,9 @@
 				<button class="accordion">
 					 <table>
 					 	<tr>
-					 		<td width=100>To: <%=fromUser%></td>
-					 		<td width=100><%=sentTable.getString("email_subject")%></td>
-					 		<td><%=sentTable.getString("time_stamp")%></td>
+					 		<td width=100><strong>To: </strong><%=fromUser%></td>
+					 		<td width=200 style="font-style: italic; padding-left: 5em;"><%=sentTable.getString("email_subject")%></td>
+					 		<td width=400><strong>Timestamp: </strong><%=sentTable.getString("time_stamp")%></td>
 					 	</tr>
 					 </table>
 				</button>
@@ -132,66 +126,20 @@
 			System.out.println("something broke");
 		}%>
 	</div>
-	
-<script> //For reply button
-
-var reply = document.getElementsByClassName("replyButton");
-var i;
-for( i=0; reply.length; i++){
-	reply[i].addEventListener("click", function(){
-		var panel = this.parentElement.parentElement.parentElement.parentElement.parentElement;
-		var user = panel.previousElementSibling.firstElementChild.firstElementChild.firstElementChild.firstElementChild;
-		var subject = user.nextElementSibling;
-		var content = this.parentElement.parentElement.nextElementSibling.firstElementChild;
-		
-		openTab(event, 'compose');
-		document.getElementById('recipient').value = user.innerText;
-		document.getElementById('subject').value = "Re: "+subject.innerText;
-		document.getElementById('email').value = "\""+ content.innerText +"\""+"\n--\n";
-	});
-}
-
-</script>		
-	
-<script> //For compose/inbox/sent tabs
-	function openTab(evt, tabname) {
-	  var i, tabcontent, tablinks;
-	  tabcontent = document.getElementsByClassName("tabcontent");
-	  for (i = 0; i < tabcontent.length; i++) {
-	    tabcontent[i].style.display = "none";
-	  }
-	  tablinks = document.getElementsByClassName("tablinks");
-	  for (i = 0; i < tablinks.length; i++) {
-	    tablinks[i].className = tablinks[i].className.replace(" active", "");
-	  }
-	  document.getElementById(tabname).style.display = "block";
-	  evt.currentTarget.className += " active";
-	}
-</script>
-<script> //For inbox emails
-	var acc = document.getElementsByClassName("accordion");
-	var i;
-
-	for (i = 0; i < acc.length; i++) {
-  		acc[i].addEventListener("click", function() {
-    		this.classList.toggle("active");
-    		var panel = this.nextElementSibling;
-    		if (panel.style.display === "block") {
-      			panel.style.display = "none";
-    		} else {
-      			panel.style.display = "block";
-    		}
-  		});
-	}
-</script>
-
-
-
-<script>
-	openTab(event, 'inbox');
-</script>
-<script src="js/email_scripts.js"></script>
-
 </div>
+<script src="js/tabdisplay_scripts.js"></script>
+<script src="js/communication_scripts.js"></script>	
+<script> //For reply button
+$('.replyButton').on('click', function(){
+	openTab(event, 'compose');
+	var arr = $(this).val().split(",");
+	document.getElementById('recipient').value = arr[0];
+	document.getElementById('subject').value = "RE: " + arr[1];
+	document.getElementById('email').value = "\"" + arr[2] + "\"" + "\n--\n";
+});
+window.onload = function(){
+	openTab(event, 'inbox');
+}
+</script>			
 </body>
 </html>
