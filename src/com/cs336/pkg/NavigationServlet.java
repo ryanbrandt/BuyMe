@@ -72,7 +72,11 @@ public class NavigationServlet extends HttpServlet {
 			dispatcher = getServletContext().getRequestDispatcher("/email/csQuestionForm.jsp");
 			dispatcher.forward(request, response);
 			break;
-			
+		//to alert page
+		case "alert":
+			dispatcher = getServletContext().getRequestDispatcher("/email/view_alerts.jsp");
+			dispatcher.forward(request, response);
+			break;
 			
 			//TODO rest of cases as modules created
 

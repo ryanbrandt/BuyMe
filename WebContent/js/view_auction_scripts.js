@@ -14,15 +14,10 @@ $('#bidForm').on('submit', function(e){
 		data: $(this).serialize() + "&action=b",
 		
 		success: function(bid){
-			// close modal, reset modal, show success message, update maxBid
-			document.getElementById('maxBid').innerHTML = "$" + bid + " From You Just Now"; 
-			var amount = $('#amount');
-			amount.val('');
-			amount.attr('placeholder', 'Min: $' + (parseFloat(bid)+0.01));
-			amount.attr('min', (parseFloat(bid)+0.01));
 			document.getElementById('load').style.display = "none";
 			$('#bidClose').click();
 			alert('Success! You Bid $' + bid);
+			window.location.reload();
 		}
 	})
 });
