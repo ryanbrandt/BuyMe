@@ -1,4 +1,6 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" import="javax.servlet.http.*"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" import="javax.servlet.http.*, com.cs336.pkg.*, java.util.Map, java.util.Date, java.text.SimpleDateFormat"%>
+<%@ page import="java.io.*,java.util.*,java.sql.*"%>
+<%@ page import="javax.servlet.http.*,javax.servlet.*"%>
 <% HttpSession curSession = request.getSession(false); %>
 <!DOCTYPE html>
 <html>
@@ -10,6 +12,15 @@
 </head>
 <!-- Navigation Bar -->
 <body>
+<%
+	ApplicationDB aDB = new ApplicationDB();	
+	Connection aCon = aDB.getConnection();	
+	Statement aSt = aCon.createStatement();
+
+	ResultSet aInboxTable = aSt.executeQuery("SELECT COUNT(*) as unreads FROM Alerts WHERE alert_for = '" + curSession.getAttribute("user") + "' and alert_read = '0'");
+	aInboxTable.next();
+	String unreads = aInboxTable.getInt("unreads") == 0 ? "" : Integer.toString(aInboxTable.getInt("unreads"));
+%>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
   <a class="navbar-brand" href="#">BuyMe</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -34,7 +45,7 @@
      	</div>
       </li>
       <li class="nav-item">
-        <a class="nav-link" id="alerts" href="#">My Alerts</a>
+        <a class="nav-link" id="alerts" href="view_alerts.jsp">My Alerts<div class="text-danger" style="display:inline; s"><sup><%=unreads%></sup></div></a>
       </li>    
 	<li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="actionsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
