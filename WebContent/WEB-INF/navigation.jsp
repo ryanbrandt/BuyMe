@@ -55,7 +55,7 @@
              </a>
              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                <a class="dropdown-item" href="adminPage.jsp">CS Account Management</a>
-               <a class="dropdown-item" href="#">Generate Sales Report</a>
+               <a class="dropdown-item" href="salesReportPage.jsp">Generate Sales Report</a>
           	</div>
            </li> 
      		
