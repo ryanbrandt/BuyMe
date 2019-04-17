@@ -14,7 +14,7 @@
 <%@ include file='WEB-INF/navigation.jsp' %>  
 <!-- Content -->
 <body>
-<div class="container">	
+<div class="container" style="margin-top: 2em !important;">	
 	<div class="tab">
 	  <button class="tablinks" onclick="openTab(event, 'compose')">Compose</button>
 	  <button class="tablinks" onclick="openTab(event, 'inbox')">Inbox</button>

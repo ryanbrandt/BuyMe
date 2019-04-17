@@ -31,36 +31,30 @@ $('#resetButton').on('click', function(){
 		}
 	})
 });
+$('.removebid').on('click', function(){
+	var bidId = $(this).val();
+	$.ajax({
+		url: "csrep/removeBid.jsp",
+		method: "POST",
+		data:{'bidID': bidId},
+		
+		success: function(data){
+			location.reload();
+			alert('Bid has been removed');
+		}	
+	})
+});
 
-var removeBidButton = document.getElementsByClassName("removebid");
-for( i=0; removeBidButton.length; i++){
-	removeBidButton[i].addEventListener("click", function(){
-		var bidrow = this.parentElement.parentElement;
-		$.ajax({
-			url: "csrep/removeBid.jsp",
-			method: "POST",
-			data:{'bidID': bidrow.id},
-			success: function(data){
-				location.reload();
-				alert('Bid has been removed');
-			}	
-		})
-	});
-}
-
-
-var removeAuctionButton = document.getElementsByClassName("removeAuction");
-for( i=0; removeAuctionButton.length; i++){
-	removeAuctionButton[i].addEventListener("click", function(){
-		var auctionrow = this.parentElement.parentElement;
-		$.ajax({
-			url: "csrep/removeAuction.jsp",
-			method: "POST",
-			data:{'auctionID': auctionrow.id},
-			success: function(data){
-				location.reload();
-				alert('Auction has been removed');
-			}	
-		})
-	});
-}
+$('.removeAuction').on('click', function(){
+	var auctionId = $(this).val();
+	console.log(auctionId);
+	$.ajax({
+		url: "csrep/removeAuction.jsp",
+		method: "POST",
+		data:{'auctionID': auctionId},
+		success: function(data){
+			location.reload();
+			alert('Auction has been removed');
+		}	
+	})
+});

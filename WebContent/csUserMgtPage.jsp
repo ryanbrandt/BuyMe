@@ -13,19 +13,20 @@
 <link rel="stylesheet" href="css/tabdisplay.css">
 </head>
 <body>
-<div class="container">
+<div class="container" style="margin-top: 2em !important;">
 	<div class="row">
 		<div class="col-lg" align="center">
-			<table><tr>
-				<td><input type="text" placeholder="display name or email" id="userLookup" required></td>
-				<td><button id="searchButton">Search</button></td>
-				<td><button id="resetButton">Reset</button></td>
+			<table style="margin-bottom: 0.5em;">
+				<tr>
+					<td><input style="margin-right:2px;" class="form-control" type="text" placeholder="display name or email" id="userLookup" required></td>
+					<td><button style="margin-right:2px;" class="form-control" id="searchButton">Search</button></td>
+					<td><button class="form-control" id="resetButton">Reset</button></td>
 				</tr>
 			</table>	
 			<table>
 				<tr>
-			  	 	<th>Display Name |</th>
-			   		<th>Email</th>
+			  	 	<td align="center"><strong>Display Name</strong></td>
+			   		<td align="center"><strong>Email</strong></td>
 				</tr>
 			<% 
 			String user = (String) curSession.getAttribute("userLookupID");
@@ -43,21 +44,21 @@
 											"WHERE user_id = '" + user + "'");
 				}
 				
-				if( csTable.next()){
-					do{%>
+				if(csTable.next()){
+					do { %>
 					 <tr>
-			            <td><%=csTable.getString("display_name") %></td>
-			            <td><%=csTable.getString("email") %></td>
+			            <td><a class="btn btn-link" style="color: rgb(88, 142, 165);"onclick="$('#userLookup').val('<%=csTable.getString("display_name")%>'); $('#searchButton').click();"><%=csTable.getString("display_name")%></a></td>
+			            <td align="center"><%=csTable.getString("email") %></td>
 			        </tr>
-					<%}while(csTable.next());
-				}else{
+					<% } while(csTable.next());
+				} else {
 					curSession.setAttribute("userLookupID", null);%>
 					<tr><td>no users found</td></tr>
 					
-				<%}
+			  <%}
 				con.close();
 				st.close();
-			}catch(Exception e){}%>
+			} catch(Exception e){}%>
 		</table>
 		</div>
 	</div>
@@ -65,7 +66,7 @@
 <div>
 <%if( curSession.getAttribute("userLookupID") != null ){%>
 	<p>
-	<button id="resetPassword">Reset Password</button>
+	<button style="margin-left: 5px;"class="btn btn-danger" id="resetPassword">Reset Password</button>
 	</p>
 	
 	<div class="tab">
@@ -84,12 +85,12 @@
 			while(auctionTable.next()){ %>
 				<button class="accordion">
 					<table><tr> 
-					 	<td width=100 id=<%=auctionTable.getString("auction_id")%>>auction_id=<%=auctionTable.getString("auction_id")%></td>
+					 	<td width=100>auction_id=<%=auctionTable.getString("auction_id")%></td>
 					</tr></table>
 				</button>
 				<div class="panel">
 					<table>
-						<tr><td><button class="removeAuction">Remove Auction</button></td></tr>
+						<tr><td><button value="<%=auctionTable.getString("auction_id")%>" class="form-control removeAuction">Remove Auction</button></td></tr>
 						<tr><td>Start Time: </td></tr>
 						<tr><td>End Time: </td></tr>
 						<tr><td>Highest Bid: </td></tr>
@@ -111,30 +112,34 @@
 			Connection con = db.getConnection();	
 			Statement st = con.createStatement();
 		
-			ResultSet bidItemTable = st.executeQuery("SELECT DISTINCT for_auction FROM Bids WHERE from_user = '"+curSession.getAttribute("userLookupID")+"'");
+			ResultSet bidItemTable = st.executeQuery("SELECT DISTINCT for_auction FROM Bids JOIN Auctions ON for_auction = auction_id WHERE from_user = '"+curSession.getAttribute("userLookupID")+"' AND is_active = 1;");
 
 			while(bidItemTable.next()){ %>
 				<button class="accordion">
 					<table><tr> 
-					 	<td id=<%=bidItemTable.getString("for_auction")%>>For AuctionID=<%=bidItemTable.getString("for_auction")%> </td>
+					 	<td id="<%=bidItemTable.getString("for_auction")%>">For AuctionID=<%=bidItemTable.getString("for_auction")%> </td>
 					</tr></table>
 				</button>
 				<div class="panel">
 					
 					<%
 					Statement st2 = con.createStatement();
-					ResultSet bidTable = st.executeQuery("SELECT * FROM Bids " +
+					ResultSet bidTable = st.executeQuery("SELECT bid_id, amount, timestamp FROM Bids JOIN Auctions ON for_auction = auction_id " +
 										"WHERE from_user = '" +curSession.getAttribute("userLookupID")+ 
-										"' AND for_auction = '" + bidItemTable.getString("for_auction") + "'" );
-					while(bidTable.next()){ %>
-						<table>
-							<tr id=<%=bidTable.getString("bid_id")%>>
+										"' AND for_auction = '" + bidItemTable.getString("for_auction") + "' AND is_active = 1 ORDER BY timestamp DESC;" );
+					%>
+					<table>
+					<col width="33%">
+					<col width="33%">
+					<col width="33%">
+					<%while(bidTable.next()){ %>
+							<tr style="margin-bottom: 0.5em;">
 								<td>Amount: <%=bidTable.getString("amount")%></td>
 								<td>Timestamp: <%=bidTable.getString("timestamp")%></td>
-								<td><button class=removebid>Remove bid</button>
+								<td align="center"><button value="<%=bidTable.getString("bid_id")%>" class="form-control removebid" style="width: 50%;">Remove Bid</button>
 							</tr>
-						</table>
-					<% }%>	
+					<% } %>	
+					</table>
 				</div>
 				
 			<% }

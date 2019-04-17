@@ -11,7 +11,7 @@
 		
 		Statement st = con.createStatement();
 		
-		st.executeUpdate( "DELETE FROM Bids WHERE bid_id = '" + request.getParameter("bidID") +"'" );
+		st.executeUpdate("DELETE FROM Bids WHERE bid_id = " + request.getParameter("bidID") +";" );
 
 		con.close();
 		st.close();

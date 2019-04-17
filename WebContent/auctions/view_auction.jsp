@@ -52,8 +52,7 @@
 		names = st.executeQuery("DESCRIBE BuyMe." + auctionData.get("type"));
 		String q = "SELECT * FROM BuyMe." + 
 					auctionData.get("type") + " WHERE "; 
-		q += auctionData.get("type").contentEquals("Pants") ? auctionData.get("type").toLowerCase() + "_id = " + auctionData.get("item_is") : 
-					auctionData.get("type").toLowerCase().substring(0, auctionData.get("type").length()-1) + "_id = " + auctionData.get("item_is");
+		q += auctionData.get("type").toLowerCase() + "_id = " + auctionData.get("item_is");
 		vals = stTwo.executeQuery(q);
 		dbToMap(names, vals, auctionData, auctionData.get("type").toLowerCase() + "_id");
 		// get bid data; amount should be unique, so is key and timestamp is value; arraylist has corresponding display_names

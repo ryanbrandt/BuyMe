@@ -41,7 +41,7 @@
 			Connection con = db.getConnection();	
 			Statement st = con.createStatement();
 		
-			ResultSet inboxTable = st.executeQuery("SELECT * FROM Alerts WHERE alert_for = '" + curSession.getAttribute("user") + "'");
+			ResultSet inboxTable = st.executeQuery("SELECT * FROM Alerts WHERE alert_for = '" + curSession.getAttribute("user") + "' ORDER BY `time_stamp` DESC;");
 			
 			
 			while(inboxTable.next()){ 

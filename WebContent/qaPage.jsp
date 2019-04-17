@@ -14,24 +14,30 @@
 <!-- Navigation Bar -->  
 <%@ include file='WEB-INF/navigation.jsp' %>  
 <body>
-<div class = "container">	
-
-	<table><tr>
-		<td><form id="searchForm">
-			<input type="text" placeholder="search question" id="questionLookup" required>
-			<button type="submit" id="searchButton">Search</button>
-		</form></td>
-		<td><button id="resetButton">Reset</button></td>
-		<td><button onclick="window.location.href='questionFormPage.jsp'">Post New Question</button></td>
-	</tr></table>
-	
-	
-	
+<div class = "container" style="margin-top: 2em !important;">	
+	<form id="searchForm">
+	<table>
+		<tr>
+			<td>
+				<input class="form-control" type="text" placeholder="search question" id="questionLookup" required>
+			</td>
+			<td>
+				<button class="form-control" type="submit" id="searchButton">Search</button>
+			</td>
+		</tr>
+	</table>
+	</form>
+	<table style="margin-top: 0.5em; margin-bottom: 0.5em;">
+		<tr>
+			<td><button class="form-control" id="resetButton">Reset</button></td>
+			<td><button class="form-control" onclick="window.location.href='questionFormPage.jsp'">Post New Question</button></td>
+		</tr>
+	</table>
 	<div class="tab">
 	  <button class="tablinks" onclick="openTab(event, 'unanswered')">Unanswered</button>
 	  <button class="tablinks" onclick="openTab(event, 'answered')">Answered</button>
 	</div>
-
+	
 	<div id="unanswered" class="tabcontent">
 		<%try{
 			ApplicationDB db = new ApplicationDB();	
@@ -75,8 +81,7 @@
 							<textarea rows="4" cols="60" id="answerText"></textarea><br>
 						</td></tr>
 						<tr><td>
-							<button class="answerButton" id="answerButton" 
-								value="<%=questionTable.getString("question_id")%>">Answer</button>
+							<button style="width: 25%;"class="answerButton form-control" id="answerButton" value="<%=questionTable.getString("question_id")%>">Answer</button>
 						</td></tr>
 					<%} %>
 					</table>
@@ -136,25 +141,18 @@
 							&emsp;<%=answeredTable.getString("answer")%>							 
 						</td></tr>
 					</table>
-				</div>
-				
-		<%}
+				</div>				
+		<% }
 		con.close();
 		st.close();
-		}catch(Exception e){
-		}%>
+		} catch(Exception e){
+		} %>
 	</div>
 </div>
-</body>
-
-
-
+<script src="js/communication_scripts.js"></script>
 <script src="js/tabdisplay_scripts.js"></script>
 <script>
 	openTab(event, 'unanswered');
 </script>
-
-<script src="js/communication_scripts.js"></script>
-
-
+</body>
 </html>
