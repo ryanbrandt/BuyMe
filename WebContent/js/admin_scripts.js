@@ -102,6 +102,9 @@ $('.generateButton').on('click', function(){
 			var displayType = $("#input1 option:selected").val();
 			if( displayType == 5 || displayType == 6){
 				$("#heading").text(arr[2]);
+				$("#heading").show();
+			}else{
+				$("#heading").hide();
 			}
 			
 			$("#tSold").text(arr[0]);

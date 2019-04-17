@@ -70,14 +70,13 @@ try{
 	}
 	
 	
-	System.out.println(query);
+	//System.out.println(query);
 	
 	
 	result = st.executeQuery(query);
 	if( result.next() ){
 		tAmount= result.getString("tAmount");
 		tSold = result.getString("tSold");
-	
 	
 		switch(input1){
 		case 5: //bestselling
@@ -92,11 +91,9 @@ try{
 		}
 		
 		response.getWriter().write(tSold+"|"+tAmount+"|"+target);
+	}else{
+		response.getWriter().write("0|0|target");
 	}
-	
-	System.out.println(target);
-	
-
 	
 	st.close();
 	con.close();
