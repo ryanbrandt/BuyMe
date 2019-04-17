@@ -29,21 +29,15 @@
 		Connection con = db.getConnection();	
 		Statement st = con.createStatement();
 		
-		ResultSet csUserID = st.executeQuery("SELECT user_id FROM Users_CS_Rep");
+		ResultSet csDisplay = st.executeQuery("SELECT * FROM Users_CS_Rep cs JOIN Users u ON u.user_id=cs.user_id");
 		ArrayList<Integer> list = new ArrayList<Integer>();
-		while(csUserID.next()){
-			list.add(csUserID.getInt(1));		
-		}
-		
-		for( int i = 0; i < list.size(); i++ ){
-			ResultSet csDisplay = st.executeQuery( "SELECT display_name, email FROM Users WHERE user_id= '" + list.get(i) +"'");
-			while(csDisplay.next()){%>
+		while(csDisplay.next()){%>
 	        <tr>
 	            <td><%=csDisplay.getString("display_name") %></td>
 	            <td><%=csDisplay.getString("email") %></td>
 	        </tr>
         <%}
-		}
+		
 		st.close();
 		con.close();
 	    

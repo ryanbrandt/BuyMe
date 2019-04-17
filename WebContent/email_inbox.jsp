@@ -56,16 +56,10 @@
 			Connection con = db.getConnection();	
 			Statement st = con.createStatement();
 		
-			ResultSet inboxTable = st.executeQuery("SELECT * FROM Emails WHERE receiver_id = '" + curSession.getAttribute("user") + "'");
-			
+			ResultSet inboxTable = st.executeQuery("SELECT * FROM Emails e JOIN Users u ON u.user_id=e.sender_id WHERE receiver_id = '" + curSession.getAttribute("user") + "'");
 			
 			while(inboxTable.next()){ 
-				Statement st2 = con.createStatement();
-				ResultSet from = st2.executeQuery("SELECT display_name FROM Users WHERE user_id = '"+inboxTable.getString("sender_id")+"'");
-				String fromUser = "(deleted user)";
-				if(from.next()){
-					fromUser = from.getString("display_name");
-				}
+				String fromUser = inboxTable.getString("display_name");
 			%>
 				<button class="accordion">
 					 <table>
@@ -98,16 +92,13 @@
 			Connection con = db.getConnection();	
 			Statement st = con.createStatement();
 		
-			ResultSet sentTable = st.executeQuery("SELECT * FROM Emails WHERE sender_id = '" + curSession.getAttribute("user") + "'");
+			ResultSet sentTable = st.executeQuery("SELECT * FROM Emails e JOIN Users u ON e.receiver_id=u.user_id WHERE sender_id = '" + curSession.getAttribute("user") + "'");
 			
 			
 			while(sentTable.next()){ 
-				Statement st2 = con.createStatement();
-				ResultSet from = st2.executeQuery("SELECT display_name FROM Users WHERE user_id = '"+sentTable.getString("receiver_id")+"'");
-				String fromUser = "(deleted user)";
-				if(from.next()){
-					fromUser = from.getString("display_name");
-				}
+				
+				String fromUser = sentTable.getString("display_name");
+
 			%>
 				<button class="accordion">
 					 <table>
