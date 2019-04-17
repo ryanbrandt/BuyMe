@@ -32,11 +32,11 @@ $('#resetButton').on('click', function(){
 	})
 });
 $('.removebid').on('click', function(){
-	var bidId = $(this).val();
+	var arr = $(this).val().split(',');
 	$.ajax({
 		url: "csrep/removeBid.jsp",
 		method: "POST",
-		data:{'bidID': bidId},
+		data:{'bidId': arr[0], 'auctionId': arr[1]},
 		
 		success: function(data){
 			location.reload();

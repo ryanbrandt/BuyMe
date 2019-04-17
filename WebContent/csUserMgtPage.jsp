@@ -124,7 +124,7 @@
 					
 					<%
 					Statement st2 = con.createStatement();
-					ResultSet bidTable = st.executeQuery("SELECT bid_id, amount, timestamp FROM Bids JOIN Auctions ON for_auction = auction_id " +
+					ResultSet bidTable = st.executeQuery("SELECT bid_id, amount, timestamp, auction_id FROM Bids JOIN Auctions ON for_auction = auction_id " +
 										"WHERE from_user = '" +curSession.getAttribute("userLookupID")+ 
 										"' AND for_auction = '" + bidItemTable.getString("for_auction") + "' AND is_active = 1 ORDER BY timestamp DESC;" );
 					%>
@@ -136,7 +136,7 @@
 							<tr style="margin-bottom: 0.5em;">
 								<td>Amount: <%=bidTable.getString("amount")%></td>
 								<td>Timestamp: <%=bidTable.getString("timestamp")%></td>
-								<td align="center"><button value="<%=bidTable.getString("bid_id")%>" class="form-control removebid" style="width: 50%;">Remove Bid</button>
+								<td align="center"><button value="<%=bidTable.getString("bid_id") + "," + bidTable.getString("auction_id")%>" class="form-control removebid" style="width: 50%;">Remove Bid</button>
 							</tr>
 					<% } %>	
 					</table>
