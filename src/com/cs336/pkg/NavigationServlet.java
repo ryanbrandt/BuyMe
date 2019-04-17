@@ -77,6 +77,10 @@ public class NavigationServlet extends HttpServlet {
 			dispatcher = getServletContext().getRequestDispatcher("/email/view_alerts.jsp");
 			dispatcher.forward(request, response);
 			break;
+		// to user settings
+		case "settings":
+			dispatcher = getServletContext().getRequestDispatcher("/user/settings.jsp");
+			dispatcher.forward(request, response);
 			
 			//TODO rest of cases as modules created
 

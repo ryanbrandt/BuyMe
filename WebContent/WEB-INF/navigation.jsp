@@ -55,7 +55,8 @@
           <a class="dropdown-item" href="email_inbox.jsp">Email</a>
           <a class="dropdown-item" href="qaPage.jsp">Q&A</a>
           <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="#" id="logout" onclick=logOut()>Logout</a>  
+          	<a class="dropdown-item" href="NavigationServlet?location=settings">Settings</a>
+          	<a class="dropdown-item" href="#" id="logout" onclick=logOut()>Logout</a>  
      	</div>
      </li>
      

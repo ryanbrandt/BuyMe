@@ -80,7 +80,7 @@
 			Connection con = db.getConnection();	
 			Statement st = con.createStatement();
 		
-			ResultSet auctionTable = st.executeQuery("SELECT * FROM Auctions WHERE seller_is = '"+curSession.getAttribute("userLookupID")+"'");
+			ResultSet auctionTable = st.executeQuery("SELECT a.auction_id, a.start_time, a.end_time, b.amount, c.name FROM ((Auctions AS a JOIN Bids AS b ON a.highest_bid = b.bid_id) JOIN Clothing AS c ON a.item_is = c.product_id) WHERE a.seller_is = '"+curSession.getAttribute("userLookupID")+"'");
 
 			while(auctionTable.next()){ %>
 				<button class="accordion">
@@ -91,11 +91,10 @@
 				<div class="panel">
 					<table>
 						<tr><td><button value="<%=auctionTable.getString("auction_id")%>" class="form-control removeAuction">Remove Auction</button></td></tr>
-						<tr><td>Start Time: </td></tr>
-						<tr><td>End Time: </td></tr>
-						<tr><td>Highest Bid: </td></tr>
-						<tr><td>Details..</td></tr>
-						
+						<tr><td>Start Time: <%=auctionTable.getString("start_time")%></td></tr>
+						<tr><td>End Time: <%=auctionTable.getString("end_time")%></td></tr>
+						<tr><td>Highest Bid: $<%=auctionTable.getString("amount")%></td></tr>
+						<tr><td>Name: <strong><%=auctionTable.getString("name")%></strong></td></tr>
 					</table>
 				</div>
 				
@@ -103,6 +102,7 @@
 		con.close();
 		st.close();
 		}catch(Exception e){
+			System.out.println(e);
 		}%>
 	</div>
 

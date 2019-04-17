@@ -16,22 +16,22 @@
 	}
 %> 
 <!-- Content -->
-<body>
+<body> 
 <!-- Login/Registration Grid -->
 <div class="container"> 
 	<div class="row">
 		<div class="col-lg" align="center">
 			<h2>Welcome to BuyMe!</h2><br/>
 			<!-- Login Form; Default is visible -->
-			<form id="loginForm">
+			<form id="loginForm">     
 				<table>
-					<tr>
+					<tr>      
 						<td><label for="loginEmail"><b>Email</b></label></td>
-					</tr>
+					</tr>   
 					<tr class="inputItems">
 						<td><input class="textInput" type="email" placeholder="Enter Email" name="loginEmail" id="loginEmail" required></td>
 					</tr>
-						
+						 
 					<tr>
 						<td><label for="loginPassword"><b>Password</b></label></td>
 					</tr>
