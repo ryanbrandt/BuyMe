@@ -33,7 +33,7 @@
         <a class="nav-link" href="NavigationServlet?location=auctions">Home</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="profile.jsp" id="profile">My Profile</a>
+        <a class="nav-link" href="NavigationServlet?location=profile" id="profile">My Profile</a>
       </li>
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="auctionDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -45,7 +45,7 @@
      	</div>
       </li>
       <li class="nav-item">
-        <a class="nav-link" id="alerts" href="view_alerts.jsp">My Alerts<div class="text-danger" style="display:inline; s"><sup><%=unreads%></sup></div></a>
+        <a class="nav-link" id="alerts" href="NavigationServlet?location=alerts">My Alerts<div class="text-danger" style="display:inline; s"><sup><%=unreads%></sup></div></a>
       </li>    
 	<li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="actionsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

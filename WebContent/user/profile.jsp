@@ -12,7 +12,7 @@
 <title>My Profile</title>
 </head>
 <!-- Navigation Bar -->
-<%@ include file='WEB-INF/navigation.jsp' %>
+<%@ include file='../WEB-INF/navigation.jsp' %>
 <%
 	/* TODO overhaul this page to a 'user' folder and use a servlet to redirect */
 	if(curSession.getAttribute("user") == null){

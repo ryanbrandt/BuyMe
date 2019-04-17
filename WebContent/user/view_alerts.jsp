@@ -7,16 +7,10 @@
 <head>
 <!-- Master stylesheet -->
 <link type="stylesheet" href="css/master.css">
-<title>My Profile</title>
-</head>
+<title>My Alerts</title>
+</head>  
 <!-- Navigation Bar -->
-<%@ include file='WEB-INF/navigation.jsp' %>
-<%
-	/* TODO overhaul this page to a 'user' folder and use a servlet to redirect */
-	if(curSession.getAttribute("user") == null){
-		response.sendRedirect("login.jsp");
-	}
-%>
+<%@ include file='../WEB-INF/navigation.jsp' %>
 <!-- Content -->
 <body>
 	<div class="container" id="alertData" align="center" style="margin-top: 2em !important;">

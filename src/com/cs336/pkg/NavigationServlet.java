@@ -48,6 +48,11 @@ public class NavigationServlet extends HttpServlet {
 			dispatcher = getServletContext().getRequestDispatcher("/auctions/create_auction.jsp");
 			dispatcher.forward(request, response);
 			break;
+		// to profile
+		case "profile":
+			dispatcher = getServletContext().getRequestDispatcher("/user/profile.jsp");
+			dispatcher.forward(request, response);
+			break;
 		// to view an auction page
 		case "view":
 			// set auction id
@@ -81,6 +86,12 @@ public class NavigationServlet extends HttpServlet {
 		case "settings":
 			dispatcher = getServletContext().getRequestDispatcher("/user/settings.jsp");
 			dispatcher.forward(request, response);
+			break;
+		// to user alerts
+		case "alerts":
+			dispatcher = getServletContext().getRequestDispatcher("/user/view_alerts.jsp");
+			dispatcher.forward(request, response);
+			
 			
 			//TODO rest of cases as modules created
 
