@@ -202,7 +202,7 @@ public class AuctionManagementServlet extends HttpServlet {
 				switch(request.getParameter("type")) {
 				
 				case "Shirts":
-					st.executeUpdate("INSERT INTO BuyMe.Shirts(shirt_id)VALUES("+request.getSession().getAttribute("new_prod_id")+")");
+					st.executeUpdate("INSERT INTO BuyMe.Shirts(shirts_id)VALUES("+request.getSession().getAttribute("new_prod_id")+")");
 					request.getSession().setAttribute("new_prod_type", "s");
 					break;
 					
@@ -212,7 +212,7 @@ public class AuctionManagementServlet extends HttpServlet {
 					break;
 					
 				case "Jackets":
-					st.executeUpdate("INSERT INTO BuyMe.Jackets(jacket_id)VALUES("+request.getSession().getAttribute("new_prod_id")+")");
+					st.executeUpdate("INSERT INTO BuyMe.Jackets(jackets_id)VALUES("+request.getSession().getAttribute("new_prod_id")+")");
 					request.getSession().setAttribute("new_prod_type", "j");
 					
 				}
@@ -225,11 +225,11 @@ public class AuctionManagementServlet extends HttpServlet {
 				switch((String) request.getSession().getAttribute("new_prod_type")) {
 				
 				case "s":
-					st.executeUpdate("UPDATE BuyMe.Shirts SET "+updateQuery+" WHERE shirt_id = "+request.getSession().getAttribute("new_prod_id")+";");
+					st.executeUpdate("UPDATE BuyMe.Shirts SET "+updateQuery+" WHERE shirts_id = "+request.getSession().getAttribute("new_prod_id")+";");
 					break;
 					
 				case "j":
-					st.executeUpdate("UPDATE BuyMe.Jackets SET "+updateQuery+" WHERE jacket_id = "+request.getSession().getAttribute("new_prod_id")+";");
+					st.executeUpdate("UPDATE BuyMe.Jackets SET "+updateQuery+" WHERE jackets_id = "+request.getSession().getAttribute("new_prod_id")+";");
 					break;
 					
 				case "p":

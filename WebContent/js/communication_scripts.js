@@ -70,15 +70,19 @@ var i;
 for( i=0; answer.length; i++){
 	answer[i].addEventListener("click", function(){
 		var arr = $(this).val().split(",");
+		
+		var answer = this.parentElement.parentElement.previousElementSibling.firstElementChild;
+		
 		$.ajax({
 			url: "communication/postAnswer.jsp",
 			method: "POST",
-			data:{'questionID': arr[0], 'answer': $('#answerText').val()},
+			data:{'questionID': arr[0], 'answer': answer.innerText},
 			success: function(data){
 				location.reload();
 				alert('Answer has been posted');
 			}	
 		})
+		
 	});
 }
 
