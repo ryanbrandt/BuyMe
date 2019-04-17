@@ -39,22 +39,27 @@ public class UserServlet extends HttpServlet {
 			switch(request.getParameter("action")) {
 			// verify password for settings
 			case "c":
-				ResultSet q = st.executeQuery("SELECT * FROM Users WHERE user_id = " + request.getSession().getAttribute("user") + " AND password = " + request.getParameter("password"));
+				ResultSet q = st.executeQuery("SELECT password FROM Users WHERE `user_id` = " + request.getSession().getAttribute("user"));
 				// if there is a tuple, correct pass, send data back
-				if(q.next()) {
+				q.next();
+				if(q.getString(1).contentEquals(request.getParameter("password"))) {
 					response.getWriter().write("1");
 				} 
+				q.close();
 				break;
 			// delete user account
 			case "d":
-				st.executeUpdate("DELETE FROM Users WHERE user_id = " + request.getParameter("user_id"));
+				st.executeUpdate("DELETE FROM Users WHERE `user_id` = " + request.getParameter("user_id"));
 				break;
 			// update user password
 			case "u":
-				st.executeUpdate("UPDATE Users SET password = " + request.getParameter("pass") + " WHERE user_id = " + request.getParameter("user_id"));
+				st.executeUpdate("UPDATE Users SET `password` = '" + request.getParameter("pass") + "' WHERE `user_id` = " + request.getParameter("user_id"));
 				break;
 			
 			} 
+			
+			st.close();
+			con.close();
 			
 		} catch(Exception e) {
 			System.out.println(e);

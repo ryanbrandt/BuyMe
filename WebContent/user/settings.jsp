@@ -18,8 +18,8 @@
 		<div class="col-lg" align="center">
 			<h2 id="head">Confirm Your Password</h2><br/>
 			<!-- Login Form; Default is visible -->
-			<form id="confirmPass">
-				<table>
+			<form id="confirmPass"> 
+				<table>  
 					<tr>
 						<td><label for="pass"><b>Password</b></label></td>
 					</tr>
