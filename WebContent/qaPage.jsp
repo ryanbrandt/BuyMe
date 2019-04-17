@@ -48,20 +48,15 @@
 			
 			String questionLookup = (String) curSession.getAttribute("questionLookup");
 			if( questionLookup == null ){
-				questionTable = st.executeQuery("SELECT * FROM Questions WHERE isAnswered = 0");
+				questionTable = st.executeQuery("SELECT * FROM Questions q JOIN Users u ON q.asked_by=u.user_id WHERE isAnswered = 0");
 			}else{
-				questionTable = st.executeQuery("SELECT * FROM Questions WHERE isAnswered = 0 && question_subject LIKE '%"+questionLookup+"%'");
+				questionTable = st.executeQuery("SELECT * FROM Questions q JOIN Users u ON q.asked_by=u.user_id WHERE isAnswered = 0 && question_subject LIKE '%"+questionLookup+"%'");
 			}
 				
 
 						
 			while(questionTable.next()){ 
-				Statement st2 = con.createStatement();
-				ResultSet from = st2.executeQuery("SELECT display_name FROM Users WHERE user_id = '"+questionTable.getString("asked_by")+"'");
-				String fromUser = "(deleted user)";
-				if(from.next()){
-					fromUser = from.getString("display_name");
-				}
+				String fromUser = questionTable.getString("display_name");
 			%>
 				<button class="accordion">
 					 	<table><tr> 
@@ -104,24 +99,27 @@
 			
 			String questionLookup = (String) curSession.getAttribute("questionLookup");
 			if( questionLookup == null ){
-				answeredTable = st.executeQuery("SELECT * FROM Questions WHERE isAnswered = 1");
+				answeredTable = st.executeQuery(
+							"SELECT t1.*, u.display_name AS answeredBy_name "+
+							"FROM( "+
+								"SELECT q.*, u.display_name AS askedBy_name "+
+								"FROM Questions q JOIN Users u ON q.asked_by=u.user_id "+
+							") AS t1 JOIN Users u ON t1.answeredBy=u.user_id "+
+							"WHERE isAnswered = 1" 
+						);
 			}else{
-				answeredTable = st.executeQuery("SELECT * FROM Questions WHERE isAnswered = 1 && question_subject LIKE '%"+questionLookup+"%'");
+				answeredTable = st.executeQuery(
+						"SELECT t1.*, u.display_name AS answeredBy_name "+
+						"FROM( "+
+							"SELECT q.*, u.display_name AS askedBy_name "+
+							"FROM Questions q JOIN Users u ON q.asked_by=u.user_id "+
+						") AS t1 JOIN Users u ON t1.answeredBy=u.user_id "+
+						"WHERE isAnswered = 1 && question_subject LIKE '%"+questionLookup+"%'");
 			}
 						
 			while(answeredTable.next()){ 
-				Statement st2 = con.createStatement();
-				ResultSet from = st2.executeQuery("SELECT display_name FROM Users WHERE user_id = '"+answeredTable.getString("asked_by")+"'");
-				String fromUser = "(deleted user)";
-				if(from.next()){
-					fromUser = from.getString("display_name");
-				}
-				Statement st3 = con.createStatement();
-				ResultSet answeredByTable = st3.executeQuery("SELECT display_name FROM Users WHERE user_id = '" + answeredTable.getString("answeredBy")+"'");
-				String answeredBy = "(deleted user)";
-				if(answeredByTable.next()){
-					answeredBy = answeredByTable.getString("display_name");
-				}
+				String fromUser = answeredTable.getString("askedBy_name");
+				String answeredBy = answeredTable.getString("answeredBy_name");
 				
 			%>
 				<button class="accordion">
