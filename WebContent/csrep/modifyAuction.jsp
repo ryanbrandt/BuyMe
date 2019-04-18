@@ -22,7 +22,7 @@
 				    "a.end_time= '" +request.getParameter("endtime")+"' "+
 				"WHERE auction_id = '" +request.getParameter("auctionID")+"'";
 
-		System.out.println(query);
+		//System.out.println(query);
 		
 		st.executeUpdate(query);
 		con.close();
