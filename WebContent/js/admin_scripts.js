@@ -84,7 +84,7 @@ $('#registerEmail').change(function(){
 $('.generateButton').on('click', function(){
 	
 	$.ajax({
-		url: "generateSalesReport.jsp",
+		url: "admin/generateSalesReport.jsp",
 		method: "POST",
 		data: {'input1':$("#input1 option:selected").val(),
 				'input2Select':$("#input2Select option:selected").val(),

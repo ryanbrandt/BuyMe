@@ -35,20 +35,23 @@ $('#questionForm').on('submit', function(e){
 	})
 });
 
-$('#emailForm').on('submit', function(){
+$('#emailForm').on('submit', function(e){
+	e.preventDefault();
 	$.ajax({
 		url: "communication/sendEmail.jsp",
 		method: "POST",
 		data:{'isQuestion': "-1", 'recipient': $('#recipient').val(), 'subject': $('#subject').val(), 'email':$('#email').val()},
 		success: function(data){
 			alert('Your email has been sent');
+			window.location.reload();
 		}	
 	})
 });
 
 
 
-$('#recipient').change(function(){ 
+$('#recipient').change(function(e){ 
+	e.preventDefault();
 	$.ajax({
 		url: "validation/validateUser.jsp",
 		method: "POST",

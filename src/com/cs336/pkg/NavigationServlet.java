@@ -69,17 +69,12 @@ public class NavigationServlet extends HttpServlet {
 			break;
 		// to email page
 		case "email":
-			dispatcher = getServletContext().getRequestDispatcher("/email/email_inbox.jsp");
+			dispatcher = getServletContext().getRequestDispatcher("/communication/email_inbox.jsp");
 			dispatcher.forward(request, response);
 			break;
 		// to question page
-		case "question":
-			dispatcher = getServletContext().getRequestDispatcher("/email/csQuestionForm.jsp");
-			dispatcher.forward(request, response);
-			break;
-		//to alert page
-		case "alert":
-			dispatcher = getServletContext().getRequestDispatcher("/email/view_alerts.jsp");
+		case "qa":
+			dispatcher = getServletContext().getRequestDispatcher("/qa/qaPage.jsp");
 			dispatcher.forward(request, response);
 			break;
 		// to user settings
@@ -91,7 +86,15 @@ public class NavigationServlet extends HttpServlet {
 		case "alerts":
 			dispatcher = getServletContext().getRequestDispatcher("/user/view_alerts.jsp");
 			dispatcher.forward(request, response);
-			
+			break;
+		// to admin page
+		case "admin":
+			dispatcher = getServletContext().getRequestDispatcher("/admin/adminPage.jsp");
+			dispatcher.forward(request, response);
+		// to sales report
+		case "report":
+			dispatcher = getServletContext().getRequestDispatcher("/admin/salesReportPage.jsp");
+			dispatcher.forward(request, response);
 			
 			//TODO rest of cases as modules created
 

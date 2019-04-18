@@ -30,32 +30,32 @@
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item">
-        <a class="nav-link" href="NavigationServlet?location=auctions">Home</a>
+        <a class="nav-link" href="/BuyMe/NavigationServlet?location=auctions">Home</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="NavigationServlet?location=profile" id="profile">My Profile</a>
+        <a class="nav-link" href="/BuyMe/NavigationServlet?location=profile" id="profile">My Profile</a>
       </li>
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="auctionDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           Auctions
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="NavigationServlet?location=createAuction">Create an Auction</a>
-          <a class="dropdown-item" href="NavigationServlet?location=auctions">My Auctions</a>
+          <a class="dropdown-item" href="/BuyMe/NavigationServlet?location=createAuction">Create an Auction</a>
+          <a class="dropdown-item" href="/BuyMe/NavigationServlet?location=auctions">My Auctions</a>
      	</div>
       </li>
       <li class="nav-item">
-        <a class="nav-link" id="alerts" href="NavigationServlet?location=alerts">My Alerts<div class="text-danger" style="display:inline; s"><sup><%=unreads%></sup></div></a>
+        <a class="nav-link" id="alerts" href="/BuyMe/NavigationServlet?location=alerts">My Alerts<div class="text-danger" style="display:inline; s"><sup><%=unreads%></sup></div></a>
       </li>    
 	<li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="actionsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           Actions
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="email_inbox.jsp">Email</a>
-          <a class="dropdown-item" href="qaPage.jsp">Q&A</a>
+          <a class="dropdown-item" href="/BuyMe/NavigationServlet?location=email">Email</a>
+          <a class="dropdown-item" href="/BuyMe/NavigationServlet?location=qa">Q&A</a>
           <div class="dropdown-divider"></div>
-          	<a class="dropdown-item" href="NavigationServlet?location=settings">Settings</a>
+          	<a class="dropdown-item" href="/BuyMe/NavigationServlet?location=settings">Settings</a>
           	<a class="dropdown-item" href="#" id="logout" onclick=logOut()>Logout</a>  
      	</div>
      </li>
@@ -66,8 +66,8 @@
                Admin Center
              </a>
              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-               <a class="dropdown-item" href="adminPage.jsp">CS Account Management</a>
-               <a class="dropdown-item" href="salesReportPage.jsp">Generate Sales Report</a>
+               <a class="dropdown-item" href="/BuyMe/NavigationServlet?location=admin">CS Account Management</a>
+               <a class="dropdown-item" href="/BuyMe/NavigationServlet?location=report">Generate Sales Report</a>
           	</div>
            </li> 
      		
@@ -82,7 +82,7 @@
           </li> 
      <%} %>
       
- 
+  
       
     </ul>
     <form class="form-inline my-2 my-lg-0" id="searchForm">

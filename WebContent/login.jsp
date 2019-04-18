@@ -12,8 +12,8 @@
 <% 
 	/* if user logged in, redirect to profile  */
 	if(curSession.getAttribute("user") != null){
-		response.sendRedirect("profile.jsp");
-	}
+		response.sendRedirect("NavigationServlet?location=profile");
+	}  
 %> 
 <!-- Content -->
 <body> 

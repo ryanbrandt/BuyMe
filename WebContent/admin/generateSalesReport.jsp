@@ -100,9 +100,7 @@ try{
 	
 	
 	
-}catch(Exception e){
-	
-	System.out.println("Broken");
-	
+} catch(Exception e){
+	System.out.println(e);
 }
 %>

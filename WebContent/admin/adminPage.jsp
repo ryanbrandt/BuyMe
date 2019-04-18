@@ -10,7 +10,7 @@
 <title>Admin</title>
 </head>
 <!-- Navigation Bar -->
-<%@ include file='WEB-INF/navigation.jsp' %>
+<%@ include file='../WEB-INF/navigation.jsp' %>
 <body>
 <div class="container" style="margin-top: 2em !important;">
 	<div class="row">
@@ -41,10 +41,11 @@
 					con.close();
 				    
 				}catch(Exception e){
+					System.out.println(e);
 				}
 			    %>
 			  </table>
-			</p>
+			</p> 
 			<p>
 			<form id="registerForm">
 				<table>

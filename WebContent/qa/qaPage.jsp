@@ -12,7 +12,7 @@
 <link rel="stylesheet" href="css/tabdisplay.css"> 
 </head>   
 <!-- Navigation Bar -->  
-<%@ include file='WEB-INF/navigation.jsp' %>  
+<%@ include file='../WEB-INF/navigation.jsp' %>  
 <body>
 <div class = "container" style="margin-top: 2em !important;">	
 	<form id="searchForm">
@@ -30,7 +30,7 @@
 	<table style="margin-top: 0.5em; margin-bottom: 0.5em;">
 		<tr>
 			<td><button class="form-control" id="resetButton">Reset</button></td>
-			<td><button class="form-control" onclick="window.location.href='questionFormPage.jsp'">Post New Question</button></td>
+			<td><button class="form-control" onclick="window.location.href='qa/questionFormPage.jsp'">Post New Question</button></td>
 		</tr>
 	</table>
 	<div class="tab">

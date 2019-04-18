@@ -48,9 +48,9 @@
 	 		 		<th scope="col"><%=inboxTable.getString("alert_title")%></th>
 	    			<th scope="col"><%=inboxTable.getString("alert_message")%></th>
 	    			<th scope="col"><% if(inboxTable.getString("alert_read").equals("0")){ %><p class="text-danger">NEW!</p><%}%></th>
- 		 		</tr>
+ 		 		</tr> 
 				
-		<%	}
+		<%	} 
 		}catch(Exception e){
 			System.out.println("something broke: " + e);
 		}%></tbody></table></div>
