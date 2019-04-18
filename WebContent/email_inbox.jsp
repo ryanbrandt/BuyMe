@@ -56,7 +56,7 @@
 			Connection con = db.getConnection();	
 			Statement st = con.createStatement();
 		
-			ResultSet inboxTable = st.executeQuery("SELECT * FROM Emails e JOIN Users u ON u.user_id=e.sender_id WHERE receiver_id = '" + curSession.getAttribute("user") + "'");
+			ResultSet inboxTable = st.executeQuery("SELECT * FROM Emails e JOIN Users u ON u.user_id=e.sender_id WHERE receiver_id = '" + curSession.getAttribute("user") + "' AND deletedReceiver = '0'");
 			
 			while(inboxTable.next()){ 
 				String fromUser = inboxTable.getString("display_name");
@@ -77,6 +77,7 @@
 						</tr>
 						<tr>
 							<td><button class="btn btn-outline-success my-2 my-sm-0 replyButton" value="<%=fromUser%>,<%=inboxTable.getString("email_subject")%>,<%=inboxTable.getString("email_text")%>">Reply</button></td>
+							<td><button class="btn btn-outline-success my-2 my-sm-0 inboxDelete" value=<%=inboxTable.getString("email_id")%>>Delete</button></td>
 						</tr>
 					</table>
 				</div>
@@ -92,7 +93,7 @@
 			Connection con = db.getConnection();	
 			Statement st = con.createStatement();
 		
-			ResultSet sentTable = st.executeQuery("SELECT * FROM Emails e JOIN Users u ON e.receiver_id=u.user_id WHERE sender_id = '" + curSession.getAttribute("user") + "'");
+			ResultSet sentTable = st.executeQuery("SELECT * FROM Emails e JOIN Users u ON e.receiver_id=u.user_id WHERE sender_id = '" + curSession.getAttribute("user") + "' AND deletedSender = '0'");
 			
 			
 			while(sentTable.next()){ 
@@ -110,7 +111,10 @@
 					 </table>
 				</button>
 				<div class="panel">
-					<%=sentTable.getString("email_text")%>
+					<table>
+						<tr><td><%=sentTable.getString("email_text")%></td></tr>
+						<tr><td><button class="btn btn-outline-success my-2 my-sm-0 sentDelete" value=<%=sentTable.getString("email_id")%>>Delete</button></td></tr>
+					</table>
 				</div>
 		<%	}
 		}catch(Exception e){
@@ -121,13 +125,7 @@
 <script src="js/tabdisplay_scripts.js"></script>
 <script src="js/communication_scripts.js"></script>	
 <script> //For reply button
-$('.replyButton').on('click', function(){
-	openTab(event, 'compose');
-	var arr = $(this).val().split(",");
-	document.getElementById('recipient').value = arr[0];
-	document.getElementById('subject').value = "RE: " + arr[1];
-	document.getElementById('email').value = "\"" + arr[2] + "\"" + "\n--\n";
-});
+
 window.onload = function(){
 	openTab(event, 'inbox');
 }

@@ -32,24 +32,27 @@
 			Connection con = db.getConnection();	
 			Statement st = con.createStatement();
 		
-			ResultSet auctionTable = st.executeQuery("SELECT * FROM Auctions WHERE seller_is = '"+curSession.getAttribute("user")+"'");
+			ResultSet auctionTable = st.executeQuery("SELECT * FROM ((Auctions a LEFT OUTER JOIN Bids b ON a.highest_bid = b.bid_id) JOIN Clothing c ON a.item_is = c.product_id) WHERE a.seller_is = '"+curSession.getAttribute("user")+"'");
 
 			while(auctionTable.next()){ %>
 				<button class="accordion">
 					<table><tr> 
-					 	<td width=100 id=<%=auctionTable.getString("auction_id")%>>auction_id=<%=auctionTable.getString("auction_id")%></td>
+					 	<td width=100><b><%=auctionTable.getString("name")%></b></td>
 					</tr></table>
 				</button>
 				<div class="panel">
 					<table>
-						<tr><td>Start Time: </td></tr>
-						<tr><td>End Time: </td></tr>
-						<tr><td>Highest Bid: </td></tr>
-						<tr><td>Details..</td></tr>
-						
+						<tr><td>Name: <strong><%=auctionTable.getString("name")%></strong></td></tr>
+						<tr><td>Item Type: <%=auctionTable.getString("type")%></td></tr>
+						<tr><td>Condition: <%=auctionTable.getString("condition")%></td></tr>
+						<tr><td>Brand: <%=auctionTable.getString("brand")%></td></tr>
+						<tr><td>Material: <%=auctionTable.getString("material")%></td></tr>
+						<tr><td>Color: <%=auctionTable.getString("color")%></td></tr>
+						<tr><td>Start Time: <%=auctionTable.getString("start_time")%></td></tr>
+						<tr><td>End Time: <%=auctionTable.getString("end_time")%></td></tr>
+						<tr><td>Highest Bid: $<%=auctionTable.getString("amount")%></td></tr>
 					</table>
 				</div>
-				
 			<%}
 		con.close();
 		st.close();

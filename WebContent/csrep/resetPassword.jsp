@@ -12,14 +12,11 @@
 		Statement st = con.createStatement();
 		
 		HttpSession curSession = request.getSession(false); 
-		String user = (String) curSession.getAttribute("userLookup");
-		
-		//System.out.println("16" + user);
 		
 		st.executeUpdate(
 				"UPDATE Users " +
 				"SET password = 'password' " +
-				"WHERE email = '" + user + "' OR display_name =" + "'" +user+ "'"
+				"WHERE user_id ='"+ curSession.getAttribute("userLookupID")+"'"
 				
 		);
 

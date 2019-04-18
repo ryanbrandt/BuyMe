@@ -65,25 +65,67 @@ $('#recipient').change(function(){
 	})
 });
 
-var answer = document.getElementsByClassName("answerButton");
-var i;
-for( i=0; answer.length; i++){
-	answer[i].addEventListener("click", function(){
-		var arr = $(this).val().split(",");
+$('.questionDelete').on('click', function(){
+	$.ajax({
+		url: "communication/deleteQueries.jsp",
+		method: "POST",
+		data:{'deleteFrom': "3", 'id': $(this).val()},
 		
-		var answer = this.parentElement.parentElement.previousElementSibling.firstElementChild;
-		
-		$.ajax({
-			url: "communication/postAnswer.jsp",
-			method: "POST",
-			data:{'questionID': arr[0], 'answer': answer.innerText},
-			success: function(data){
-				location.reload();
-				alert('Answer has been posted');
-			}	
-		})
-		
-	});
-}
+		success: function(data){
+			alert("Question has been deleted.");
+			location.reload();
+		}	
+	})
+});
 
 
+$('.answerButton').on('click', function(){
+	alert("hello");
+	var answer = this.parentElement.parentElement.parentElement.parentElement
+							.previousElementSibling.firstElementChild.firstElementChild
+							.nextElementSibling.firstElementChild.firstElementChild;
+	$.ajax({
+		url: "communication/postAnswer.jsp",
+		method: "POST",
+		data:{'questionID': $(this).val(), 'answer': answer.innerText},
+		success: function(data){
+			location.reload();
+			alert('Answer has been posted');
+		}	
+	})
+});
+
+$('.inboxDelete').on('click', function(){
+	$.ajax({
+		url: "communication/deleteQueries.jsp",
+		method: "POST",
+		data:{'deleteFrom': "1", 'id': $(this).val()},
+		
+		success: function(data){
+			alert("Email has been deleted from inbox");
+			location.reload();
+		}	
+	})
+});
+
+$('.sentDelete').on('click', function(){
+	$.ajax({
+	url: "communication/deleteQueries.jsp",
+	method: "POST",
+	data:{'deleteFrom': "2", 'id': $(this).val()},
+	
+	success: function(data){
+		location.reload();
+		alert("Email has been deleted from sent box.")
+	}	
+	})
+});
+
+
+$('.replyButton').on('click', function(){
+	openTab(event, 'compose');
+	var arr = $(this).val().split(",");
+	document.getElementById('recipient').value = arr[0];
+	document.getElementById('subject').value = "RE: " + arr[1];
+	document.getElementById('email').value = "\"" + arr[2] + "\"" + "\n--\n";
+});

@@ -92,7 +92,7 @@ try{
 		
 		response.getWriter().write(tSold+"|"+tAmount+"|"+target);
 	}else{
-		response.getWriter().write("0|0|target");
+		response.getWriter().write("0|0|No Sales");
 	}
 	
 	st.close();
