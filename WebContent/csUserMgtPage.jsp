@@ -92,17 +92,41 @@
 						<table>
 							<tr>
 								<td><button value="<%=auctionTable.getString("auction_id")%>" class="form-control removeAuction">Remove Auction</button></td>
-							<td><button value="<%=auctionTable.getString("auction_id")%>" class="form-control modifyAuction">Modify Auction</button></td>
-								</tr>
-							<tr><td>Name: <strong><%=auctionTable.getString("name")%></strong></td></tr>
-							<tr><td>Item Type: <%=auctionTable.getString("type")%></td></tr>
-							<tr><td>Condition: <%=auctionTable.getString("condition")%></td></tr>
-							<tr><td>Brand: <%=auctionTable.getString("brand")%></td></tr>
-							<tr><td>Material: <%=auctionTable.getString("material")%></td></tr>
-							<tr><td>Color: <%=auctionTable.getString("color")%></td></tr>
-							<tr><td>Start Time: <%=auctionTable.getString("start_time")%></td></tr>
-							<tr><td>End Time: <%=auctionTable.getString("end_time")%></td></tr>
-							<tr><td>Highest Bid: $<%=auctionTable.getString("amount")%></td></tr>
+								<td><button value="<%=auctionTable.getString("auction_id")%>" class="form-control modifyAuction">Modify Auction</button></td>
+							</tr>
+							<tr><td>Name:</td><td><input class="name" type="text" value=<%=auctionTable.getString("name")%>></td></tr>
+							
+							<tr><td>Item Type:</td><td class="type"><%=auctionTable.getString("type")%></td></tr>
+							<!-- want to select the option  = auctionTable.getString("type") as default;
+							<tr>
+								<td>Item Type:</td>
+								<td><select>
+								  <option value="Shirts">Shirts</option>
+								  <option value="Pants">Pants</option>
+								  <option value="Jackets">Jackets</option>
+								</select></td>
+							</tr>
+							 -->
+							 
+							<tr><td>Condition:</td><td class="condition"><%=auctionTable.getString("condition")%></td></tr>
+							<!-- want to select the option  = auctionTable.getString("condition") as default;
+							<tr>
+								<td>Item Type:</td>
+								<td><select>
+									<option value="new">new</option>
+					  				<option value="used-like-new">used-like-new</option>
+					  				<option value="used-good">used-good</option>
+					  				<option value="used-acceptable">used-acceptable</option>
+								</select></td>
+							</tr>
+							 -->
+							 
+							<tr><td>Brand:</td><td><input class="brand" type="text" value=<%=auctionTable.getString("brand")%>></td></tr>
+							<tr><td>Material:</td><td><input class="material" type="text" value=<%=auctionTable.getString("material")%>></td></tr>
+							<tr><td>Color:</td><td><input class="color" type="text" value=<%=auctionTable.getString("color")%>></td></tr>
+							<tr><td>Start Time:</td><td><%=auctionTable.getString("start_time")%></td></tr>
+							<tr><td>End Time:</td><td><input class="endtime" type="date" value=<%=auctionTable.getString("end_time")%>></td></tr>
+							<tr><td>Highest Bid:</td><td>$<%=auctionTable.getString("amount")%></td></tr>
 						</table>
 					</div>
 					

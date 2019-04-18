@@ -58,3 +58,29 @@ $('.removeAuction').on('click', function(){
 		}	
 	})
 });
+
+$('.modifyAuction').on('click', function(){
+	var table = $(this).closest('table');
+	var name = table.find('.name').val();
+	//var type = table.find('.type').val();
+	var type = table.find('.type').text();
+	//var condition = table.find('.condition').val();
+	var condition = table.find('.condition').text();
+	var brand = table.find('.brand').val();
+	var material = table.find('.material').val();
+	var color = table.find('.color').val();
+	var endtime = table.find('.endtime').val();
+	
+	$.ajax({
+		url: "csrep/modifyAuction.jsp",
+		method: "POST",
+		data:{'auctionID': $(this).val(), 'name': name, 'type': type, 'condition': condition, 'brand': brand, 'material': material, 'color': color, 'endtime': endtime },
+		//, 'name': name, 'type': type, 'condition': condition, 'brand': brand, 'material': material, 'color': color, 'endtime': endtime
+		success: function(data){
+			location.reload();
+			alert('Auction has been updated');
+		}	
+	})
+	
+	
+});

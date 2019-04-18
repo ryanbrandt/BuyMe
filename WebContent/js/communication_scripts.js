@@ -80,19 +80,19 @@ $('.questionDelete').on('click', function(){
 
 
 $('.answerButton').on('click', function(){
-	alert("hello");
-	var answer = this.parentElement.parentElement.parentElement.parentElement
-							.previousElementSibling.firstElementChild.firstElementChild
-							.nextElementSibling.firstElementChild.firstElementChild;
+
+	var answer = $(this).closest('.panel').find('.answerText');
+
 	$.ajax({
 		url: "communication/postAnswer.jsp",
 		method: "POST",
-		data:{'questionID': $(this).val(), 'answer': answer.innerText},
+		data:{'questionID': $(this).val(), 'answer': answer.text()},
 		success: function(data){
 			location.reload();
 			alert('Answer has been posted');
 		}	
 	})
+	
 });
 
 $('.inboxDelete').on('click', function(){

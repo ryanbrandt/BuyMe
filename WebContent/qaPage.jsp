@@ -73,7 +73,7 @@
 						
 					<%if(curSession.getAttribute("userType").equals("cs_rep")){%>
 						<tr><td>
-							<textarea rows="4" cols="60" id="answerText"></textarea><br>
+							<textarea class="answerText" rows="4" cols="60" id="answerText"></textarea><br>
 						</td></tr>
 					</table>
 					<table>

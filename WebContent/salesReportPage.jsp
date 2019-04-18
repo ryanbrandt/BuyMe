@@ -46,10 +46,10 @@
 					<tr>
 						<td id="input3_text1">Condition:<td>
 						<td><select id="input3_1">
-							<option value="new">Small</option>
-			  				<option value="used-like-new">Medium</option>
-			  				<option value="used-good">Large</option>
-			  				<option value="used-acceptable">Large</option>
+							<option value="new">new</option>
+			  				<option value="used-like-new">used-like-new</option>
+			  				<option value="used-good">used-good</option>
+			  				<option value="used-acceptable">used-acceptable</option>
 						</select></td>
 					</tr>
 					<tr>
