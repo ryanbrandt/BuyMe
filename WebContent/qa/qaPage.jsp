@@ -75,9 +75,12 @@
 						<tr><td>
 							<textarea rows="4" cols="60" id="answerText"></textarea><br>
 						</td></tr>
-						<tr><td>
-							<button style="width: 25%;"class="answerButton form-control" id="answerButton" value="<%=questionTable.getString("question_id")%>">Answer</button>
-						</td></tr>
+					</table>
+					<table>
+						<tr>
+							<td><button class="answerButton form-control" value=<%=questionTable.getString("question_id")%>>Answer</button></td>
+							<td><button class="questionDelete form-control" value=<%=questionTable.getString("question_id")%>>Delete</button></td>
+						</tr>
 					<%} %>
 					</table>
 				</div>

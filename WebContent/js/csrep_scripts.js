@@ -1,8 +1,8 @@
 $('#resetPassword').on('click', function(){
 	$.ajax({
-		url: "resetPassword.jsp",
+		url: "csrep/resetPassword.jsp",
 		method: "POST",
-		data: {'user': $('#userLookup').val()},
+		data: {},
 		
 		success: function(data){
 			alert('Password reset to \'password\'');
