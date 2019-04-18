@@ -95,6 +95,10 @@ public class NavigationServlet extends HttpServlet {
 		case "report":
 			dispatcher = getServletContext().getRequestDispatcher("/admin/salesReportPage.jsp");
 			dispatcher.forward(request, response);
+		// to cs rep page
+		case "cs":
+			dispatcher = getServletContext().getRequestDispatcher("/csrep/csUserMgtPage.jsp");
+			dispatcher.forward(request, response);
 			
 			//TODO rest of cases as modules created
 

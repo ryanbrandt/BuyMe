@@ -77,7 +77,7 @@
                Customer Support Center
              </a>
              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-               <a class="dropdown-item" href="csUserMgtPage.jsp">User Account Management</a>
+               <a class="dropdown-item" href="/BuyMe/NavigationServlet?location=cs">User Account Management</a>
           	</div>
           </li> 
      <%} %>
