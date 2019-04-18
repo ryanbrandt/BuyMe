@@ -161,14 +161,11 @@
 											"' AND for_auction = '" + bidItemTable.getString("for_auction") + "' AND is_active = 1 ORDER BY timestamp DESC;" );
 						%>
 						<table>
-						<col width="33%">
-						<col width="33%">
-						<col width="33%">
 						<%while(bidTable.next()){ %>
 								<tr style="margin-bottom: 0.5em;">
-									<td>Amount: <%=bidTable.getString("amount")%></td>
-									<td>Timestamp: <%=bidTable.getString("timestamp")%></td>
-									<td align="center"><button value="<%=bidTable.getString("bid_id") + "," + bidTable.getString("auction_id")%>" class="form-control removebid" style="width: 50%;">Remove Bid</button>
+									<td width="500"><strong>Timestamp:</strong> <%=bidTable.getString("timestamp")%></td>
+									<td width="200"><strong>Amount:</strong> $<%=bidTable.getString("amount")%></td>
+									<td width="400"><button value="<%=bidTable.getString("bid_id") + "," + bidTable.getString("auction_id")%>" class="form-control removebid" style="width: 50%;">Remove Bid</button>
 								</tr>
 						<% } %>	
 						</table>
