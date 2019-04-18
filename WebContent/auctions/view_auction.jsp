@@ -130,7 +130,7 @@
 								<td><strong id="maxBid">$<%=String.format("%.2f", lead_bid)%><%= !bid_leader.isEmpty()? " From " + bid_leader : " (Initial Price)"%></strong><p><a href="#" style="text-decoration: none;" id="openHistory">Bid History</a></p></td>
 							</tr> 
 							<tr> 
-								<td><h3>Ends On</h3><hr></td>
+								<td><h3><%=auctionData.get("is_active").contentEquals("1")? "Ends On" : "Aucution Ended on" %></h3><hr></td>
 							</tr>
 							<tr class="subTable">
 								<td><strong><%=auctionData.get("end_time")%></strong></td>
@@ -488,9 +488,13 @@ window.onload = function(){
 	/* if seller = user, make edit button instead of bid */
 	var user = <%=request.getSession().getAttribute("user")%>;
 	var seller = <%= auctionData.get("seller_is")%>;
+	var isActive = <%= auctionData.get("is_active")%>;
 	if(user == seller){
 		document.getElementById("bid").style.display = "none";
 		document.getElementById("edit").style.display = "block";
+	}
+	if(isActive == "0"){
+		document.getElementById('bid').disabled = true;
 	}
 	/* show attributes based on type */
 	var type = "<%= auctionData.get("type") %>";
