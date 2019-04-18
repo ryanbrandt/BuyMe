@@ -11,7 +11,7 @@
 <link rel="stylesheet" href="css/tabdisplay.css"> 
 </head>   
 <!-- Navigation Bar -->  
-<%@ include file='WEB-INF/navigation.jsp' %>  
+<%@ include file='../WEB-INF/navigation.jsp' %>  
 <!-- Content -->
 <body>
 <div class="container" style="margin-top: 2em !important;">	

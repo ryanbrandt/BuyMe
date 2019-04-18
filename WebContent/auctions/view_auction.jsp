@@ -68,7 +68,7 @@
 				lead_bid = (double) Math.round(names.getDouble(1)*100)/100;
 				names = st.executeQuery("SELECT display_name, user_id FROM BuyMe.Users WHERE user_id = " + names.getString(2));
 				if(names.next()){
-					bid_leader = names.getInt(2) == (int) request.getSession().getAttribute("user") ? "You" : names.getString(1);
+					bid_leader = names.getInt(2) == (int)request.getSession().getAttribute("user") ? "You" : names.getString(1);
 				}
 			}
 		} else {
