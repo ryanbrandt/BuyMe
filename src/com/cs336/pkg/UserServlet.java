@@ -55,6 +55,10 @@ public class UserServlet extends HttpServlet {
 			case "u":
 				st.executeUpdate("UPDATE Users SET `password` = '" + request.getParameter("pass") + "' WHERE `user_id` = " + request.getParameter("user_id"));
 				break;
+			// delete user alerts
+			case "a":
+				st.executeUpdate("DELETE FROM Alerts WHERE alert_for = " + request.getParameter("userId"));
+				break;
 			
 			} 
 			

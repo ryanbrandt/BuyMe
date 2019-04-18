@@ -68,7 +68,7 @@ $('#loginForm').on('submit', function(e){
 			if($.trim(data)){
 				alert('Hmm, those credentials didnt match any accounts. Try again?');
 			} else {
-				window.location.href = 'profile.jsp';	
+				window.location.href = 'NavigationServlet?location=profile';	
 			}
 		}		
 	})	

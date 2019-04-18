@@ -13,9 +13,8 @@
 <%@ include file='../WEB-INF/navigation.jsp' %>
 <!-- Content -->
 <body>
-	<div class="container" id="alertData" align="center" style="margin-top: 2em !important;">
-		Hello World, user_id = <%= curSession.getAttribute("user") %> is logged in!
-		userType = <%= curSession.getAttribute("userType") %>
+	<div class="container" align="center" style="margin-top: 2em !important;">
+		<strong id="alertData"></strong><button id="clearAlerts" class="btn btn-outline-danger my-2 my-sm-0" style="float: right;">Clear</button>
 	</div>
 	<br/>
 	<div class="container" align="center" id="additionalButtons">
@@ -62,6 +61,20 @@
 		var alertData = 'Hello! You have <%if (unreads.equals("")){%> 0 new alerts<%} else if (unreads.equals("1")){ %><%=unreads%> new alert<%}else{%> new alerts<%}%>.';
 		document.getElementById("alertData").innerHTML = alertData;
 	}
+	// clear (delete) alerts
+	$('#clearAlerts').on('click', function(){
+		if(confirm('Are you sure?')){
+			$.ajax({
+				url: "UserServlet?action=a",
+				method: "POST",
+				data: {"userId": <%=request.getSession().getAttribute("user")%>},
+				
+				success: function(){
+					window.location.reload();
+				}
+			})
+		}
+	});
 </script>		
 </body>
 </html>

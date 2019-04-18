@@ -56,15 +56,18 @@
 					<tr><td>no users found</td></tr>
 					
 			  <%}
+				csTable.close();
 				con.close();
 				st.close();
-			} catch(Exception e){}%>
+			} catch(Exception e){
+				System.out.println(e);
+			}%>
 		</table>
 		</div>
 	</div>
 </div>
 <div>
-<%if( curSession.getAttribute("userLookupID") != null ){%>
+<%if(curSession.getAttribute("userLookupID") != null ){%>
 	<p>
 	<button style="margin-left: 5px;"class="btn btn-danger" id="resetPassword">Reset Password</button>
 	</p>
@@ -80,8 +83,7 @@
 			Connection con = db.getConnection();	
 			Statement st = con.createStatement();
 		
-			ResultSet auctionTable = st.executeQuery("SELECT a.auction_id, a.start_time, a.end_time, b.amount, c.name FROM ((Auctions AS a JOIN Bids AS b ON a.highest_bid = b.bid_id) JOIN Clothing AS c ON a.item_is = c.product_id) WHERE a.seller_is = '"+curSession.getAttribute("userLookupID")+"'");
-
+			ResultSet auctionTable = st.executeQuery("SELECT a.auction_id, a.start_time, a.end_time, c.name FROM (Auctions AS a JOIN Clothing AS c ON a.item_is = c.product_id) WHERE a.seller_is = " + curSession.getAttribute("userLookupID") + " AND a.is_active = 1;");
 			while(auctionTable.next()){ %>
 				<button class="accordion">
 					<table><tr> 
@@ -93,12 +95,12 @@
 						<tr><td><button value="<%=auctionTable.getString("auction_id")%>" class="form-control removeAuction">Remove Auction</button></td></tr>
 						<tr><td>Start Time: <%=auctionTable.getString("start_time")%></td></tr>
 						<tr><td>End Time: <%=auctionTable.getString("end_time")%></td></tr>
-						<tr><td>Highest Bid: $<%=auctionTable.getString("amount")%></td></tr>
 						<tr><td>Name: <strong><%=auctionTable.getString("name")%></strong></td></tr>
 					</table>
 				</div>
 				
 			<%}
+		auctionTable.close();
 		con.close();
 		st.close();
 		}catch(Exception e){
@@ -143,9 +145,11 @@
 				</div>
 				
 			<% }
+		bidItemTable.close();
 		con.close();
 		st.close();
 		} catch(Exception e){
+			System.out.println(e);
 		} %>
 	</div>
 <%}%>
