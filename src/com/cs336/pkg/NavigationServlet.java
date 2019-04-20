@@ -77,6 +77,9 @@ public class NavigationServlet extends HttpServlet {
 			dispatcher = getServletContext().getRequestDispatcher("/email/view_alerts.jsp");
 			dispatcher.forward(request, response);
 			break;
+		case "advSearch":
+			//TODO: set adv settings
+			break;
 			
 			//TODO rest of cases as modules created
 
