@@ -14,7 +14,6 @@
 				"UPDATE Auctions a JOIN Clothing c ON a.item_is=c.product_id "+
 				"SET "+
 					"c.name= '" +request.getParameter("name")+"', "+
-				    "c.type= '" +request.getParameter("type")+"', "+
 				    "c.condition= '" +request.getParameter("condition")+"', "+
 				    "c.brand= '" +request.getParameter("brand")+"', "+
 				    "c.material= '" +request.getParameter("material")+"', "+

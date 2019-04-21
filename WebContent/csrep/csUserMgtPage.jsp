@@ -96,30 +96,19 @@
 							</tr>
 							<tr><td>Name:</td><td><input class="name" type="text" value=<%=auctionTable.getString("name")%>></td></tr>
 							
+							
+							<!-- probably shouldn't allow modifications on type bc would have to change item => different attributes -->
 							<tr><td>Item Type:</td><td class="type"><%=auctionTable.getString("type")%></td></tr>
-							<!-- want to select the option  = auctionTable.getString("type") as default;
+							
 							<tr>
-								<td>Item Type:</td>
-								<td><select>
-								  <option value="Shirts">Shirts</option>
-								  <option value="Pants">Pants</option>
-								  <option value="Jackets">Jackets</option>
-								</select></td>
-							</tr>
-							 -->
-							 
-							<tr><td>Condition:</td><td class="condition"><%=auctionTable.getString("condition")%></td></tr>
-							<!-- want to select the option  = auctionTable.getString("condition") as default;
-							<tr>
-								<td>Item Type:</td>
-								<td><select>
+								<td>Condition:</td>
+								<td><select class="condition" id=<%=auctionTable.getString("condition")%>>
 									<option value="new">new</option>
 					  				<option value="used-like-new">used-like-new</option>
 					  				<option value="used-good">used-good</option>
 					  				<option value="used-acceptable">used-acceptable</option>
 								</select></td>
 							</tr>
-							 -->
 							 
 							<tr><td>Brand:</td><td><input class="brand" type="text" value=<%=auctionTable.getString("brand")%>></td></tr>
 							<tr><td>Material:</td><td><input class="material" type="text" value=<%=auctionTable.getString("material")%>></td></tr>
@@ -133,6 +122,11 @@
 				<%}
 			con.close();
 			st.close();
+			
+			
+			
+			
+			
 			}catch(Exception e){
 				System.out.println(e);
 			}%>
@@ -182,5 +176,8 @@
 </div>
 <script src="js/csrep_scripts.js"></script>
 <script src="js/tabdisplay_scripts.js"></script>
+
+
+
 </body>
 </html>

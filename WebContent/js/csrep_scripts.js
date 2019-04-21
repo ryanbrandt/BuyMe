@@ -1,3 +1,5 @@
+
+
 $('#resetPassword').on('click', function(){
 	$.ajax({
 		url: "csrep/resetPassword.jsp",
@@ -31,6 +33,8 @@ $('#resetButton').on('click', function(){
 		}
 	})
 });
+
+
 $('.removebid').on('click', function(){
 	var arr = $(this).val().split(',');
 	$.ajax({
@@ -65,7 +69,7 @@ $('.modifyAuction').on('click', function(){
 	//var type = table.find('.type').val();
 	var type = table.find('.type').text();
 	//var condition = table.find('.condition').val();
-	var condition = table.find('.condition').text();
+	var condition = table.find('.condition').val();
 	var brand = table.find('.brand').val();
 	var material = table.find('.material').val();
 	var color = table.find('.color').val();
@@ -74,13 +78,29 @@ $('.modifyAuction').on('click', function(){
 	$.ajax({
 		url: "csrep/modifyAuction.jsp",
 		method: "POST",
-		data:{'auctionID': $(this).val(), 'name': name, 'type': type, 'condition': condition, 'brand': brand, 'material': material, 'color': color, 'endtime': endtime },
+		data:{'auctionID': $(this).val(), 'name': name, 'condition': condition, 'brand': brand, 'material': material, 'color': color, 'endtime': endtime },
 		//, 'name': name, 'type': type, 'condition': condition, 'brand': brand, 'material': material, 'color': color, 'endtime': endtime
 		success: function(data){
 			location.reload();
 			alert('Auction has been updated');
 		}	
 	})
-	
-	
 });
+
+
+window.onload = function(){
+	var conditionSelectArr = document.getElementsByClassName('condition');
+	for(var k = 0; k < conditionSelectArr.length; k++) {
+
+		var conditionSelect = conditionSelectArr[k].getAttribute('id');
+		//alert(conditionSelect);
+		
+		for(var i, j = 0; i = conditionSelectArr[k].options[j]; j++) {
+		    if(i.value == conditionSelect ) {
+		        conditionSelectArr[k].selectedIndex = j;
+		        break;
+		    }
+		}
+		
+	}
+}
