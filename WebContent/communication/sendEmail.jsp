@@ -7,16 +7,16 @@
 	try{
 		
 		ApplicationDB db = new ApplicationDB();	
-		Connection con = db.getConnection();	
+		Connection con = db.getConnection();	            
 		
 		Statement st = con.createStatement();
 		ResultSet q;
 		
 		HttpSession curSession = request.getSession(false); 
-		
+		   
 		String recipient = request.getParameter("recipient");
 		String receiverid="";
-		
+		       
 		q = st.executeQuery("SELECT user_id FROM Users WHERE email = '"+recipient+"' OR display_name= '"+recipient+"'");
 		if(q.next()){
 			receiverid = q.getString("user_id");

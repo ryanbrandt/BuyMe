@@ -52,8 +52,7 @@
 		names = st.executeQuery("DESCRIBE BuyMe." + auctionData.get("type"));
 		String q = "SELECT * FROM BuyMe." + 
 					auctionData.get("type") + " WHERE "; 
-		q += auctionData.get("type").contentEquals("Pants") ? auctionData.get("type").toLowerCase() + "_id = " + auctionData.get("item_is") : 
-					auctionData.get("type").toLowerCase().substring(0, auctionData.get("type").length()-1) + "_id = " + auctionData.get("item_is");
+		q += auctionData.get("type").toLowerCase() + "_id = " + auctionData.get("item_is");
 		vals = stTwo.executeQuery(q);
 		dbToMap(names, vals, auctionData, auctionData.get("type").toLowerCase() + "_id");
 		// get bid data; amount should be unique, so is key and timestamp is value; arraylist has corresponding display_names
@@ -69,7 +68,7 @@
 				lead_bid = (double) Math.round(names.getDouble(1)*100)/100;
 				names = st.executeQuery("SELECT display_name, user_id FROM BuyMe.Users WHERE user_id = " + names.getString(2));
 				if(names.next()){
-					bid_leader = names.getInt(2) == (int) request.getSession().getAttribute("user") ? "You" : names.getString(1);
+					bid_leader = names.getInt(2) == (int)request.getSession().getAttribute("user") ? "You" : names.getString(1);
 				}
 			}
 		} else {
@@ -131,7 +130,7 @@
 								<td><strong id="maxBid">$<%=String.format("%.2f", lead_bid)%><%= !bid_leader.isEmpty()? " From " + bid_leader : " (Initial Price)"%></strong><p><a href="#" style="text-decoration: none;" id="openHistory">Bid History</a></p></td>
 							</tr> 
 							<tr> 
-								<td><h3>Ends On</h3><hr></td>
+								<td><h3><%=auctionData.get("is_active").contentEquals("1")? "Ends On" : "Aucution Ended on" %></h3><hr></td>
 							</tr>
 							<tr class="subTable">
 								<td><strong><%=auctionData.get("end_time")%></strong></td>
@@ -489,9 +488,13 @@ window.onload = function(){
 	/* if seller = user, make edit button instead of bid */
 	var user = <%=request.getSession().getAttribute("user")%>;
 	var seller = <%= auctionData.get("seller_is")%>;
+	var isActive = <%= auctionData.get("is_active")%>;
 	if(user == seller){
 		document.getElementById("bid").style.display = "none";
 		document.getElementById("edit").style.display = "block";
+	}
+	if(isActive == "0"){
+		document.getElementById('bid').disabled = true;
 	}
 	/* show attributes based on type */
 	var type = "<%= auctionData.get("type") %>";

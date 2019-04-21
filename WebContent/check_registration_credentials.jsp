@@ -9,7 +9,7 @@
 		// establish DB connection
 		ApplicationDB db = new ApplicationDB();	
 		Connection con = db.getConnection();	
-		
+		 
 		Statement st = con.createStatement();
 		
 		// get parameters 

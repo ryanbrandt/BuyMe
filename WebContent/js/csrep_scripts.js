@@ -1,8 +1,10 @@
+
+
 $('#resetPassword').on('click', function(){
 	$.ajax({
-		url: "resetPassword.jsp",
+		url: "csrep/resetPassword.jsp",
 		method: "POST",
-		data: {'user': $('#userLookup').val()},
+		data: {},
 		
 		success: function(data){
 			alert('Password reset to \'password\'');
@@ -32,35 +34,73 @@ $('#resetButton').on('click', function(){
 	})
 });
 
-var removeBidButton = document.getElementsByClassName("removebid");
-for( i=0; removeBidButton.length; i++){
-	removeBidButton[i].addEventListener("click", function(){
-		var bidrow = this.parentElement.parentElement;
-		$.ajax({
-			url: "csrep/removeBid.jsp",
-			method: "POST",
-			data:{'bidID': bidrow.id},
-			success: function(data){
-				location.reload();
-				alert('Bid has been removed');
-			}	
-		})
-	});
-}
+
+$('.removebid').on('click', function(){
+	var arr = $(this).val().split(',');
+	$.ajax({
+		url: "csrep/removeBid.jsp",
+		method: "POST",
+		data:{'bidId': arr[0], 'auctionId': arr[1]},
+		
+		success: function(data){
+			location.reload();
+			alert('Bid has been removed');
+		}	
+	})
+});
+
+$('.removeAuction').on('click', function(){
+	var auctionId = $(this).val();
+	console.log(auctionId);
+	$.ajax({
+		url: "csrep/removeAuction.jsp",
+		method: "POST",
+		data:{'auctionID': auctionId},
+		success: function(data){
+			location.reload();
+			alert('Auction has been removed');
+		}	
+	})
+});
+
+$('.modifyAuction').on('click', function(){
+	var table = $(this).closest('table');
+	var name = table.find('.name').val();
+	//var type = table.find('.type').val();
+	var type = table.find('.type').text();
+	//var condition = table.find('.condition').val();
+	var condition = table.find('.condition').val();
+	var brand = table.find('.brand').val();
+	var material = table.find('.material').val();
+	var color = table.find('.color').val();
+	var endtime = table.find('.endtime').val();
+	
+	$.ajax({
+		url: "csrep/modifyAuction.jsp",
+		method: "POST",
+		data:{'auctionID': $(this).val(), 'name': name, 'condition': condition, 'brand': brand, 'material': material, 'color': color, 'endtime': endtime },
+		//, 'name': name, 'type': type, 'condition': condition, 'brand': brand, 'material': material, 'color': color, 'endtime': endtime
+		success: function(data){
+			location.reload();
+			alert('Auction has been updated');
+		}	
+	})
+});
 
 
-var removeAuctionButton = document.getElementsByClassName("removeAuction");
-for( i=0; removeAuctionButton.length; i++){
-	removeAuctionButton[i].addEventListener("click", function(){
-		var auctionrow = this.parentElement.parentElement;
-		$.ajax({
-			url: "csrep/removeAuction.jsp",
-			method: "POST",
-			data:{'auctionID': auctionrow.id},
-			success: function(data){
-				location.reload();
-				alert('Auction has been removed');
-			}	
-		})
-	});
+window.onload = function(){
+	var conditionSelectArr = document.getElementsByClassName('condition');
+	for(var k = 0; k < conditionSelectArr.length; k++) {
+
+		var conditionSelect = conditionSelectArr[k].getAttribute('id');
+		//alert(conditionSelect);
+		
+		for(var i, j = 0; i = conditionSelectArr[k].options[j]; j++) {
+		    if(i.value == conditionSelect ) {
+		        conditionSelectArr[k].selectedIndex = j;
+		        break;
+		    }
+		}
+		
+	}
 }

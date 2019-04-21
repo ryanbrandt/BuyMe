@@ -48,6 +48,11 @@ public class NavigationServlet extends HttpServlet {
 			dispatcher = getServletContext().getRequestDispatcher("/auctions/create_auction.jsp");
 			dispatcher.forward(request, response);
 			break;
+		// to profile
+		case "profile":
+			dispatcher = getServletContext().getRequestDispatcher("/user/profile.jsp");
+			dispatcher.forward(request, response);
+			break;
 		// to view an auction page
 		case "view":
 			// set auction id
@@ -66,19 +71,36 @@ public class NavigationServlet extends HttpServlet {
 			break;
 		// to email page
 		case "email":
-			dispatcher = getServletContext().getRequestDispatcher("/email/email_inbox.jsp");
+			dispatcher = getServletContext().getRequestDispatcher("/communication/email_inbox.jsp");
 			dispatcher.forward(request, response);
 			break;
-		// to question pagerequest.getSession().getAttributerequest.getSession().getAttribute
-		case "question":
-			dispatcher = getServletContext().getRequestDispatcher("/email/csQuestionForm.jsp");
+		// to question page
+		case "qa":
+			dispatcher = getServletContext().getRequestDispatcher("/qa/qaPage.jsp");
 			dispatcher.forward(request, response);
 			break;
-		//to alert page
-		case "alert":
-			dispatcher = getServletContext().getRequestDispatcher("/email/view_alerts.jsp");
+		// to user settings
+		case "settings":
+			dispatcher = getServletContext().getRequestDispatcher("/user/settings.jsp");
 			dispatcher.forward(request, response);
 			break;
+		// to user alerts
+		case "alerts":
+			dispatcher = getServletContext().getRequestDispatcher("/user/view_alerts.jsp");
+			dispatcher.forward(request, response);
+			break;
+		// to admin page
+		case "admin":
+			dispatcher = getServletContext().getRequestDispatcher("/admin/adminPage.jsp");
+			dispatcher.forward(request, response);
+		// to sales report
+		case "report":
+			dispatcher = getServletContext().getRequestDispatcher("/admin/salesReportPage.jsp");
+			dispatcher.forward(request, response);
+		// to cs rep page
+		case "cs":
+			dispatcher = getServletContext().getRequestDispatcher("/csrep/csUserMgtPage.jsp");
+			dispatcher.forward(request, response);
 		case "advSearch":
 			request.getSession().setAttribute("search_query", request.getParameter("q"));
 			request.getSession().setAttribute("adv", true);
@@ -118,7 +140,6 @@ public class NavigationServlet extends HttpServlet {
 			dispatcher.forward(request, response);
 			//TODO: set adv settings
 			break;
-			
 			//TODO rest of cases as modules created
 
 		}

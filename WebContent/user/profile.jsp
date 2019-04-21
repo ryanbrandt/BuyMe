@@ -12,7 +12,7 @@
 <title>My Profile</title>
 </head>
 <!-- Navigation Bar -->
-<%@ include file='WEB-INF/navigation.jsp' %>
+<%@ include file='../WEB-INF/navigation.jsp' %>
 <%
 	/* TODO overhaul this page to a 'user' folder and use a servlet to redirect */
 	if(curSession.getAttribute("user") == null){
@@ -32,24 +32,27 @@
 			Connection con = db.getConnection();	
 			Statement st = con.createStatement();
 		
-			ResultSet auctionTable = st.executeQuery("SELECT * FROM Auctions WHERE seller_is = '"+curSession.getAttribute("user")+"'");
+			ResultSet auctionTable = st.executeQuery("SELECT * FROM ((Auctions a LEFT OUTER JOIN Bids b ON a.highest_bid = b.bid_id) JOIN Clothing c ON a.item_is = c.product_id) WHERE a.seller_is = '"+curSession.getAttribute("user")+"'");
 
 			while(auctionTable.next()){ %>
 				<button class="accordion">
 					<table><tr> 
-					 	<td width=100 id=<%=auctionTable.getString("auction_id")%>>auction_id=<%=auctionTable.getString("auction_id")%></td>
+					 	<td width=100><strong><%=auctionTable.getString("name")%></strong></td>
 					</tr></table>
 				</button>
 				<div class="panel">
 					<table>
-						<tr><td>Start Time: </td></tr>
-						<tr><td>End Time: </td></tr>
-						<tr><td>Highest Bid: </td></tr>
-						<tr><td>Details..</td></tr>
-						
+						<tr><td>Name: <strong><%=auctionTable.getString("name")%></strong></td></tr>
+						<tr><td>Item Type: <%=auctionTable.getString("type")%></td></tr>
+						<tr><td>Condition: <%=auctionTable.getString("condition")%></td></tr>
+						<tr><td>Brand: <%=auctionTable.getString("brand")%></td></tr>
+						<tr><td>Material: <%=auctionTable.getString("material")%></td></tr>
+						<tr><td>Color: <%=auctionTable.getString("color")%></td></tr>
+						<tr><td>Start Time: <%=auctionTable.getString("start_time")%></td></tr>
+						<tr><td>End Time: <%=auctionTable.getString("end_time")%></td></tr>
+						<tr><td>Highest Bid: $<%=auctionTable.getString("amount")%></td></tr>
 					</table>
 				</div>
-				
 			<%}
 		con.close();
 		st.close();
@@ -63,12 +66,13 @@
 			Connection con = db.getConnection();	
 			Statement st = con.createStatement();
 		
-			ResultSet bidItemTable = st.executeQuery("SELECT DISTINCT for_auction FROM Bids WHERE from_user = '"+curSession.getAttribute("user")+"'");
+			ResultSet bidItemTable = st.executeQuery("SELECT DISTINCT for_auction, name FROM Auctions a JOIN Bids b ON b.for_auction=a.auction_id JOIN Clothing c ON c.product_id=a.item_is WHERE from_user = '"+curSession.getAttribute("user")+"'");
 
 			while(bidItemTable.next()){ %>
-				<button class="accordion">
+				<button class="accordion" id=<%=bidItemTable.getString("for_auction")%>>
 					<table><tr> 
-					 	<td id=<%=bidItemTable.getString("for_auction")%>>For AuctionID=<%=bidItemTable.getString("for_auction")%> </td>
+					 	<td width="500"><strong><%=bidItemTable.getString("name")%></strong></td>
+					 	<td>(auction#<%=bidItemTable.getString("for_auction")%>)</td>
 					</tr></table>
 				</button>
 				<div class="panel">
@@ -77,12 +81,12 @@
 					Statement st2 = con.createStatement();
 					ResultSet bidTable = st.executeQuery("SELECT * FROM Bids " +
 										"WHERE from_user = '" +curSession.getAttribute("user")+ 
-										"' AND for_auction = '" + bidItemTable.getString("for_auction") + "'" );
+										"' AND for_auction = '" + bidItemTable.getString("for_auction") + "' ORDER BY timestamp DESC" );
 					while(bidTable.next()){ %>
 						<table>
 							<tr id=<%=bidTable.getString("bid_id")%>>
-								<td>amount: <%=bidTable.getString("amount")%></td>
-								<td>timestamp: <%=bidTable.getString("timestamp")%></td>
+								<td width="300"><strong>Time</strong>: <%=bidTable.getString("timestamp")%></td>
+								<td width="200"><strong>Amount</strong>: $<%=bidTable.getString("amount")%></td>
 							</tr>
 						</table>
 					<% }%>	
@@ -94,8 +98,7 @@
 		}catch(Exception e){
 		}%>
 	</div>
-		
-	</div>
+</div>
 </body>
 
 <script src="js/tabdisplay_scripts.js"></script>

@@ -11,7 +11,9 @@
 		
 		Statement st = con.createStatement();
 		
-		st.executeUpdate( "DELETE FROM Bids WHERE bid_id = '" + request.getParameter("bidID") +"'" );
+		st.executeUpdate("DELETE FROM Bids WHERE bid_id = " + request.getParameter("bidId") +";" );
+		// update highest bid field, if the removed bid was a highest bid
+		st.executeUpdate("UPDATE Auctions SET highest_bid = (SELECT bid_id FROM Bids WHERE for_auction = + " + request.getParameter("auctionId") + " AND amount = (SELECT MAX(amount) FROM Bids WHERE for_auction = " + request.getParameter("auctionId") + ")) WHERE auction_id = " + request.getParameter("auctionId"));
 
 		con.close();
 		st.close();
