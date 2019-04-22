@@ -66,6 +66,10 @@ public class NavigationServlet extends HttpServlet {
 			request.getSession().setAttribute("adv",null); //ensure we're just doing a normal search, even if we did advanced services previously in the session
 			request.getSession().setAttribute("search_query", request.getParameter("q"));
 			request.getSession().setAttribute("type","a"); //ensure we default to all
+			if(request.getParameter("sortType") != null) {
+				request.getSession().setAttribute("sortType", request.getParameter("sortType"));
+				request.getSession().setAttribute("sortOrder", request.getParameter("sortOrder"));
+			}
 			dispatcher = getServletContext().getRequestDispatcher("/auctions/search_auctions.jsp");
 			dispatcher.forward(request, response);
 			break;
@@ -102,6 +106,10 @@ public class NavigationServlet extends HttpServlet {
 			dispatcher = getServletContext().getRequestDispatcher("/csrep/csUserMgtPage.jsp");
 			dispatcher.forward(request, response);
 		case "advSearch":
+			if(request.getParameter("sortType") != null) {
+				request.getSession().setAttribute("sortType", request.getParameter("sortType"));
+				request.getSession().setAttribute("sortOrder", request.getParameter("sortOrder"));
+			}
 			request.getSession().setAttribute("search_query", request.getParameter("q"));
 			request.getSession().setAttribute("adv", true);
 			request.getSession().setAttribute("type", request.getParameter("t"));
