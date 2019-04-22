@@ -42,6 +42,8 @@
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
           <a class="dropdown-item" href="/BuyMe/NavigationServlet?location=createAuction">Create an Auction</a>
           <a class="dropdown-item" href="/BuyMe/NavigationServlet?location=auctions">My Auctions</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="/BuyMe/NavigationServlet?location=itemAlerts">Set Item Alerts</a>
      	</div>
       </li>
       <li class="nav-item">

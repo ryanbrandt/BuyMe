@@ -59,6 +59,32 @@ public class UserServlet extends HttpServlet {
 			case "a":
 				st.executeUpdate("DELETE FROM Alerts WHERE alert_for = " + request.getParameter("userId"));
 				break;
+			// create new user item alert
+			case "ca":
+				String alertFields = "(user_id, type";
+				String alertVals = "(" + request.getSession().getAttribute("user") + ",'" + request.getParameter("type") + "'";
+				// ugly but functional
+				if(request.getParameter("brand") != "" && request.getParameter("brand") != null) {
+					alertFields += ",brand";
+					alertVals += ",'" + request.getParameter("brand") + "'";
+				}
+				if(request.getParameter("condition") != "" && request.getParameter("condition") != null) {
+					alertFields += ",condition";
+					alertVals += ",'" + request.getParameter("condition") + "'";
+				}
+				if(request.getParameter("color") != "" && request.getParameter("color") != null) {
+					alertFields += ",color";
+					alertVals += ",'" + request.getParameter("color") + "'";
+				}
+				if(request.getParameter("desired_name") != "" && request.getParameter("desired_name") != null) {
+					alertFields += ",desired_name)";
+					alertVals += ",'" + request.getParameter("desired_name") + "')";
+				} else {
+					alertFields += ")";
+					alertVals += ")";
+				}
+				st.executeUpdate("INSERT INTO BuyMe.Item_Alerts" + alertFields + "VALUES" + alertVals);
+				
 			
 			} 
 			

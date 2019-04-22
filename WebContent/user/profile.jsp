@@ -81,6 +81,7 @@
 						<tr><td>Start Time: <%=auctionTable.getString("start_time")%></td></tr>
 						<tr><td>End Time: <%=auctionTable.getString("end_time")%></td></tr>
 						<tr><td>Highest Bid: <%=auctionTable.getString("amount") != null ? "$" + auctionTable.getString("amount") : "No bids yet" %></td></tr>
+						<tr><td><a class="btn btn-primary" href="NavigationServlet?location=view&id=<%=auctionTable.getInt("auction_id")%>">Go There</a></td></tr>
 					</table>
 				</div>
 			<%}
@@ -106,7 +107,7 @@
 					</tr></table>
 				</button>
 				<div class="panel">
-					
+					<a style="margin-bottom: 1em;" class="btn btn-primary" href="NavigationServlet?location=view&id=<%=bidItemTable.getInt("for_auction")%>">Go There</a>
 					<%
 					Statement st2 = con.createStatement();
 					ResultSet bidTable = st.executeQuery("SELECT * FROM Bids " +
@@ -131,6 +132,10 @@
 </div>
 <script src="js/tabdisplay_scripts.js"></script>
 <script src="js/csrep_scripts.js"></script>
-
+<script>
+	window.onload = function(){
+		openTab(event, 'auctions');
+	}
+</script>
+</body>
 </html>
-

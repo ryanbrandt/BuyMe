@@ -86,7 +86,7 @@
 								  <div class="card-body">
 								    <h5 class="card-title"><%=entry.getValue()%></h5>
 								    <p class="card-text">Clothing: <%=ownedType.get(j)%></p>
-								    <a href="/BuyMe/NavigationServlet?location=view&id=<%=entry.getKey()%>" class="btn btn-primary">Go There</a>
+								    <a href="/BuyMe/NavigationServlet?location=view&id=<%=entry.getKey()%>" class="btn btn-primary">View</a>
 								 </div>
 							</div>
 						</td>

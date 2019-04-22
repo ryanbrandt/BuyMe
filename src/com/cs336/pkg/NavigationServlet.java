@@ -84,6 +84,11 @@ public class NavigationServlet extends HttpServlet {
 			dispatcher = getServletContext().getRequestDispatcher("/user/settings.jsp");
 			dispatcher.forward(request, response);
 			break;
+		// to user item alerts
+		case "itemAlerts":
+			dispatcher = getServletContext().getRequestDispatcher("/user/item_alerts.jsp");
+			dispatcher.forward(request, response);
+			break;
 		// to user alerts
 		case "alerts":
 			dispatcher = getServletContext().getRequestDispatcher("/user/view_alerts.jsp");
@@ -101,6 +106,7 @@ public class NavigationServlet extends HttpServlet {
 		case "cs":
 			dispatcher = getServletContext().getRequestDispatcher("/csrep/csUserMgtPage.jsp");
 			dispatcher.forward(request, response);
+		// to adv search
 		case "advSearch":
 			request.getSession().setAttribute("search_query", request.getParameter("q"));
 			request.getSession().setAttribute("adv", true);

@@ -480,7 +480,7 @@
     </div>
   </div>
 </div>
-<div class="container">   
+<div class="container" style="margin-top: 1em !Important;">   
 	<div class="row"> 
 		<div class="col-lg" align="left"> 
 			<h2>Similar Items</h2><hr><br/>
