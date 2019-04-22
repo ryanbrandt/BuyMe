@@ -40,7 +40,7 @@
 					 	<td width=100><strong><%=auctionTable.getString("name")%></strong></td>
 					</tr></table>
 				</button>
-				<div class="panel">
+				<div class="panel" align="left">
 					<table>
 						<tr><td>Name: <strong><%=auctionTable.getString("name")%></strong></td></tr>
 						<tr><td>Item Type: <%=auctionTable.getString("type")%></td></tr>
@@ -50,7 +50,7 @@
 						<tr><td>Color: <%=auctionTable.getString("color")%></td></tr>
 						<tr><td>Start Time: <%=auctionTable.getString("start_time")%></td></tr>
 						<tr><td>End Time: <%=auctionTable.getString("end_time")%></td></tr>
-						<tr><td>Highest Bid: $<%=auctionTable.getString("amount")%></td></tr>
+						<tr><td>Highest Bid: <%=auctionTable.getString("amount") != null ? "$" + auctionTable.getString("amount") : "No bids yet" %></td></tr>
 					</table>
 				</div>
 			<%}
@@ -99,8 +99,6 @@
 		}%>
 	</div>
 </div>
-</body>
-
 <script src="js/tabdisplay_scripts.js"></script>
 
 </html>

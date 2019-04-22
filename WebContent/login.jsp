@@ -10,9 +10,9 @@
 <!-- Navigation Bar -->
 <%@ include file='WEB-INF/navigation.jsp' %>
 <% 
-	/* if user logged in, redirect to profile  */
+	/* if user logged in, redirect to my auctions home page  */
 	if(curSession.getAttribute("user") != null){
-		response.sendRedirect("NavigationServlet?location=profile");
+		response.sendRedirect("NavigationServlet?location=auctions");
 	}  
 %> 
 <!-- Content -->
