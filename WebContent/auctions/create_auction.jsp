@@ -8,7 +8,7 @@
 <head>
 <!-- Master stylesheet -->     
 <link rel="stylesheet" href="css/master.css"> 
-<title>Start a New Auction</title>
+<title>Start a New Auction</title>  
 </head>   
 <!-- Navigation Bar -->  
 <%@ include file='../WEB-INF/navigation.jsp' %>  
@@ -54,15 +54,15 @@
 							</select>    
 						</td>    
 					</tr> 
-					
-					<tr>
+					  
+					<tr>   
 						<td><label for="material"><b>What is it Made of?</b></label></td>
 					</tr> 
 					<tr class="inputItems">
 						<td><input class="textInput" type="text" placeholder="Item Brand" name="material"></td>
-					</tr>
-					
-					<tr>
+					</tr> 
+					 
+					<tr>     
 						<td><label for="brand"><b>Who Makes It?</b></label></td>
 					</tr> 
 					<tr class="inputItems">

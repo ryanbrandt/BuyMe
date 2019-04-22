@@ -41,5 +41,5 @@
 		</div>
 	</div>
 </div>
-<script src="js/communication_scripts.js"></script>
+<script src="../js/communication_scripts.js"></script>
 </body>

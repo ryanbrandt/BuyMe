@@ -1,4 +1,3 @@
-
 $('#searchButton').on('click', function(){
 	$.ajax({
 		url: "communication/searchQuestion.jsp",
@@ -23,12 +22,12 @@ $('#resetButton').on('click', function(){
 $('#questionForm').on('submit', function(e){
 	e.preventDefault();
 	$.ajax({
-		url: "communication/sendQuestion.jsp",
+		url: "/BuyMe/communication/sendQuestion.jsp",
 		method: "POST",
 		data: {'subject': $('#subject').val(), 'content': $('#details').val() },
 		
 		success: function(data){
-			window.location.href = "qaPage.jsp";
+			window.location.href = "/BuyMe/NavigationServlet?location=qa";
 			alert('Your question has been posted');
 			
 		}		
@@ -47,8 +46,6 @@ $('#emailForm').on('submit', function(e){
 		}	
 	})
 });
-
-
 
 $('#recipient').change(function(e){ 
 	e.preventDefault();

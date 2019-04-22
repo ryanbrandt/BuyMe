@@ -48,7 +48,7 @@ public class NavigationServlet extends HttpServlet {
 			dispatcher = getServletContext().getRequestDispatcher("/auctions/create_auction.jsp");
 			dispatcher.forward(request, response);
 			break;
-		// to profile
+		// to profile view
 		case "profile":
 			dispatcher = getServletContext().getRequestDispatcher("/user/profile.jsp");
 			dispatcher.forward(request, response);

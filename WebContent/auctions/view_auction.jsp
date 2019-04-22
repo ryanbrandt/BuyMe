@@ -69,7 +69,7 @@
 				lead_bid = (double) Math.round(names.getDouble(1)*100)/100;
 				names = st.executeQuery("SELECT display_name, user_id FROM BuyMe.Users WHERE user_id = " + names.getString(2));
 				if(names.next()){
-					bid_leader = names.getInt(2) == Integer.parseInt(request.getSession().getAttribute("user").toString()) ? "You" : names.getString(1);
+					bid_leader = names.getInt(2) == (Integer)request.getSession().getAttribute("user") ? "You" : names.getString(1);
 				}
 			}
 		} else {
@@ -96,7 +96,7 @@
 %>
 <!DOCTYPE html>    
 <html> 
-<!-- Head -->
+<!-- Head --> 
 <head>
 <!-- Master stylesheet -->     
 <link rel="stylesheet" href="css/master.css"> 
@@ -122,7 +122,7 @@
 								<td><h3>Seller</h3><hr></td>
 							</tr>
 							<tr class="subTable">
-								<td><strong><%=auctionData.get("seller_name")%></strong></td>
+								<td><strong><%=auctionData.get("seller_name")%></a></strong></td>
 							</tr>
 							<tr>
 								<td><h3>Highest Bid</h3><hr></td>
@@ -611,7 +611,7 @@ catch(Exception e){
 	</div>
 </div>
 <!-- JavaScript -->
-<% if(request.getSession().getAttribute("is_new_auction") != null){ if(Integer.parseInt(request.getSession().getAttribute("is_new_auction").toString())==1){%> <script>alert("Success! Welcome to your new auction! Click edit to change details");</script> <% request.getSession().setAttribute("is_new_auction", 0);}}%>
+<% if(request.getSession().getAttribute("is_new_auction") != null){ if((Integer)request.getSession().getAttribute("is_new_auction")==1){%> <script>alert("Success! Welcome to your new auction! Click edit to change details");</script> <% request.getSession().setAttribute("is_new_auction", 0);}}%>
 </body>
 <script src="js/view_auction_scripts.js"></script>
 <script>

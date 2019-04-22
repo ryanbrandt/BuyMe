@@ -1,8 +1,7 @@
 package com.cs336.pkg;
 
 import java.io.IOException;
-
-
+import java.io.InputStream;
 import java.util.Enumeration;
 import java.util.Map;
 import java.util.HashMap;
@@ -15,6 +14,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Part;
 
 
 /**
@@ -197,6 +197,14 @@ public class AuctionManagementServlet extends HttpServlet {
 				
 				if(s.next()) {
 					request.getSession().setAttribute("new_prod_id", s.getInt(1));
+				}
+				// do picture insert
+				Part pic = request.getPart("image");
+				if(pic != null) {
+					PreparedStatement ps = con.prepareStatement("UPDATE BuyMe.Clothing SET `image` =  ? WHERE product_id = " + request.getSession().getAttribute("new_prod_id"));
+					InputStream inpStr = pic.getInputStream();
+					ps.setBlob(1, inpStr);
+					ps.executeUpdate();
 				}
 				// create associated type tuple, save its type as a session attribute for next steps
 				switch(request.getParameter("type")) {
