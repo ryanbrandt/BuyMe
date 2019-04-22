@@ -13,13 +13,20 @@
 <!-- Navigation Bar -->
 <body>
 <%
-	ApplicationDB aDB = new ApplicationDB();	
-	Connection aCon = aDB.getConnection();	
-	Statement aSt = aCon.createStatement();
+String unreads;
+	try{
+		ApplicationDB aDB = new ApplicationDB();	
+		Connection aCon = aDB.getConnection();	
+		Statement aSt = aCon.createStatement();
 
-	ResultSet aInboxTable = aSt.executeQuery("SELECT COUNT(*) as unreads FROM Alerts WHERE alert_for = '" + curSession.getAttribute("user") + "' and alert_read = '0'");
-	aInboxTable.next();
-	String unreads = aInboxTable.getInt("unreads") == 0 ? "" : Integer.toString(aInboxTable.getInt("unreads"));
+		ResultSet aInboxTable = aSt.executeQuery("SELECT COUNT(*) as unreads FROM Alerts WHERE alert_for = '" + curSession.getAttribute("user") + "' and alert_read = '0'");
+		aInboxTable.next();
+		unreads = aInboxTable.getInt("unreads") == 0 ? "" : Integer.toString(aInboxTable.getInt("unreads"));
+	}
+	catch(Exception e){
+		unreads = "";
+		System.out.println(curSession.getAttribute("user"));
+	}
 %>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
   <a class="navbar-brand" href="#">BuyMe</a>
@@ -47,7 +54,7 @@
      	</div>
       </li>
       <li class="nav-item">
-        <a class="nav-link" id="alerts" href="/BuyMe/NavigationServlet?location=alerts">My Alerts<div class="text-danger" style="display:inline; s"><sup><%=unreads%></sup></div></a>
+        <a class="nav-link" id="alerts" href="/BuyMe/NavigationServlet?location=alerts">My Alerts<div class="text-danger" style="display:inline; s"><sup><%=curSession.getAttribute("user") != null ? unreads : ""%></sup></div></a>
       </li>    
 	<li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="actionsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

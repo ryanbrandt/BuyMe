@@ -5,6 +5,7 @@
 	// get necessary data to populate page 
 	Map<Integer, String> queryAuctions = new HashMap<Integer, String>();
 	ArrayList<String> prodType = new ArrayList<String>();
+	ArrayList<Integer> ordering = new ArrayList<Integer>();
 	try{ 
 		// establish DB connection
 		ApplicationDB db = new ApplicationDB();	
@@ -13,25 +14,83 @@
 		ResultSet q;
 		// do query based on user's search query; right now it just matches against a product title, maybe do against description too
 		if(request.getSession().getAttribute("adv") != null){
-			System.out.println(request.getSession().getAttribute("type"));
-			System.out.println(request.getSession().getAttribute("fit") + " " + request.getSession().getAttribute("waist") + " " + request.getSession().getAttribute("length"));
-			System.out.println(request.getSession().getAttribute("seller") + " " + request.getSession().getAttribute("brand"));
 			String query = 
-							"SELECT a.auction_id, c.type," + "c.`" + "name" + "`, " + 
-								"MATCH (" + "`" + "name" + "`) AGAINST ('" +
-									request.getSession().getAttribute("search_query") + 
-								"') AS title_relevance, a.item_is, a.seller_is, a.highest_bid, a.min_price " + 
-							"FROM BuyMe.Clothing AS c " +
-							"JOIN Auctions " +
-								"AS a ON item_is = product_id " + 
-							"WHERE " + 
-								"MATCH (" + "`" + "name" + "`) AGAINST ('" +
-								request.getSession().getAttribute("search_query") + "') " + 
-							"ORDER BY title_relevance DESC";
+					"SELECT a.auction_id, c.type," + "c.`" + "name" + "`, " + 
+						"MATCH (" + "`" + "name" + "`) AGAINST ('" +
+							request.getSession().getAttribute("search_query") + 
+						"') AS title_relevance, a.item_is, a.seller_is, a.highest_bid, a.min_price, c.condition, if(b.amount is null,a.min_price,b.amount) " + 
+					"FROM BuyMe.Clothing AS c " +
+					"JOIN BuyMe.Auctions " +
+						"AS a ON item_is = product_id " + 
+					"LEFT JOIN BuyMe.Bids AS b ON bid_id = highest_bid "+
+					"WHERE " + 
+						"MATCH (" + "`" + "name" + "`) AGAINST ('" +
+						request.getSession().getAttribute("search_query") + "') ";
+			if(request.getSession().getAttribute("sortType").toString() == null){
+				query +="ORDER BY title_relevance DESC";
+			}
+			else{
+				if(request.getSession().getAttribute("sortType").toString().equals("p")){
+					query +="ORDER BY b.amount ";
+					if(request.getSession().getAttribute("sortOrder").toString().equals("lo")){
+						query += "ASC";
+					}
+					else{
+						query += "DESC";
+					}
+				}
+				else{
+					query +="ORDER BY c.CONDITION ";
+					if(request.getSession().getAttribute("sortOrder").toString().equals("lo")){
+						query += "ASC";
+					}
+					else{
+						query += "DESC";
+					}
+				}
+			}
 			
+			System.out.println(query);
 			q = st.executeQuery(query);
 		}else{
-			q = st.executeQuery("SELECT a.auction_id, c.type," + "c.`" + "name" + "`, MATCH (" + "`" + "name" + "`) AGAINST ('" +request.getSession().getAttribute("search_query") + "') AS title_relevance FROM BuyMe.Clothing AS c JOIN Auctions AS a ON item_is = product_id WHERE MATCH (" + "`" + "name" + "`) AGAINST ('" + request.getSession().getAttribute("search_query") + "') ORDER BY title_relevance DESC");
+			String query = 
+					"SELECT a.auction_id, c.type," + "c.`" + "name" + "`, " + 
+						"MATCH (" + "`" + "name" + "`) AGAINST ('" +
+							request.getSession().getAttribute("search_query") + 
+						"') AS title_relevance, a.item_is, a.seller_is, a.highest_bid, a.min_price, c.condition, if(b.amount is null,a.min_price,b.amount) " + 
+					"FROM BuyMe.Clothing AS c " +
+					"JOIN BuyMe.Auctions " +
+						"AS a ON item_is = product_id " + 
+					"LEFT JOIN BuyMe.Bids AS b ON bid_id = highest_bid "+
+					"WHERE " + 
+						"MATCH (" + "`" + "name" + "`) AGAINST ('" +
+						request.getSession().getAttribute("search_query") + "') ";
+			if(request.getSession().getAttribute("sortType").toString() == null){
+				query +="ORDER BY title_relevance DESC";
+			}
+			else{
+				if(request.getSession().getAttribute("sortType").toString().equals("p")){
+					query +="ORDER BY b.amount ";
+					if(request.getSession().getAttribute("sortOrder").toString().equals("lo")){
+						query += "ASC";
+					}
+					else{
+						query += "DESC";
+					}
+				}
+				else{
+					query +="ORDER BY c.CONDITION ";
+					if(request.getSession().getAttribute("sortOrder").toString().equals("lo")){
+						query += "ASC";
+					}
+					else{
+						query += "DESC";
+					}
+				}
+			}
+			
+			System.out.println(query);
+			q = st.executeQuery(query);
 		}
 		// auction_id as key, product name as value
 		if(request.getSession().getAttribute("adv") != null){
@@ -165,6 +224,7 @@
 					if(z.next() && z2.next() && z3.next() && priceCheck && conditionCheck){
 						queryAuctions.put(q.getInt(1), q.getString(3));
 						prodType.add(q.getString(2));
+						ordering.add(q.getInt(1));
 					}
 					st2.close();
 					st3.close();
@@ -173,6 +233,7 @@
 			}
 			else if (request.getSession().getAttribute("type").toString().contentEquals("a")){
 				while(q.next()){
+					System.out.println(q.getInt(5) + request.getSession().getAttribute("brand").toString());
 					String query2 = "Select c.product_id " +
 									"from BuyMe.Clothing as c " +
 									"Where c.product_id = " + q.getInt(5)
@@ -264,6 +325,7 @@
 					}
 					
 					if(z2.next() && z3.next() && priceCheck && conditionCheck){
+						ordering.add(q.getInt(1));
 						queryAuctions.put(q.getInt(1), q.getString(3));
 						prodType.add(q.getString(2));
 					}
@@ -418,6 +480,7 @@
 					}
 					
 					if(z.next() && z2.next() && z3.next() && priceCheck && conditionCheck){
+						ordering.add(q.getInt(1));
 						queryAuctions.put(q.getInt(1), q.getString(3));
 						prodType.add(q.getString(2));
 					}
@@ -553,6 +616,7 @@
 					}
 					
 					if(z.next() && z2.next() && z3.next() && priceCheck && conditionCheck){
+						ordering.add(q.getInt(1));
 						queryAuctions.put(q.getInt(1), q.getString(3));
 						prodType.add(q.getString(2));
 					}
@@ -566,8 +630,10 @@
 			while(q.next()){
 				queryAuctions.put(q.getInt(1), q.getString(3));
 				prodType.add(q.getString(2));
+				ordering.add(q.getInt(1));
 			}
 		}
+		System.out.println(ordering);
 		
 		st.close();
 		con.close();
@@ -575,6 +641,8 @@
 	catch(Exception e){
 		System.out.println("Exception: " + e);
 	}
+	boolean advanced = request.getSession().getAttribute("adv") != null;
+	
 %>
 	<!DOCTYPE html>
 	<html>
@@ -615,22 +683,22 @@
                                   <div class="form-group">
                                     <label for="priceRange">Price Range</label>
                                     <select multiple class="form-control" id = "priceRange">
-                                        <option value="0" <% if(request.getSession().getAttribute("price").toString().contains("0")){ %> selected <%}%> >Any Price</option>
-                                        <option value="1" <% if(request.getSession().getAttribute("price").toString().contains("1")){ %> selected <%}%> >Below $25</option>
-                                        <option value="2" <% if(request.getSession().getAttribute("price").toString().contains("2")){ %> selected <%}%> >$25-$49.99</option>
-                                        <option value="3" <% if(request.getSession().getAttribute("price").toString().contains("3")){ %> selected <%}%> >$50-$99.99</option>
-                                        <option value="4" <% if(request.getSession().getAttribute("price").toString().contains("4")){ %> selected <%}%> >$100-$199.99</option>
-                                        <option value="5" <% if(request.getSession().getAttribute("price").toString().contains("5")){ %> selected <%}%> >$200-$499.99</option>
-                                        <option value="6" <% if(request.getSession().getAttribute("price").toString().contains("6")){ %> selected <%}%> >$500+</option>
+                                        <option value="0" <% if(!advanced || request.getSession().getAttribute("price").toString().contains("0")){ %> selected <%}%> >Any Price</option>
+                                        <option value="1" <% if(advanced && request.getSession().getAttribute("price").toString().contains("1")){ %> selected <%}%> >Below $25</option>
+                                        <option value="2" <% if(advanced && request.getSession().getAttribute("price").toString().contains("2")){ %> selected <%}%> >$25-$49.99</option>
+                                        <option value="3" <% if(advanced && request.getSession().getAttribute("price").toString().contains("3")){ %> selected <%}%> >$50-$99.99</option>
+                                        <option value="4" <% if(advanced && request.getSession().getAttribute("price").toString().contains("4")){ %> selected <%}%> >$100-$199.99</option>
+                                        <option value="5" <% if(advanced && request.getSession().getAttribute("price").toString().contains("5")){ %> selected <%}%> >$200-$499.99</option>
+                                        <option value="6" <% if(advanced && request.getSession().getAttribute("price").toString().contains("6")){ %> selected <%}%> >$500+</option>
                                     </select>
                                   </div>
                                   <div class="form-group">
                                     <label for="seller">Seller Name</label>
-                                    <input class="form-control" id="seller" type="text" value = "<%=request.getSession().getAttribute("seller").toString().equals("%") ? "" : request.getSession().getAttribute("seller").toString() %>"/>
+                                    <input class="form-control" id="seller" type="text" value = "<%=(!advanced || request.getSession().getAttribute("seller").toString().equals("%")) ? "" : request.getSession().getAttribute("seller").toString() %>"/>
                                   </div>
                                   <div class="form-group">
                                     <label for="contain">Brand Name</label>
-                                    <input class="form-control" id="brand" type="text" value = "<%=request.getSession().getAttribute("brand").toString().equals("%") ? "" : request.getSession().getAttribute("brand").toString() %>"/>
+                                    <input class="form-control" id="brand" type="text" value = "<%=(!advanced || request.getSession().getAttribute("brand").toString().equals("%")) ? "" : request.getSession().getAttribute("brand").toString() %>"/>
                                   </div>
                                   <div class="form-group">
                                     <label for="condition">Condition</label>
@@ -657,7 +725,13 @@
 <div class="container" style="margin-top: 2em !important;">   
 	<div class="row"> 
 		<div class="col-lg" align="left"> 
-			<h2>Results for '<%=request.getSession().getAttribute("search_query") %>'</h2><hr><br/>
+			<h2>Results for '<%=request.getSession().getAttribute("search_query") %>' 
+				<button type="button" style="float:right; margin:1px;" class="btn btn-secondary" onclick="sortSearch('c','lo');">Condition (Used First)</button> 
+				<button type="button" style="float:right; margin:1px;" class="btn btn-secondary" onclick="sortSearch('c','hi');">Condition (New First)</button> 
+				<button type="button" style="float:right; margin:1px;" class="btn btn-secondary" onclick="sortSearch('p','hi');">Price ($$ - $)</button> 
+				<button type="button" style="float:right; margin:1px;" class="btn btn-secondary" onclick="sortSearch('p','lo');">Price ($ - $$)</button> 
+				<div class="inline" style="float:right;text-align:center;height:100%"><h3>Sort By: </h2></div>
+			</h2><hr><br/>
 			<table>
 			<col width="20%"> 
 			<col width="20%">
@@ -666,7 +740,7 @@
 			<%
 				int i = 0;
 				int j = 0;
-				for(Map.Entry<Integer, String> entry : queryAuctions.entrySet()){ 
+				for(Integer index : ordering){ 
 			%>
 			<%		if(i == 0){ %>
 					<tr class="attrTable" align="center">
@@ -675,9 +749,9 @@
 							<div class="card" style="margin-left: 2em; margin-right: 2em;">
 								<div class="card-header">Active Auction</div>
 								  <div class="card-body">
-								    <h5 class="card-title"><%=entry.getValue() %></h5>
+								    <h5 class="card-title"><%=queryAuctions.get(index)%></h5>
 								    <p class="card-text">Clothing: <%=prodType.get(j) %></p>
-								    <a href="/BuyMe/NavigationServlet?location=view&id=<%=entry.getKey()%>" class="btn btn-primary">View Now</a>
+								    <a href="/BuyMe/NavigationServlet?location=view&id=<%=index%>" class="btn btn-primary">View Now</a>
 								 </div>
 							</div>
 						</td>
@@ -822,6 +896,17 @@
 		window.location.href = dest;
 	}
 	
+	function sortSearch(sortType,sortOrder){
+		var args = "&sortType="+sortType+"&sortOrder="+sortOrder;
+		var lochref = "" +  window.location.href;
+		if(lochref.includes("&sortType")){
+			window.location.href = lochref.substring(0, window.location.href.length-24) + args;
+		}
+		else{
+			window.location.href = window.location.href + args;
+		}
+	}
+		
 	function advSearch(){
 		var args = "&q=" + $('#regSearch').val();
 		switch($("#productType").val()){
