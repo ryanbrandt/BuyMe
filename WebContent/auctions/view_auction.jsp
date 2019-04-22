@@ -55,6 +55,7 @@
 		q += auctionData.get("type").toLowerCase() + "_id = " + auctionData.get("item_is");
 		vals = stTwo.executeQuery(q);
 		dbToMap(names, vals, auctionData, auctionData.get("type").toLowerCase() + "_id");
+		
 		// get bid data; amount should be unique, so is key and timestamp is value; arraylist has corresponding display_names
 		names = st.executeQuery("SELECT b.amount, b.timestamp, u.display_name FROM BuyMe.Bids AS b JOIN BuyMe.Users AS u ON from_user = user_id WHERE for_auction = " + request.getSession().getAttribute("auction_id") + " ORDER BY b.amount DESC;");
 		while(names.next()){    
@@ -478,6 +479,136 @@
       </div>
     </div>
   </div>
+</div>
+<div class="container">   
+	<div class="row"> 
+		<div class="col-lg" align="left"> 
+			<h2>Similar Items</h2><hr><br/>
+			<table>
+			<col width="20%"> 
+			<col width="20%">
+			<col width="20%">
+			<col width="20%">
+				<tr class="attrTable" align="center">
+<%
+final int itemGoal = 3;
+int itemsFound = 0;
+try{   
+	// establish DB connection 
+	ApplicationDB db = new ApplicationDB();	
+	Connection con = db.getConnection();
+	Statement st;
+	String query;
+	if(itemsFound < itemGoal){
+		Map<Integer,Integer> itemScores = new HashMap<Integer,Integer>();
+		Map<Integer,String> itemNames = new HashMap<Integer,String>();
+		//get similarity count for each case
+		if(auctionData.get("type").equals("Shirts")){
+			st = con.createStatement();
+			query = "SELECT a.auction_id, c.name, s.buttons, s.long_sleeve, s.collar, s.size " +
+					"FROM BuyMe.Auctions a, BuyMe.Shirts s, BuyMe.Clothing c " +
+					"WHERE a.item_is = c.product_id and c.type='Shirts' and c.product_id=s.shirts_id and a.auction_id !=" + request.getSession().getAttribute("auction_id");
+			ResultSet shirtList = st.executeQuery(query);
+			while(shirtList.next()){
+				itemNames.put(shirtList.getInt(1),shirtList.getString(2));
+				int score = 0;
+				if(shirtList.getString(3).equals(auctionData.get("buttons")))
+					score++;
+				if(shirtList.getString(4).equals(auctionData.get("long_sleeve")))
+					score++;
+				if(shirtList.getString(5).equals(auctionData.get("collar")))
+					score++;
+				if(shirtList.getString(6).equals(auctionData.get("size")))
+					score++;
+				
+				itemScores.put(shirtList.getInt(1),score);
+			}
+		}
+		else if(auctionData.get("type").equals("Pants")){
+			st = con.createStatement();
+			query = "SELECT a.auction_id, c.name, p.has_belt_loops, p.length, p.fit, p.waist " +
+					"FROM BuyMe.Auctions a, BuyMe.Pants p, BuyMe.Clothing c " +
+					"WHERE a.item_is = c.product_id and c.type='Pants' and c.product_id=p.pants_id and a.auction_id !=" + request.getSession().getAttribute("auction_id");
+			ResultSet shirtList = st.executeQuery(query);
+			while(shirtList.next()){
+				itemNames.put(shirtList.getInt(1),shirtList.getString(2));
+				int score = 0;
+				if(shirtList.getString(3).equals(auctionData.get("has_belt_loops")))
+					score++;
+				if(shirtList.getString(4).equals(auctionData.get("length")))
+					score++;
+				if(shirtList.getString(5).equals(auctionData.get("fit")))
+					score++;
+				if(shirtList.getString(6).equals(auctionData.get("waist")))
+					score++;
+				
+				itemScores.put(shirtList.getInt(1),score);
+			}		
+		}
+		else if (auctionData.get("type").equals("Jackets")){
+			st = con.createStatement();
+			query = "SELECT a.auction_id, c.name, j.water_resistant, j.hood, j.insulated, j.size " +
+					"FROM BuyMe.Auctions a, BuyMe.Jackets j, BuyMe.Clothing c " +
+					"WHERE a.item_is = c.product_id and c.type='Jackets' and c.product_id=j.jackets_id and a.auction_id !=" + request.getSession().getAttribute("auction_id");
+			ResultSet shirtList = st.executeQuery(query);
+			while(shirtList.next()){
+				itemNames.put(shirtList.getInt(1),shirtList.getString(2));
+				int score = 0;
+				if(shirtList.getString(3).equals(auctionData.get("water_resistant")))
+					score++;
+				if(shirtList.getString(4).equals(auctionData.get("hood")))
+					score++;
+				if(shirtList.getString(5).equals(auctionData.get("insulated")))
+					score++;
+				if(shirtList.getString(6).equals(auctionData.get("size")))
+					score++;
+				
+				itemScores.put(shirtList.getInt(1),score);
+			}	
+		}
+		
+		while(itemsFound < itemGoal){
+			int maxScore = -1;
+			int id = 0;
+			String name = "";
+			List<Integer> keys = new ArrayList<Integer>(itemScores.keySet());
+			Collections.shuffle(keys);
+			for(int iId : keys){
+				if(itemScores.get(iId) > maxScore){
+					id = iId;
+					name = itemNames.get(iId);
+					maxScore = itemScores.get(iId);
+					
+					
+				}
+			}
+			%>
+			<td>
+			<div class="card" style="margin-left: 2em; margin-right: 2em;">
+				<div class="card-header">Active Auction</div>
+				  <div class="card-body">
+				    <h5 class="card-title"><%=name%></h5>
+				    <p class="card-text">Clothing: <%=auctionData.get("type")%></p>
+				    <a href="/BuyMe/NavigationServlet?location=view&id=<%=id%>" class="btn btn-primary">View Now</a>
+				 </div>
+			</div>
+		</td>
+		<%
+		
+		itemScores.remove(id);
+		itemNames.remove(id);
+		itemsFound++;		
+		}
+	}
+}
+catch(Exception e){
+	System.out.println(e);
+}
+	%>
+					</tr>
+				</table>
+		</div>
+	</div>
 </div>
 <!-- JavaScript -->
 <% if(request.getSession().getAttribute("is_new_auction") != null){ if((Integer)request.getSession().getAttribute("is_new_auction")==1){%> <script>alert("Success! Welcome to your new auction! Click edit to change details");</script> <% request.getSession().setAttribute("is_new_auction", 0);}}%>
