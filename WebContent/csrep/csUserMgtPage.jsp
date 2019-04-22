@@ -91,6 +91,7 @@
 					<div class="panel">
 						<table>
 							<tr>
+								<td><a href="/BuyMe/NavigationServlet?location=view&id=<%=auctionTable.getString("auction_id")%>" class="btn btn-primary">Go There</a></td>
 								<td><button value="<%=auctionTable.getString("auction_id")%>" class="form-control removeAuction">Remove Auction</button></td>
 								<td><button value="<%=auctionTable.getString("auction_id")%>" class="form-control modifyAuction">Modify Auction</button></td>
 							</tr>
@@ -147,14 +148,14 @@
 						</tr></table>
 					</button>
 					<div class="panel">
-						
+						<table>
+						<tr><td><a href="/BuyMe/NavigationServlet?location=view&id=<%=bidItemTable.getString("for_auction")%>" class="btn btn-primary">Go To Auction Page</a></td></tr>
 						<%
 						Statement st2 = con.createStatement();
 						ResultSet bidTable = st.executeQuery("SELECT bid_id, amount, timestamp, auction_id FROM Bids JOIN Auctions ON for_auction = auction_id " +
 											"WHERE from_user = '" +curSession.getAttribute("userLookupID")+ 
 											"' AND for_auction = '" + bidItemTable.getString("for_auction") + "' AND is_active = 1 ORDER BY timestamp DESC;" );
 						%>
-						<table>
 						<%while(bidTable.next()){ %>
 								<tr style="margin-bottom: 0.5em;">
 									<td width="500"><strong>Timestamp:</strong> <%=bidTable.getString("timestamp")%></td>
