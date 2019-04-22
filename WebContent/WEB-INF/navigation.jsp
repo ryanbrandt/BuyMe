@@ -45,7 +45,7 @@
      	</div>
       </li>
       <li class="nav-item">
-        <a class="nav-link" id="alerts" href="/BuyMe/NavigationServlet?location=alerts">My Alerts<div class="text-danger" style="display:inline; s"><sup><%=unreads%></sup></div></a>
+        <a class="nav-link" id="alerts" href="/BuyMe/NavigationServlet?location=alerts">My Alerts<div class="text-danger" style="display:inline; s"><sup><%=curSession.getAttribute("user") != null ? unreads : ""%></sup></div></a>
       </li>    
 	<li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="actionsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
