@@ -26,10 +26,11 @@
 					"WHERE " + 
 						"MATCH (" + "`" + "name" + "`) AGAINST ('" +
 						request.getSession().getAttribute("search_query") + "') ";
-			if(request.getSession().getAttribute("sortType").toString() == null){
+			if(request.getSession().getAttribute("sortType") == null){
 				query +="ORDER BY title_relevance DESC";
 			}
 			else{
+				//System.out.println("g");
 				if(request.getSession().getAttribute("sortType").toString().equals("p")){
 					query +="ORDER BY b.amount ";
 					if(request.getSession().getAttribute("sortOrder").toString().equals("lo")){
@@ -49,8 +50,7 @@
 					}
 				}
 			}
-			
-			System.out.println(query);
+			//System.out.println(query);
 			q = st.executeQuery(query);
 		}else{
 			String query = 
@@ -65,7 +65,7 @@
 					"WHERE " + 
 						"MATCH (" + "`" + "name" + "`) AGAINST ('" +
 						request.getSession().getAttribute("search_query") + "') ";
-			if(request.getSession().getAttribute("sortType").toString() == null){
+			if(request.getSession().getAttribute("sortType") == null){
 				query +="ORDER BY title_relevance DESC";
 			}
 			else{
@@ -89,7 +89,7 @@
 				}
 			}
 			
-			System.out.println(query);
+			//System.out.println(query);
 			q = st.executeQuery(query);
 		}
 		// auction_id as key, product name as value
@@ -162,7 +162,7 @@
 					String priceString = request.getSession().getAttribute("price").toString();
 					for(String price: priceString.split(",")){
 						if(priceCheck == true) break;
-						int itemPrice = q.getInt(7) != 0 ? q.getInt(7) : q.getInt(8);
+						int itemPrice = q.getInt(10) == 0 ? q.getInt(8) : q.getInt(10);
 						int p = Integer.parseInt(price);
 						switch(p){
 						case 0:
@@ -216,7 +216,7 @@
 							conditionQuery += " and c.condition = 1";
 							break;
 						}
-						System.out.println(conditionQuery);
+						//System.out.println(conditionQuery);
 						ResultSet conditionSet = conditionSt.executeQuery(conditionQuery);
 						if(conditionSet.next()) conditionCheck = true;
 					}
@@ -233,7 +233,7 @@
 			}
 			else if (request.getSession().getAttribute("type").toString().contentEquals("a")){
 				while(q.next()){
-					System.out.println(q.getInt(5) + request.getSession().getAttribute("brand").toString());
+					//System.out.println(q.getInt(5) + request.getSession().getAttribute("brand").toString());
 					String query2 = "Select c.product_id " +
 									"from BuyMe.Clothing as c " +
 									"Where c.product_id = " + q.getInt(5)
@@ -266,7 +266,8 @@
 					String priceString = request.getSession().getAttribute("price").toString();
 					for(String price: priceString.split(",")){
 						if(priceCheck == true) break;
-						int itemPrice = q.getInt(7) != 0 ? q.getInt(7) : q.getInt(8);
+						int itemPrice = q.getInt(10) == 0 ? q.getInt(8) : q.getInt(10);
+						System.out.println(q.getInt(1) + " : " + q.getInt(10) + " : " + itemPrice);
 						int p = Integer.parseInt(price);
 						switch(p){
 						case 0:
@@ -319,7 +320,7 @@
 							conditionQuery += " and c.condition = 1";
 							break;
 						}
-						System.out.println(conditionQuery);
+						//System.out.println(conditionQuery);
 						ResultSet conditionSet = conditionSt.executeQuery(conditionQuery);
 						if(conditionSet.next()) conditionCheck = true;
 					}
@@ -339,7 +340,7 @@
 				while(q.next()){
 					Statement st2 = con.createStatement();
 					ResultSet z;
-					System.out.println("b:" + request.getSession().getAttribute("buttons"));
+					//System.out.println("b:" + request.getSession().getAttribute("buttons"));
 					String buttons = request.getSession().getAttribute("buttons").equals("true") ? "1" : "0" ;
 					String sleeve = "";
 					if(request.getSession().getAttribute("longsleeve").equals("true") && request.getSession().getAttribute("shortsleeve").equals("true")){
@@ -420,7 +421,7 @@
 					String priceString = request.getSession().getAttribute("price").toString();
 					for(String price: priceString.split(",")){
 						if(priceCheck == true) break;
-						int itemPrice = q.getInt(7) != 0 ? q.getInt(7) : q.getInt(8);
+						int itemPrice = q.getInt(10) == 0 ? q.getInt(8) : q.getInt(10);
 						int p = Integer.parseInt(price);
 						switch(p){
 						case 0:
@@ -474,7 +475,7 @@
 							conditionQuery += " and c.condition = 1";
 							break;
 						}
-						System.out.println(conditionQuery);
+						//System.out.println(conditionQuery);
 						ResultSet conditionSet = conditionSt.executeQuery(conditionQuery);
 						if(conditionSet.next()) conditionCheck = true;
 					}
@@ -557,7 +558,7 @@
 					String priceString = request.getSession().getAttribute("price").toString();
 					for(String price: priceString.split(",")){
 						if(priceCheck == true) break;
-						int itemPrice = q.getInt(7) != 0 ? q.getInt(7) : q.getInt(8);
+						int itemPrice = q.getInt(10) == 0 ? q.getInt(8) : q.getInt(10);
 						int p = Integer.parseInt(price);
 						switch(p){
 						case 0:
@@ -633,7 +634,7 @@
 				ordering.add(q.getInt(1));
 			}
 		}
-		System.out.println(ordering);
+		//System.out.println(ordering);
 		
 		st.close();
 		con.close();

@@ -1,13 +1,16 @@
 package com.cs336.pkg;
 
+import java.awt.image.BufferedImage;
+import java.lang.Object;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Enumeration;
 import java.util.Map;
 import java.util.HashMap;
-
+import java.util.Iterator;
 import java.sql.*;
 
+import javax.imageio.ImageIO;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -192,14 +195,34 @@ public class AuctionManagementServlet extends HttpServlet {
 			case "c":
 				// insert new clothing tuple, get its primary key and save it as a session attribute for the next steps
 				String[] insertQuery = buildInsert(request);
+				//System.out.println(insertQuery[2]);
 				st.executeUpdate("INSERT INTO BuyMe.Clothing("+insertQuery[0]+")VALUES("+insertQuery[1]+")", Statement.RETURN_GENERATED_KEYS);
 				ResultSet s = st.getGeneratedKeys();
 				
 				if(s.next()) {
 					request.getSession().setAttribute("new_prod_id", s.getInt(1));
 				}
+<<<<<<< HEAD
 				// TODO do picture insert here
 				
+=======
+				// do picture insert
+				String myImage = request.getParameter("image");
+				if(myImage != null && !myImage.contentEquals("null") && !myImage.contentEquals("")) {
+					try {
+						myImage = myImage.replaceAll("\\*", "\\+");
+						System.out.println("pic found");
+						String query = "UPDATE BuyMe.Clothing SET `image` = '" + myImage + "' WHERE product_id = " + request.getSession().getAttribute("new_prod_id");
+						st.executeUpdate(query);
+					}
+					catch (Exception e) {
+						System.out.println("PicError: " + e);
+					}
+				}
+				else {
+					//
+				}
+>>>>>>> 6be261ac05b7a031a3ecb2a6fb8ba08efbf7121d
 				// create associated type tuple, save its type as a session attribute for next steps
 				switch(request.getParameter("type")) {
 				

@@ -24,18 +24,43 @@ $('#newProductForm').on('submit', function(e){
 		head.innerHTML = "Jacket Details";
 		
 	}
-	$.ajax({
-		url: "/BuyMe/AuctionManagementServlet",
-		method: "POST",
-		// send action=c for create new clothing tuple
-		data: $(this).serialize() + "&action=c",
-		
-		success: function(){
-			console.log("success");
-		}
-	})
+	var reader  = new FileReader();
+	console.log(document.getElementById("imageUpload").files.length == 0);
+	if(document.getElementById("imageUpload").files.length > 0){
+		reader.readAsDataURL(document.getElementById("imageUpload").files[0]);
+		reader.onload = function () {
+			//console.log(myencode(reader.result));
+			$.ajax({
+				url: "/BuyMe/AuctionManagementServlet",
+				method: "POST",
+				// send action=c for create new clothing tuple
+				data: $('#newProductForm').serialize() + "&image=" + myencode(reader.result) + "&action=c",
+				
+				success: function(){
+					console.log("success");
+					//console.log($('#newProductForm').serialize());
+				}
+			})
+		  }	
+	}
+	else{
+		$.ajax({
+			url: "/BuyMe/AuctionManagementServlet",
+			method: "POST",
+			// send action=c for create new clothing tuple
+			data: $('#newProductForm').serialize() + "&image=" + myencode(reader.result) + "&action=c",
+			
+			success: function(){
+				console.log("success");
+				//console.log($('#newProductForm').serialize());
+			}
+		})
+	}
 });
-
+function myencode(mystring){
+	var thisString = "" + mystring;
+	return (thisString.replace(new RegExp("\\+","g"),"*"));
+}
 /* on submit of any Clothing type form, show final auction form and post Clothing Type data */
 $('.typeForm').on('submit', function(e){
 	e.preventDefault();

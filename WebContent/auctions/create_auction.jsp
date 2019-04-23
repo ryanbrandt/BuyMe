@@ -80,7 +80,7 @@
 						<td><label for="image"><b>Upload a Picture</b></label></td>
 					</tr>
 					<tr class="inputItems">
-						<td><input type="file" name="image"></td>
+						<td><input type="file" id="imageUpload" name="image"></td>
 					</tr>
 						
 					<tr class="formSubmit">
