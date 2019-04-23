@@ -1,6 +1,7 @@
 package com.cs336.pkg;
 
 import java.awt.image.BufferedImage;
+
 import java.lang.Object;
 import java.io.IOException;
 import java.io.InputStream;
@@ -202,10 +203,7 @@ public class AuctionManagementServlet extends HttpServlet {
 				if(s.next()) {
 					request.getSession().setAttribute("new_prod_id", s.getInt(1));
 				}
-<<<<<<< HEAD
-				// TODO do picture insert here
-				
-=======
+
 				// do picture insert
 				String myImage = request.getParameter("image");
 				if(myImage != null && !myImage.contentEquals("null") && !myImage.contentEquals("")) {
@@ -222,7 +220,6 @@ public class AuctionManagementServlet extends HttpServlet {
 				else {
 					//
 				}
->>>>>>> 6be261ac05b7a031a3ecb2a6fb8ba08efbf7121d
 				// create associated type tuple, save its type as a session attribute for next steps
 				switch(request.getParameter("type")) {
 				
