@@ -26,10 +26,11 @@
 					"WHERE " + 
 						"MATCH (" + "`" + "name" + "`) AGAINST ('" +
 						request.getSession().getAttribute("search_query") + "') ";
-			if(request.getSession().getAttribute("sortType").toString() == null){
+			if(request.getSession().getAttribute("sortType") == null){
 				query +="ORDER BY title_relevance DESC";
 			}
 			else{
+				System.out.println("g");
 				if(request.getSession().getAttribute("sortType").toString().equals("p")){
 					query +="ORDER BY b.amount ";
 					if(request.getSession().getAttribute("sortOrder").toString().equals("lo")){
@@ -49,7 +50,6 @@
 					}
 				}
 			}
-			
 			System.out.println(query);
 			q = st.executeQuery(query);
 		}else{
@@ -65,7 +65,7 @@
 					"WHERE " + 
 						"MATCH (" + "`" + "name" + "`) AGAINST ('" +
 						request.getSession().getAttribute("search_query") + "') ";
-			if(request.getSession().getAttribute("sortType").toString() == null){
+			if(request.getSession().getAttribute("sortType") == null){
 				query +="ORDER BY title_relevance DESC";
 			}
 			else{

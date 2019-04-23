@@ -113,7 +113,26 @@
 			<h1 style="display: inline-block;"><%= auctionData.get("name") %></h1><button id="bid" class="btn btn-outline-success my-2 my-sm-0" style="float: right;">Bid Now</button><button class="btn btn-outline-info my-2 my-sm-0" style="float: right; display: none;" id="edit">Edit</button><br/>
 			<table> 
 				<tr>
-					<td style="width: 50%;"><img class="img-thumbnail img-fluid" src="${pageContext.request.contextPath}/images/no-image-icon-23494.png" alt="" style="width: 400px; height: 400px; object-fit: contain;"></img></td>
+					<td style="width: 50%;"><img class="img-thumbnail img-fluid" src="<%
+					try{
+						ApplicationDB db = new ApplicationDB();	
+						Connection con = db.getConnection();
+						Statement st = con.createStatement(); 
+						String query = "SELECT c.image from BuyMe.Clothing c WHERE product_id="+auctionData.get("item_is") + " AND c.image is not NULL and c.image != 'null'";
+						ResultSet imageSet = st.executeQuery(query);
+						if(imageSet.next()){
+							%><%=imageSet.getString(1) %>
+							<%
+						}else{
+							%>${pageContext.request.contextPath}/images/no-image-icon-23494.png<%
+						}
+					}
+					catch (Exception e){
+						%>${pageContext.request.contextPath}/images/no-image-icon-23494.png<%
+						System.out.println("Img Error: " + e);
+					}
+						%>
+					" alt="" style="width: 400px; height: 400px; object-fit: contain;"></img></td>
 					<td style="text-align: center; float: right; width: 50%;">
 						<table>
 							<col width = "50%;">
@@ -512,13 +531,13 @@ try{
 			while(shirtList.next()){
 				itemNames.put(shirtList.getInt(1),shirtList.getString(2));
 				int score = 0;
-				if(shirtList.getString(3).equals(auctionData.get("buttons")))
+				if(shirtList.getString(3) != null && shirtList.getString(3).equals(auctionData.get("buttons")))
 					score++;
-				if(shirtList.getString(4).equals(auctionData.get("long_sleeve")))
+				if(shirtList.getString(4) != null && shirtList.getString(4).equals(auctionData.get("long_sleeve")))
 					score++;
-				if(shirtList.getString(5).equals(auctionData.get("collar")))
+				if(shirtList.getString(3) != null && shirtList.getString(5).equals(auctionData.get("collar")))
 					score++;
-				if(shirtList.getString(6).equals(auctionData.get("size")))
+				if(shirtList.getString(3) != null && shirtList.getString(6).equals(auctionData.get("size")))
 					score++;
 				
 				itemScores.put(shirtList.getInt(1),score);
