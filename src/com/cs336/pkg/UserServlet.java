@@ -61,30 +61,34 @@ public class UserServlet extends HttpServlet {
 				break;
 			// create new user item alert
 			case "ca":
-				String alertFields = "(user_id, type";
+				String alertFields = "(`user_id`, `type`";
 				String alertVals = "(" + request.getSession().getAttribute("user") + ",'" + request.getParameter("type") + "'";
 				// ugly but functional
 				if(request.getParameter("brand") != "" && request.getParameter("brand") != null) {
-					alertFields += ",brand";
+					alertFields += ",`brand`";
 					alertVals += ",'" + request.getParameter("brand") + "'";
 				}
 				if(request.getParameter("condition") != "" && request.getParameter("condition") != null) {
-					alertFields += ",condition";
+					alertFields += ",`condition`";
 					alertVals += ",'" + request.getParameter("condition") + "'";
 				}
 				if(request.getParameter("color") != "" && request.getParameter("color") != null) {
-					alertFields += ",color";
+					alertFields += ",`color`";
 					alertVals += ",'" + request.getParameter("color") + "'";
 				}
 				if(request.getParameter("desired_name") != "" && request.getParameter("desired_name") != null) {
-					alertFields += ",desired_name)";
+					alertFields += ",`desired_name`)";
 					alertVals += ",'" + request.getParameter("desired_name") + "')";
 				} else {
 					alertFields += ")";
 					alertVals += ")";
 				}
+				System.out.println(alertFields + " " +  alertVals);
 				st.executeUpdate("INSERT INTO BuyMe.Item_Alerts" + alertFields + "VALUES" + alertVals);
-				
+				break;
+			// delete existing user item alert
+			case "da":
+				st.executeUpdate("DELETE FROM BuyMe.Item_Alerts WHERE item_alert_id = " + request.getParameter("id"));
 			
 			} 
 			

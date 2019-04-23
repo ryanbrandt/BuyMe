@@ -44,10 +44,10 @@
 				int i = 0;
 				while(itemAlerts.next()){ 
 			%>
-			<%		if(i == 0){ %>
+			<%		if(i == 0){ %> 
 					<tr class="attrTable" align="center">
-			<%		} %>
-						<td>
+			<%		} %> 
+						<td> 
 							<div class="card h-100" style="margin-left: 2em; margin-right: 2em;">
 								<div class="card-header">Alert</div>
 								  <div class="card-body">
@@ -66,7 +66,7 @@
 								    		<td><strong>Color: </strong><%=itemAlerts.getString("color") != null ? itemAlerts.getString("color"): "<small style=font-style:italic;>N/A</small>" %></td>
 								    	</tr>
 								    </table>
-								    <button value="<%=itemAlerts.getString("item_alert_id")%>" class="btn btn-outline-danger my-2 my-sm-0">Delete</button>
+								    <button value="<%=itemAlerts.getString("item_alert_id")%>" class="btn btn-outline-danger my-2 my-sm-0 del">Delete</button>
 								 </div>
 							</div>
 						</td>
@@ -84,8 +84,6 @@
 		</div>
 	</div>
 </div>
-<!-- Modal For Each Item Alert -->
-
 <!-- Create New Alert Popup -->
 <div class="modal" align="center" tabindex="-1" role="dialog" id="newAlertModal">
   <div class="modal-dialog modal-lg" role="document">

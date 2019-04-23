@@ -131,7 +131,7 @@
 								<td><strong id="maxBid">$<%=String.format("%.2f", lead_bid)%><%= !bid_leader.isEmpty()? " From " + bid_leader : " (Initial Price)"%></strong><p><a href="#" style="text-decoration: none;" id="openHistory">Bid History</a></p></td>
 							</tr> 
 							<tr> 
-								<td><h3><%=auctionData.get("is_active").contentEquals("1")? "Ends On" : "Aucution Ended on" %></h3><hr></td>
+								<td><h3><%=Integer.parseInt(auctionData.get("is_active")) == 1? "Ends On" : "Aucution Ended on" %></h3><hr></td>
 							</tr>
 							<tr class="subTable">
 								<td><strong><%=auctionData.get("end_time")%></strong></td>
@@ -456,7 +456,7 @@
       <div class="modal-body">
         <table class="table">
   			<thead>
-    			<tr>
+    			<tr> 
 			      <th scope="col">User</th>
 			      <th scope="col">Amount</th>
 			      <th scope="col">Date</th>

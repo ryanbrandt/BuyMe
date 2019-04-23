@@ -198,14 +198,8 @@ public class AuctionManagementServlet extends HttpServlet {
 				if(s.next()) {
 					request.getSession().setAttribute("new_prod_id", s.getInt(1));
 				}
-				// do picture insert
-				Part pic = request.getPart("image");
-				if(pic != null) {
-					PreparedStatement ps = con.prepareStatement("UPDATE BuyMe.Clothing SET `image` =  ? WHERE product_id = " + request.getSession().getAttribute("new_prod_id"));
-					InputStream inpStr = pic.getInputStream();
-					ps.setBlob(1, inpStr);
-					ps.executeUpdate();
-				}
+				// TODO do picture insert here
+				
 				// create associated type tuple, save its type as a session attribute for next steps
 				switch(request.getParameter("type")) {
 				

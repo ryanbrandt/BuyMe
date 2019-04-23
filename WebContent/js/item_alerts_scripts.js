@@ -20,3 +20,20 @@ $('#alertForm').on('submit', function(e){
 		}
 	})
 });
+
+/* delete existing item alert */
+$('.del').on('click', function(e){
+	e.preventDefault();
+	if(confirm('Are you sure?')){
+		$.ajax({
+			url: "/BuyMe/UserServlet?action=da",
+			method: "POST",
+			// alert id is button value
+			data: "&id=" + $(this).val(),
+		
+			success: function(){
+				window.location.reload();
+			}
+		})
+	}
+})
