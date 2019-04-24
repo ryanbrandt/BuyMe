@@ -127,6 +127,7 @@
 						}else{
 							%>${pageContext.request.contextPath}/images/no-image-icon-23494.png<%
 						}
+						con.close();
 					}
 					catch (Exception e){
 						%>${pageContext.request.contextPath}/images/no-image-icon-23494.png<%
@@ -619,6 +620,7 @@ try{
 		itemsFound++;		
 		}
 	}
+	con.close();
 }
 catch(Exception e){
 	System.out.println("exception: " + e);

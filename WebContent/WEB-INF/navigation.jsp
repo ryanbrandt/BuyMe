@@ -22,6 +22,7 @@ String unreads;
 		ResultSet aInboxTable = aSt.executeQuery("SELECT COUNT(*) as unreads FROM Alerts WHERE alert_for = '" + curSession.getAttribute("user") + "' and alert_read = '0'");
 		aInboxTable.next();
 		unreads = aInboxTable.getInt("unreads") == 0 ? "" : Integer.toString(aInboxTable.getInt("unreads"));
+		aCon.close();
 	}
 	catch(Exception e){
 		unreads = "";
