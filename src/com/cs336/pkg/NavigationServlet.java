@@ -36,7 +36,6 @@ public class NavigationServlet extends HttpServlet {
 		
 		String page = request.getParameter("location");
 		//System.out.println("page: " + page);
-		
 		switch(request.getParameter("location")){
 		// to my auctions list page
 		case "auctions":
