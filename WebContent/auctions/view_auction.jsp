@@ -120,12 +120,14 @@
 						Statement st = con.createStatement(); 
 						String query = "SELECT c.image from BuyMe.Clothing c WHERE product_id="+auctionData.get("item_is") + " AND c.image is not NULL and c.image != 'null'";
 						ResultSet imageSet = st.executeQuery(query);
-						if(imageSet.next()){
+						if(imageSet.next() && imageSet.getString(1) != null && !imageSet.getString(1).equals("?")){
+							System.out.println(imageSet.getString(1));
 							%><%=imageSet.getString(1) %>
 							<%
 						}else{
 							%>${pageContext.request.contextPath}/images/no-image-icon-23494.png<%
 						}
+						con.close();
 					}
 					catch (Exception e){
 						%>${pageContext.request.contextPath}/images/no-image-icon-23494.png<%
@@ -552,13 +554,13 @@ try{
 			while(shirtList.next()){
 				itemNames.put(shirtList.getInt(1),shirtList.getString(2));
 				int score = 0;
-				if(shirtList.getString(3).equals(auctionData.get("has_belt_loops")))
+				if(shirtList.getString(3) != null && shirtList.getString(3).equals(auctionData.get("has_belt_loops")))
 					score++;
-				if(shirtList.getString(4).equals(auctionData.get("length")))
+				if(shirtList.getString(4) != null && shirtList.getString(4).equals(auctionData.get("length")))
 					score++;
-				if(shirtList.getString(5).equals(auctionData.get("fit")))
+				if(shirtList.getString(5) != null && shirtList.getString(5).equals(auctionData.get("fit")))
 					score++;
-				if(shirtList.getString(6).equals(auctionData.get("waist")))
+				if(shirtList.getString(6) != null && shirtList.getString(6).equals(auctionData.get("waist")))
 					score++;
 				
 				itemScores.put(shirtList.getInt(1),score);
@@ -573,20 +575,19 @@ try{
 			while(shirtList.next()){
 				itemNames.put(shirtList.getInt(1),shirtList.getString(2));
 				int score = 0;
-				if(shirtList.getString(3).equals(auctionData.get("water_resistant")))
+				if(shirtList.getString(3) != null && shirtList.getString(3).equals(auctionData.get("water_resistant")))
 					score++;
-				if(shirtList.getString(4).equals(auctionData.get("hood")))
+				if(shirtList.getString(4) != null && shirtList.getString(4).equals(auctionData.get("hood")))
 					score++;
-				if(shirtList.getString(5).equals(auctionData.get("insulated")))
+				if(shirtList.getString(5) != null && shirtList.getString(5).equals(auctionData.get("insulated")))
 					score++;
-				if(shirtList.getString(6).equals(auctionData.get("size")))
+				if(shirtList.getString(6) != null && shirtList.getString(6).equals(auctionData.get("size")))
 					score++;
 				
 				itemScores.put(shirtList.getInt(1),score);
 			}	
 		}
-		
-		while(itemsFound < itemGoal){
+		while(itemsFound < itemGoal && itemScores.keySet().size() > 2){
 			int maxScore = -1;
 			int id = 0;
 			String name = "";
@@ -619,9 +620,10 @@ try{
 		itemsFound++;		
 		}
 	}
+	con.close();
 }
 catch(Exception e){
-	System.out.println(e);
+	System.out.println("exception: " + e);
 }
 	%>
 					</tr>

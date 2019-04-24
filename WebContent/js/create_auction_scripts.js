@@ -25,7 +25,7 @@ $('#newProductForm').on('submit', function(e){
 		
 	}
 	var reader  = new FileReader();
-	console.log(document.getElementById("imageUpload").files.length == 0);
+	console.log(sanitize($(this).serialize()));
 	if(document.getElementById("imageUpload").files.length > 0){
 		reader.readAsDataURL(document.getElementById("imageUpload").files[0]);
 		reader.onload = function () {
@@ -34,7 +34,7 @@ $('#newProductForm').on('submit', function(e){
 				url: "/BuyMe/AuctionManagementServlet",
 				method: "POST",
 				// send action=c for create new clothing tuple
-				data: $('#newProductForm').serialize() + "&image=" + myencode(reader.result) + "&action=c",
+				data: sanitize($('#newProductForm').serialize()) + "&image=" + myencode(reader.result) + "&action=c",
 				
 				success: function(){
 					console.log("success");
@@ -48,7 +48,7 @@ $('#newProductForm').on('submit', function(e){
 			url: "/BuyMe/AuctionManagementServlet",
 			method: "POST",
 			// send action=c for create new clothing tuple
-			data: $('#newProductForm').serialize() + "&image=" + myencode(reader.result) + "&action=c",
+			data: sanitize($('#newProductForm').serialize()) + "&image=" + myencode(reader.result) + "&action=c",
 			
 			success: function(){
 				console.log("success");
@@ -73,7 +73,7 @@ $('.typeForm').on('submit', function(e){
 		url: "/BuyMe/AuctionManagementServlet",
 		method: "POST",
 		// send action=t for adding fields to related type of clothing tuple created in newProductForm
-		data: $(this).serialize() + "&action=t",
+		data: sanitize($(this).serialize()) + "&action=t",
 		
 		success: function(){
 			// do stuff
@@ -97,6 +97,13 @@ $('#auctionForm').on('submit', function(e){
 		}
 	})
 });
+
+function sanitize(inputString){
+    var d = inputString;
+    while(d.includes("'"))
+    	d = d.replace("'","");
+    return d;
+}
 /* make sure end_date after today and slide newProductForm */
 window.onload = function(){
 	$('#newProductForm').slideDown("slow", function(){

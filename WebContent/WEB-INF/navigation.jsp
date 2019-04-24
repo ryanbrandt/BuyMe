@@ -22,6 +22,7 @@ String unreads;
 		ResultSet aInboxTable = aSt.executeQuery("SELECT COUNT(*) as unreads FROM Alerts WHERE alert_for = '" + curSession.getAttribute("user") + "' and alert_read = '0'");
 		aInboxTable.next();
 		unreads = aInboxTable.getInt("unreads") == 0 ? "" : Integer.toString(aInboxTable.getInt("unreads"));
+		aCon.close();
 	}
 	catch(Exception e){
 		unreads = "";
@@ -114,10 +115,16 @@ String unreads;
 			return false;
 		}
 	}
+	function sanitize(inputString){
+	    var d = inputString;
+	    while(d.includes("'"))
+	    	d = d.replace("'","");
+	    return d;
+	}
 	/* on submit go to search page with search query */
 	$('#searchForm').on('submit', function(e){
 		e.preventDefault();
-		var args = "&q=" + $('#q').val();
+		var args = "&q=" + sanitize($('#q').val());
 		var dest = "NavigationServlet?location=search" + args;
 		window.location.href = dest;
 	});
