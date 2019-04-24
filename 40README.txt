@@ -8,6 +8,7 @@ Also, we want the username and password of your Apache Tomcat manager (see AWS_E
 	Tomcat:
 		User: admin
 		Password: password
+	.pem is attached 
 	
 
 -a list that apportions credit (possibly shared) for each code file to the team members. (It would also be good to have these as comments in your code files). 
@@ -18,3 +19,6 @@ If your think that the everyone contributed equally just write that in your file
 -admin credentials so we can login as an admin
 	Email: admin@buyme.com
 	Password: admin
+
+
+	

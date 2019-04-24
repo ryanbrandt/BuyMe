@@ -3,10 +3,10 @@
 <%@ page import="javax.servlet.http.*,javax.servlet.*"%>
 <%
 	// get necessary data to populate page 
-	Map<Integer, String> ownedAuctions = new HashMap<Integer, String>();
-	Map<Integer, String> bidOnAuctions = new HashMap<Integer, String>();
-	Map<Integer, String> wonAuctions = new HashMap<Integer, String>();
-	Map<Integer, String> closedAuctions = new HashMap<Integer, String>();
+	Map<Integer, String> ownedAuctions = new LinkedHashMap<Integer, String>();
+	Map<Integer, String> bidOnAuctions = new LinkedHashMap<Integer, String>();
+	Map<Integer, String> wonAuctions = new LinkedHashMap<Integer, String>();
+	Map<Integer, String> closedAuctions = new LinkedHashMap<Integer, String>();
 	ArrayList<String> ownedType = new ArrayList<String>();
 	ArrayList<String> wonType = new ArrayList<String>();
 	ArrayList<String> bidOnType = new ArrayList<String>();

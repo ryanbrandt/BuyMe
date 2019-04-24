@@ -3,7 +3,7 @@
 <%@ page import="javax.servlet.http.*,javax.servlet.*"%>
 <%
 	// get necessary data to populate page 
-	Map<Integer, String> queryAuctions = new HashMap<Integer, String>();
+	Map<Integer, String> queryAuctions = new LinkedHashMap<Integer, String>();
 	ArrayList<String> prodType = new ArrayList<String>();
 	ArrayList<Integer> ordering = new ArrayList<Integer>();
 	try{ 
