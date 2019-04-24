@@ -891,8 +891,14 @@
 			break;
 		}
 	}
+	function sanitize(inputString){
+	    var d = inputString;
+	    while(d.includes("'"))
+	    	d = d.replace("'","");
+	    return d;
+	}
 	function regSearch(){
-		var args = "&q=" + $('#regSearch').val();
+		var args = "&q=" + sanitize($('#regSearch').val());
 		var dest = "NavigationServlet?location=search" + args;
 		window.location.href = dest;
 	}
