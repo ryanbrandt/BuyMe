@@ -114,10 +114,16 @@ String unreads;
 			return false;
 		}
 	}
+	function sanitize(inputString){
+	    var d = inputString;
+	    while(d.includes("'"))
+	    	d = d.replace("'","");
+	    return d;
+	}
 	/* on submit go to search page with search query */
 	$('#searchForm').on('submit', function(e){
 		e.preventDefault();
-		var args = "&q=" + $('#q').val();
+		var args = "&q=" + sanitize($('#q').val());
 		var dest = "NavigationServlet?location=search" + args;
 		window.location.href = dest;
 	});
