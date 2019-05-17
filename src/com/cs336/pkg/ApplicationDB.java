@@ -13,7 +13,7 @@ public class ApplicationDB {
 	public Connection getConnection(){
 		
 		//Create a connection string
-		String connectionUrl = "jdbc:mysql://buyme.cbjugyhqgonx.us-east-2.rds.amazonaws.com:3306/BuyMe";
+		String connectionUrl = "aSuperSecretEndpoint";
 		Connection connection = null;
 		
 		try {
@@ -31,7 +31,7 @@ public class ApplicationDB {
 		}
 		try {
 			//Create a connection to your DB
-			connection = DriverManager.getConnection(connectionUrl,"root", "password");
+			connection = DriverManager.getConnection(connectionUrl,"aSuperSecretUser", "aSuperSecretPassword");
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
